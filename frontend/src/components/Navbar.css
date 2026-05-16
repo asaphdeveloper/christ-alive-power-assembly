@@ -1,0 +1,150 @@
+.nav-bar {
+  position: fixed;
+  left: 100px;
+  right: 100px;
+  top: 25px;
+  border-radius: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 20px 0px 20px;
+  height: 68px;
+  z-index: 100;
+  background-color: white;
+  border: 1px solid rgba(0, 0, 0, 0.02);
+  box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+/* Nav Left Section Styles */
+.left-section {
+  flex-basis: 200px;
+  display: flex;
+  justify-content: flex-start;
+}
+.logo {
+  width: 40px;
+  cursor: pointer;
+  position: relative;
+  left: 8px;
+  bottom: 2px;
+}
+
+/* Nav Middle Section Styles */
+.middle-section {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+.nav-links {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+}
+.nav-link {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 15px 0;
+}
+.nav-link:hover .link {
+  color: black;
+}
+.nav-link:hover .link-icon {
+  filter: invert(0);
+  transform: translate(0, 2px);
+}
+.link {
+  color: black;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 0.25px;
+  text-wrap: nowrap;
+}
+.link-icon {
+  width: 10px;
+  filter: invert(0.25);
+  transition: 0.15s ease;
+}
+
+/* Nav Right Section Styles */
+.right-section {
+  flex-basis: 200px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+button.menu {
+  background-color: transparent;
+  border: none;
+  display: none;
+  padding: 10px 0px;
+}
+button.menu svg {
+  width: 28px;
+  height: 28px;
+  stroke: black;
+}
+
+/* Dropdown */
+.nav-link {
+  position: relative;
+}
+.nav-link .dropdown::before {
+  content: '';
+  position: absolute;
+  top: -25px;
+  height: 100%;
+  width: 100%;
+  left: 0;
+  /* padding: 25px; */
+  border-radius: 0 0 8px 8px;
+  background-color: transparent;
+  z-index: -1000;
+}
+.nav-link .dropdown {
+  position: absolute;
+  top: 65px;
+  padding: 25px;
+  border-radius: 8px 8px 8px 8px;
+  min-width: 250px;
+  background-color: white;
+  display: flex;
+  align-items: flex-start;
+  gap: 35px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  z-index: 100;
+  display: none;
+}
+.nav-link.has-menu:hover .dropdown {
+  display: flex;
+}
+.dropdown ul {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  list-style: none;
+}
+.dropdown ul li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.dropdown ul li img {
+  width: 12px;
+  transition: 0.2s ease;
+}
+.dropdown ul li a {
+  color: #000;
+  font-size: 15px;
+  text-wrap: nowrap;
+  font-family: Outfit;
+}
+.dropdown ul li:hover a {
+  color: rgb(9, 119, 86);
+}
+.dropdown ul li:hover img {
+  transform: translate(2px, -2px);
+}
+
+/* Minsistries Dropdown */

@@ -1,0 +1,120 @@
+.pastor-summary {
+  height: 100vh;
+  width: 100%;
+  padding: 0;
+  position: relative;
+}
+.pastor-image {
+  height: 100%;
+  width: 100%;
+}
+.pastor-image img {
+  height: 100%;
+  width: 100%;
+  object-fit: cover;
+}
+.pastor-details {
+  max-width: 600px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+
+  position: absolute;
+  left: 5%;
+  top: 50%;
+  transform: translate(0%, -50%);
+  transition: 1s ease;
+}
+.pastor-details.hidden {
+  transform: translate(-50%, -50%);
+  opacity: 0;
+}
+.pastor-heading h2 {
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: -2px;
+  word-spacing: -10px;
+  font-weight: 900;
+  font-size: 45px;
+  font-family: Outfit;
+}
+.pastor-heading h2 span {
+  color: var(--primary-color-light);
+}
+.pastor-body {
+  line-height: 1.5;
+  font-size: 15px;
+  color: #000;
+  background-color: #fff;
+  border-radius: 15px;
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+.pastor-body-row {
+  display: grid;
+  grid-template-columns: 50px 1fr;
+}
+.pastor-body-row-icon {
+  width: 45px;
+  height: 45px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.pastor-body-row img {
+  width: 18px;
+  filter: invert(0.25);
+}
+.pastor-body-row h3 {
+  text-transform: uppercase;
+  font-size: 18px;
+  margin-bottom: 5px;
+  color: var(--primary-color);
+  color: #333;
+  font-weight: 800;
+  word-spacing: 2px;
+}
+.pastor-body-row p {
+  font-size: 14px;
+  color: #333;
+  letter-spacing: -0.5px;
+  font-family: Outfit;
+  line-height: 2;
+}
+.pastor-btn {
+  gap: 8px;
+  border-radius: 50px;
+  justify-content: center;
+}
+.pastor-btn .btn-primary-icon {
+  border-radius: 50px;
+}
+.pastor-image-container {
+  width: 100%;
+}
+.pastor-image {
+  width: 100%;
+}
+.pastor-description {
+  align-items: end;
+}
+.pastor-description h3 {
+  font-size: 25px;
+  color: white;
+  margin-bottom: 20px;
+  text-align: center;
+}
+.pastor-description p {
+  color: gainsboro;
+  line-height: 1.8;
+  letter-spacing: 0.5px;
+  word-spacing: 1px;
+  margin-bottom: 25px;
+  text-align: center;
+}
+.pastor-description-btn {
+  justify-self: center;
+}

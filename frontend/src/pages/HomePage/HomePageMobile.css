@@ -1,0 +1,394 @@
+@media (max-width: 1250px) {
+  /* SERVICES */
+  .services-summary {
+    margin: 0 50px;
+  }
+  .about-us-contents {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 100px;
+    column-gap: 25px;
+  }
+}
+
+@media (max-width: 1100px) {
+  .hero-overlay-content p.hero-overlay-text {
+    font-size: 22px;
+  }
+  .hero-overlay-content h1.hero-overlay-title {
+    font-size: 3.5rem;
+  }
+
+  /* SERVICES */
+  .services-summary {
+    margin: 0 10px;
+  }
+  .about-us-contents {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 100px;
+    column-gap: 25px;
+  }
+
+  /* PASTOR */
+  .pastor-details {
+    max-width: 450px;
+  }
+  .pastor-heading h2 {
+    font-size: 40px;
+  }
+
+  /* CTA */
+  .section-cta {
+    width: 100%;
+    padding: 100px 25px;
+    margin: 100px 0;
+  }
+  .cta-box {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 25px;
+    display: grid;
+    gap: 50px;
+    grid-template-columns: 2fr 1fr;
+  }
+  .cta-text-box {
+    padding: 35px 30px 20px;
+    color: white;
+    max-width: 100%;
+  }
+  .cta-box .heading-secondary {
+    margin-bottom: 25px;
+    font-size: 30px;
+    font-weight: 600;
+  }
+  .cta-text {
+    font-size: 16px;
+    word-spacing: 2px;
+    line-height: 1.5;
+    margin-bottom: 25px;
+  }
+  .cta-box a {
+    width: 50%;
+  }
+
+  /* FOOTER */
+}
+
+@media (max-width: 900px) {
+  .hero-overlay-content p.hero-overlay-text {
+    font-size: 20px;
+  }
+  .hero-overlay-content h1.hero-overlay-title {
+    font-size: 45px;
+  }
+
+  /* ABOUT */
+  .about-summary {
+    margin: 0 25px;
+  }
+  .about-us-contents {
+    grid-template-columns: repeat(1, 1fr);
+    row-gap: 50px;
+  }
+
+  /* RESOURCES */
+  .resources-summary {
+    padding: 150px 25px 25px;
+  }
+  .resources-heading h2 {
+    font-size: 30px;
+  }
+
+  /* UPCOMING SECTION */
+  .upcoming-summary {
+    padding: 150px 25px 25px;
+  }
+  .upcoming-heading h2 {
+    font-size: 30px;
+  }
+}
+
+@media (max-width: 750px) {
+  .hero-overlay-content p.hero-overlay-text {
+    font-size: 20px;
+  }
+  .hero-overlay-content h1.hero-overlay-title {
+    font-size: 45px;
+  }
+  .swiper-button-next,
+  .swiper-button-prev {
+    display: none;
+  }
+
+  /* BRANCHES */
+  .branches-summary {
+    padding: 150px 0px 50px 0px;
+  }
+
+  .branches-swiper-btns {
+    padding: 20px;
+    gap: 10px;
+  }
+  .branches-swiper-btn {
+    width: 42px;
+    height: 42px;
+  }
+  .branches-swiper-btn img {
+    width: 18px;
+  }
+  /* PASTOR */
+  .pastor-details {
+    max-width: 400px;
+  }
+  .pastor-body {
+    padding: 40px 20px 40px 10px;
+  }
+  .pastor-heading h2 {
+    font-size: 35px;
+  }
+  .pastor-details {
+    left: 2%;
+  }
+  .pastor-body-row p {
+    line-height: 1.5;
+  }
+
+  /* CTA */
+  .section-cta {
+    width: 100%;
+    margin: 0 auto;
+  }
+  .cta-box {
+    padding: 0 25px 25px 25px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+    padding-bottom: 15px;
+  }
+  .cta-img-box {
+    height: 150px;
+    grid-row: 1;
+    background-position: center;
+    transform: scale(1.5);
+  }
+  .cta-box h2 {
+    font-size: 30px;
+    margin-bottom: 15px;
+    margin-top: 10px;
+    justify-self: center;
+    width: 100%;
+  }
+  .cta-box p {
+    font-size: 16px;
+    text-align: center;
+  }
+  .cta-box a {
+    width: 100%;
+  }
+
+  /* FOOTER */
+}
+
+@media (max-width: 520px) {
+  .services-summary {
+    padding-top: 75px;
+  }
+  .hero-overlay-content {
+    top: 50%;
+    padding-top: 50px;
+  }
+  .hero-overlay-content p.hero-overlay-text {
+    font-size: 16px;
+  }
+  .hero-overlay-content h1.hero-overlay-title {
+    font-size: 40px;
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+    gap: 8px;
+  }
+  .hero-overlay-content h1.hero-overlay-title div {
+    flex-direction: column;
+    line-height: 0.8;
+  }
+
+  /* ABOUT US */
+  .about-summary {
+    padding-top: 20px;
+  }
+  .about-us-contents {
+    row-gap: 50px;
+    column-gap: 25px;
+  }
+  .about-us-content {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  .about-us-content-left {
+    height: 50px;
+    width: 50px;
+    background-color: var(--primary-color-tint);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .about-us-content-left img {
+    width: 22px;
+  }
+  .about-us-content-left img {
+    width: 20px;
+  }
+  .about-us-content-right p {
+    font-size: 14px;
+  }
+  .about-us-heading {
+    width: 60%;
+  }
+
+  /* SERVICES */
+  .services-summary {
+    padding-top: 75px;
+  }
+  .services-heading {
+    text-align: center;
+    padding: 25px 0;
+    margin-bottom: 0px;
+  }
+  .services-heading button {
+    padding: 10px 15px;
+  }
+  .services-heading button svg {
+    width: 15px;
+    height: 15px;
+  }
+  .services-heading h2 {
+    margin: 20px 0 20px 0;
+    font-size: 26px;
+  }
+
+  /* PASTOR */
+  .pastor-details {
+    max-width: 275px;
+  }
+  .pastor-body {
+    padding: 20px;
+  }
+  .pastor-body-row {
+    grid-template-columns: 1fr;
+  }
+  .pastor-body-row-icon {
+    background-color: whitesmoke;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    margin-bottom: 10px;
+    /* display: none; */
+  }
+  .pastor-heading h2 {
+    font-size: 30px;
+  }
+  .pastor-body-row p {
+    line-height: 1.2;
+  }
+  .pastor-body-row h3 {
+    line-height: 1;
+  }
+  .pastor-body-row p {
+    line-height: 1.4;
+  }
+
+  /* BRANCHES */
+  .branches-cards {
+    gap: 15px;
+  }
+
+  .branches-heading h2 {
+    font-size: 25px;
+  }
+
+  /* UPCOMING SECTION  & RESOURCES SECTION*/
+  .upcoming-heading,
+  .resources-heading {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+  .upcoming-heading h2,
+  .resources-heading h2 {
+    font-size: 28px;
+  }
+
+  /* CTA */
+  .cta-text-box {
+    padding: 0;
+  }
+  .cta-box h2 {
+    font-size: 28px;
+  }
+  .cta-box p {
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .cta-box a {
+    width: 100%;
+  }
+}
+
+@media (max-width: 450px) {
+  /* ABOUT */
+  .about-summary {
+    padding-top: 25px;
+    padding-bottom: 25px;
+    margin: 0 10px;
+  }
+  .about-summary h2 {
+    display: none;
+  }
+
+  /* CTA */
+  .cta-text-box {
+    padding: 0;
+  }
+  .cta-box h2 {
+    font-size: 24px;
+  }
+  .cta-box p {
+    font-size: 14px;
+    font-weight: 400;
+  }
+  .cta-box a {
+    width: 100%;
+  }
+
+  /* PASTOR */
+  .pastor-summary {
+    margin-top: 50px;
+  }
+  .pastor-body {
+    padding: 30px 25px;
+  }
+  .pastor-body-row-icon {
+    background-color: transparent;
+    display: none;
+  }
+  .pastor-details {
+    transition: 1s ease;
+  }
+  .pastor-body-row h3 {
+    font-size: 16px;
+  }
+
+  .social-links {
+    gap: 20px;
+  }
+
+  .footer-top {
+    padding: 0;
+  }
+  .copyright {
+    font-size: 10px;
+  }
+}

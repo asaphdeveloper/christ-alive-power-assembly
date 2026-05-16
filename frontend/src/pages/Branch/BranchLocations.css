@@ -1,0 +1,76 @@
+.branch-locations {
+  margin: 20px 0 0 0;
+}
+.branch-locations .branch-locations-paragraph {
+  color: #777;
+  margin: -10px 0 25px 0;
+}
+.branch-locations-cards {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  width: 100%;
+}
+.branch-locations-card .branch-card-details {
+  flex: 1;
+}
+.branch-locations-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #fbfdfe, #fff);
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+.branch-locations-card .branch-card-heading {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+.branch-locations-card .branch-card-heading span {
+  font-size: 18px;
+  font-weight: 800;
+  color: #555;
+}
+.branch-locations-card
+  .branch-card-heading
+  .branch-card-heading-icon-container {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: whitesmoke;
+  border: 1px solid rgb(238, 238, 238);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.branch-locations-card .branch-card-heading-icon {
+  width: 20px;
+}
+.branch-locations-card .branch-card-description {
+  font-size: 14px;
+  color: var(--primary-color);
+  font-weight: 600;
+}
+.branch-locations-card .branch-card-address {
+  margin: 10px 0 0 0;
+  color: #444;
+  font-size: 14px;
+  line-height: 1.35;
+}
+.branch-locations-card .branch-card-map {
+  height: 140px;
+  margin-top: 12px;
+}
+.branch-locations-card .branch-card-map iframe {
+  height: 100%;
+  width: 100%;
+  border: 0;
+  border-radius: 6px;
+}

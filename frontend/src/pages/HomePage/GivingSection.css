@@ -1,0 +1,106 @@
+.cta-box {
+  position: relative;
+  top: 200px;
+  display: none;
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+  display: grid;
+  gap: 50px;
+  grid-template-columns: 2fr 1fr;
+  box-shadow: 0 2.4rem 4.8rem rgba(0, 0, 0, 0.15);
+  border-radius: 11px;
+  overflow: hidden;
+  background-image: linear-gradient(
+    to right bottom,
+    var(--primary-color),
+    var(--primary-color-light)
+  );
+}
+.cta-text-box {
+  padding: 50px;
+  color: white;
+  max-width: 100%;
+}
+.cta-box h2 {
+  color: inherit;
+  margin-bottom: 25px;
+  font-size: 30px;
+  font-weight: 600;
+  position: relative;
+  max-width: fit-content;
+  color: #333;
+  z-index: 1;
+}
+.cta-box h2::after {
+  display: block;
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  z-index: -1;
+  opacity: 0.7;
+  transform: scale(1.07, 1.05) skewX(-15deg);
+  background: #fff;
+}
+.cta-box p {
+  font-size: 18px;
+  letter-spacing: -0.5px;
+  line-height: 1.5;
+  margin-bottom: 25px;
+  font-family: Outfit;
+}
+.cta-img-box {
+  height: 100%;
+  background-image: linear-gradient(
+      to right bottom,
+      rgba(8, 127, 91, 0.25),
+      rgba(8, 127, 91, 0.1)
+    ),
+    url('../images/slide-01.jpg');
+  background-size: cover;
+  background-position: center;
+  transform: scale(1.2);
+}
+.cta-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right;
+}
+.cta-box .cta-button {
+  padding: 10px;
+  border: none;
+  background-color: white;
+  font-size: 20px;
+  font-weight: 600;
+  border-radius: 8px;
+  width: 35%;
+  text-align: center;
+  display: inline-block;
+  cursor: pointer;
+  text-decoration: none;
+  color: #333;
+  text-wrap: nowrap;
+  position: relative;
+  z-index: 1;
+}
+.cta-box .cta-button::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: #fff;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  border-radius: 8px;
+  transition: all 0.3s;
+}
+.cta-box .cta-button:hover::after {
+  transform: scaleY(1.6);
+  opacity: 0;
+}

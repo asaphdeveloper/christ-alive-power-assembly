@@ -1,0 +1,190 @@
+.branches-summary {
+  padding: 150px 25px 100px;
+  max-width: 1300px;
+  margin: 0 auto;
+  min-height: 100dvh;
+  background-color: white;
+}
+.branches-heading {
+  justify-self: start;
+  margin-bottom: 50px;
+}
+.branches-heading h2 {
+  margin: 15px 0;
+  font-size: 35px;
+}
+.branches-heading h2 span {
+  color: var(--primary-color);
+}
+.branches-heading button {
+  justify-self: left;
+}
+.branches-heading button img {
+  width: 18px;
+  height: 18px;
+}
+
+.branches-cards {
+  display: flex;
+  gap: 20px;
+  padding: 0 10px;
+  overflow-x: scroll;
+  scrollbar-width: none;
+}
+.branch-card {
+  display: inline-block;
+  border-radius: 8px;
+  height: 400px;
+  min-width: 300px;
+  max-width: 400px;
+  overflow: hidden;
+  position: relative;
+  transition: all 0.3s ease;
+}
+.branch-card.hidden {
+  opacity: 0;
+  transform: scale(0.75);
+}
+.branch-card .branch-card-image-container {
+  height: 400px;
+  min-width: 300px;
+}
+.branch-card .branch-card-image-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.branch-card .branch-card-image-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(190deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.95));
+}
+.branch-card:hover .branch-card-icon {
+  opacity: 1;
+  transform: translate(0%, 0%);
+}
+.branch-card:hover .branch-card-box {
+  opacity: 1;
+  transform: translateY(0px);
+}
+.branch-card:hover .branch-card-state {
+  opacity: 1;
+  letter-spacing: 0;
+}
+.branch-card-button {
+  position: absolute;
+  bottom: 60px;
+  left: 20px;
+
+  display: flex;
+  align-items: center;
+  gap: 5px;
+
+  backdrop-filter: blur(20px);
+  border-radius: 50px;
+  background-color: #ffffff1f;
+  height: 30px;
+  max-width: fit-content;
+  padding: 1px 12px 1px 8px;
+}
+.branch-card-button-icon {
+  width: 16px;
+  color: #fff;
+}
+.branch-card-button span {
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: #fff;
+}
+.branch-card-state {
+  color: #fff;
+  font-weight: 800;
+  font-size: 40px;
+  text-align: center;
+  transition: var(--transition);
+  letter-spacing: 5px;
+  position: absolute;
+  top: 25%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  opacity: 0;
+}
+.branch-card-box {
+  opacity: 0;
+  position: absolute;
+  bottom: 5px;
+  left: 0;
+
+  color: #fff;
+  background-color: #ffffff1f;
+  backdrop-filter: blur(20px);
+  padding: 20px;
+  margin: 20px;
+  border-radius: 8px;
+
+  font-size: 14px;
+  line-height: 1.4;
+  word-spacing: 2px;
+  letter-spacing: 0.5px;
+  transform: translateY(150px);
+  transition: all 0.3s cubic-bezier(1, 0, 0, 1);
+
+  background-color: #fff;
+  color: #000;
+}
+.branch-card h3 {
+  color: #fff;
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 0.75px;
+  position: absolute;
+  bottom: 25px;
+  left: 25px;
+}
+.branch-card-icon {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 25px;
+  height: 25px;
+  opacity: 0;
+}
+
+.branches-swiper-btns {
+  grid-column: 1 / -1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 20px;
+  padding: 20px 0;
+  width: 100%;
+
+  max-width: 1300px;
+  margin: 0 auto;
+}
+.branches-swiper-btn {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  z-index: 1;
+}
+.branches-swiper-btn img {
+  width: 20px;
+  transition: 0.2s ease;
+  transform: translateX(0%);
+}
+.branches-swiper-btn.prev-btn:hover img {
+  transform: translateX(-15%);
+}
+.branches-swiper-btn.next-btn:hover img {
+  transform: translateX(15%);
+}
