@@ -2,6 +2,7 @@ import express from 'express';
 import morgan from 'morgan';
 import AppError from './utils/AppError.js';
 import { router as userRouter } from './routes/user.routes.js';
+import { router as authRouter } from './routes/auth.routes.js';
 
 export const app = express();
 
@@ -12,6 +13,7 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 app.use('/api/users', userRouter);
+app.use('/api/auth', authRouter);
 
 app.all('*splat', (req, res, next) => {
   next(new AppError(`Page not found`, 404));

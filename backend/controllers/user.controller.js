@@ -59,7 +59,6 @@ export const updateUser = async (req, res) => {
       new: true,
       runValidators: true,
     });
-    console.log(updatedUser);
 
     if (!updatedUser) {
       return res.status(404).json({
