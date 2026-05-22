@@ -3,6 +3,13 @@ import User from '../models/user.model.js';
 export const getAllUsers = async (req, res) => {
   const users = await User.find();
 
+  if (!users || users.length === 0) {
+    return res.status(404).json({
+      status: 'fail',
+      message: 'Users not found',
+    });
+  }
+
   res.status(200).json({
     status: 'success',
     data: { users },
