@@ -20,12 +20,20 @@ app.all('*splat', (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
-  console.log(err);
+  if (err.name === 'TokenExpiredError') {
+    err = new AppError('Your token has expired! Please log in again!', 401);
+  }
 
-  const { statusCode, message } = err;
+  if (err.name === 'JsonWebTokenError') {
+    err = new AppError('Invalid token. Please log in again!', 401);
+  }
+
+  const statusCode = err.statusCode || 500;
+  const message = err.message;
   const status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
 
   res.status(statusCode).json({ status, message });
+
   next();
 });
 
