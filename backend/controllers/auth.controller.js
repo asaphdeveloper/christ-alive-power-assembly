@@ -37,13 +37,13 @@ export const login = async (req, res, next) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      throw new AppError('Please provide email and password', 400);
+      return next(new AppError('Please provide email and password', 400));
     }
 
     const user = await User.findOne({ email }).select('+password');
 
     if (!user || !(await user.comparePasswords(password, user.password))) {
-      throw new AppError('invalid email or password', 400);
+      return next(new AppError('invalid email or password', 400));
     }
 
     const token = signToken(user._id);
@@ -69,7 +69,7 @@ export const authenticate = async (req, res, next) => {
     }
 
     if (!token) {
-      throw new AppError('You are not logged in', 401);
+      return next(new AppError('You are not logged in', 401));
     }
 
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
@@ -77,9 +77,8 @@ export const authenticate = async (req, res, next) => {
     const user = await User.findById(decoded.id);
 
     if (!user) {
-      throw new AppError(
-        'The user belonging to this token no longer exists',
-        401,
+      return next(
+        new AppError('The user belonging to this token no longer exists', 401),
       );
     }
 
@@ -88,14 +87,14 @@ export const authenticate = async (req, res, next) => {
       const changedTimestamp = parseInt(passwordChangedAt.getTime() / 1000, 10);
 
       if (changedTimestamp > decoded.iat) {
-        throw new AppError(
-          'Password recently changed. Please login again',
-          401,
+        return next(
+          new AppError('Password recently changed. Please login again', 401),
         );
       }
     }
 
     req.user = user;
+
     next();
   } catch (err) {
     next(err);
@@ -105,9 +104,8 @@ export const authenticate = async (req, res, next) => {
 export const restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      return new AppError(
-        'You do not have permission to perform this action',
-        401,
+      return next(
+        new AppError('You do not have permission to perform this action', 401),
       );
     }
 
