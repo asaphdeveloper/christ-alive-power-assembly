@@ -20,6 +20,8 @@ app.all('*splat', (req, res, next) => {
 });
 
 app.use((err, req, res, next) => {
+  console.log(err);
+
   const { statusCode, message } = err;
   const status = `${statusCode}`.startsWith('4') ? 'fail' : 'error';
 

@@ -9,7 +9,7 @@ const signToken = (id) => {
   });
 };
 
-export const signUp = async (req, res) => {
+export const signUp = async (req, res, next) => {
   try {
     const newUser = await User.create({
       name: req.body.name,
@@ -27,32 +27,23 @@ export const signUp = async (req, res) => {
       token,
       data: { user: newUser },
     });
-  } catch (error) {
-    res.status(500).json({
-      status: 'fail',
-      message: error.message,
-    });
+  } catch (err) {
+    next(err);
   }
 };
 
-export const login = async (req, res) => {
+export const login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
     if (!email || !password) {
-      return res.status(400).json({
-        status: 'fail',
-        message: 'Please provide email and password',
-      });
+      throw new AppError('Please provide email and password', 400);
     }
 
     const user = await User.findOne({ email }).select('+password');
 
     if (!user || !(await user.comparePasswords(password, user.password))) {
-      return res.status(401).json({
-        status: 'fail',
-        message: 'invalid email or password',
-      });
+      throw new AppError('invalid email or password', 400);
     }
 
     const token = signToken(user._id);
@@ -64,11 +55,8 @@ export const login = async (req, res) => {
       token,
       data: { user },
     });
-  } catch (error) {
-    res.status(500).json({
-      status: 'fail',
-      message: error.message,
-    });
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -81,20 +69,18 @@ export const authenticate = async (req, res, next) => {
     }
 
     if (!token) {
-      return res.status(401).json({
-        status: 'fail',
-        message: 'You are not logged in',
-      });
+      throw new AppError('You are not logged in', 401);
     }
 
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
+
     const user = await User.findById(decoded.id);
 
     if (!user) {
-      return res.status(401).json({
-        status: 'fail',
-        message: 'The user belonging to this token no longer exists',
-      });
+      throw new AppError(
+        'The user belonging to this token no longer exists',
+        401,
+      );
     }
 
     if (user.passwordChangedAt) {
@@ -102,30 +88,27 @@ export const authenticate = async (req, res, next) => {
       const changedTimestamp = parseInt(passwordChangedAt.getTime() / 1000, 10);
 
       if (changedTimestamp > decoded.iat) {
-        return res.status(401).json({
-          status: 'fail',
-          message: 'Password recently changed. Please login again',
-        });
+        throw new AppError(
+          'Password recently changed. Please login again',
+          401,
+        );
       }
     }
 
     req.user = user;
     next();
-  } catch (error) {
-    res.status(401).json({
-      status: 'fail',
-      message: error.message,
-    });
+  } catch (err) {
+    next(err);
   }
 };
 
 export const restrictTo = (...roles) => {
   return (req, res, next) => {
     if (!roles.includes(req.user.role)) {
-      return res.status(403).json({
-        status: 'fail',
-        message: 'You do not have permission to perform this action',
-      });
+      return new AppError(
+        'You do not have permission to perform this action',
+        401,
+      );
     }
 
     next();
