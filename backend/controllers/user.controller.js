@@ -1,4 +1,5 @@
 import User from '../models/user.model.js';
+import mongoose from 'mongoose';
 
 export const getAllUsers = async (req, res) => {
   const users = await User.find();
@@ -18,6 +19,13 @@ export const getAllUsers = async (req, res) => {
 
 export const getUser = async (req, res) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'Invalid ID',
+      });
+    }
+
     const user = await User.findById(req.params.id);
 
     if (!user) {
@@ -62,8 +70,15 @@ export const createUser = async (req, res) => {
 
 export const updateUser = async (req, res) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'Invalid ID',
+      });
+    }
+
     const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
-      new: true,
+      returnDocument: 'after',
       runValidators: true,
     });
 
@@ -88,6 +103,13 @@ export const updateUser = async (req, res) => {
 
 export const deleteUser = async (req, res) => {
   try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({
+        status: 'fail',
+        message: 'Invalid ID',
+      });
+    }
+
     const user = await User.findByIdAndDelete(req.params.id);
 
     if (!user) {
@@ -99,7 +121,7 @@ export const deleteUser = async (req, res) => {
 
     res.status(204).json({
       status: 'success',
-      data: null,
+      message: 'Deleted successfully',
     });
   } catch (error) {
     res.status(400).json({
@@ -111,7 +133,7 @@ export const deleteUser = async (req, res) => {
 
 export const deleteAllUsers = async (req, res) => {
   try {
-    const user = await User.deleteMany({});
+    const user = await User.deleteMany({ role: { $ne: 'admin' } });
 
     res.status(200).json({
       status: 'success',

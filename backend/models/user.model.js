@@ -64,11 +64,32 @@ userSchema.pre('save', async function () {
   this.passwordConfirm = undefined;
 });
 
+userSchema.pre('findOneAndUpdate', async function () {
+  const update = this.getUpdate();
+
+  if (update.password) {
+    this.set({ passwordChangedAt: Date.now() - 1000 });
+  }
+});
+
 userSchema.methods.comparePasswords = async function (
   candidatePassword,
   savedPassword,
 ) {
   return await bcrypt.compare(candidatePassword, savedPassword);
+};
+
+userSchema.methods.passwordChangedAfter = function (issuedTimestamp) {
+  if (this.passwordChangedAt) {
+    const changedTimestamp = parseInt(
+      this.passwordChangedAt.getTime() / 1000,
+      10,
+    );
+
+    return changedTimestamp > issuedTimestamp;
+  }
+
+  return false;
 };
 
 const User = mongoose.model('User', userSchema);

@@ -82,15 +82,10 @@ export const authenticate = async (req, res, next) => {
       );
     }
 
-    if (user.passwordChangedAt) {
-      const { passwordChangedAt } = user;
-      const changedTimestamp = parseInt(passwordChangedAt.getTime() / 1000, 10);
-
-      if (changedTimestamp > decoded.iat) {
-        return next(
-          new AppError('Password recently changed. Please login again', 401),
-        );
-      }
+    if (user.passwordChangeddAfter(decoded.iat)) {
+      return next(
+        new AppError('Password recently changed. Please login again', 401),
+      );
     }
 
     req.user = user;
