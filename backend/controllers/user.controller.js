@@ -1,53 +1,47 @@
-import User from '../models/user.model.js';
 import mongoose from 'mongoose';
+import User from '../models/user.model.js';
+import AppError from '../utils/AppError.js';
 
-export const getAllUsers = async (req, res) => {
-  const users = await User.find();
+export const getAllUsers = async (req, res, next) => {
+  try {
+    const users = await User.find();
 
-  if (!users || users.length === 0) {
-    return res.status(404).json({
-      status: 'fail',
-      message: 'Users not found',
+    if (!users || users.length === 0) {
+      return next(new AppError('Users not found', 404));
+    }
+
+    res.status(200).json({
+      status: 'success',
+      results: users.length,
+      data: { users },
     });
+  } catch (err) {
+    next(err);
   }
-
-  res.status(200).json({
-    status: 'success',
-    data: { users },
-  });
 };
 
-export const getUser = async (req, res) => {
+export const getUser = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.status(400).json({
-        status: 'fail',
-        message: 'Invalid ID',
-      });
+      return next(new AppError('Invalid ID', 400));
     }
 
     const user = await User.findById(req.params.id);
 
     if (!user) {
-      return res.status(404).json({
-        status: 'fail',
-        message: 'User not found',
-      });
+      return next(new AppError('User not found', 404));
     }
 
     res.status(200).json({
       status: 'success',
       data: user,
     });
-  } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message,
-    });
+  } catch (err) {
+    next(err);
   }
 };
 
-export const createUser = async (req, res) => {
+export const createUser = async (req, res, next) => {
   try {
     const newUser = await User.create({
       name: req.body.name,
@@ -60,21 +54,15 @@ export const createUser = async (req, res) => {
       status: 'success',
       data: { newUser },
     });
-  } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message,
-    });
+  } catch (err) {
+    next(err);
   }
 };
 
-export const updateUser = async (req, res) => {
+export const updateUser = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.status(400).json({
-        status: 'fail',
-        message: 'Invalid ID',
-      });
+      return next(new AppError('Invalid ID', 400));
     }
 
     const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
@@ -83,55 +71,40 @@ export const updateUser = async (req, res) => {
     });
 
     if (!updatedUser) {
-      return res.status(404).json({
-        status: 'fail',
-        message: 'User not found',
-      });
+      return next(new AppError('User not found', 404));
     }
 
     res.status(200).json({
       status: 'success',
       data: { updatedUser },
     });
-  } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message,
-    });
+  } catch (err) {
+    next(err);
   }
 };
 
-export const deleteUser = async (req, res) => {
+export const deleteUser = async (req, res, next) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return res.status(400).json({
-        status: 'fail',
-        message: 'Invalid ID',
-      });
+      return next(new AppError('Invalid ID', 400));
     }
 
     const user = await User.findByIdAndDelete(req.params.id);
 
     if (!user) {
-      return res.status(404).json({
-        status: 'fail',
-        message: 'User not found',
-      });
+      return next(new AppError('User not found', 404));
     }
 
-    res.status(204).json({
+    res.status(200).json({
       status: 'success',
       message: 'Deleted successfully',
     });
-  } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message,
-    });
+  } catch (err) {
+    next(err);
   }
 };
 
-export const deleteAllUsers = async (req, res) => {
+export const deleteAllUsers = async (req, res, next) => {
   try {
     const user = await User.deleteMany({ role: { $ne: 'admin' } });
 
@@ -139,10 +112,7 @@ export const deleteAllUsers = async (req, res) => {
       status: 'success',
       message: 'All users deleted successfully',
     });
-  } catch (error) {
-    res.status(400).json({
-      status: 'fail',
-      message: error.message,
-    });
+  } catch (err) {
+    next(err);
   }
 };
