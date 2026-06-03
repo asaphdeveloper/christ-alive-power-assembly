@@ -4,7 +4,7 @@ import * as authController from '../controllers/auth.controller.js';
 
 export const router = express.Router();
 
-router.get('/', authController.authenticate, userController.getAllUsers);
+router.get('/', userController.getAllUsers);
 router.post('/', userController.createUser);
 router.delete(
   '/',
