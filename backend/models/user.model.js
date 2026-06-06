@@ -100,17 +100,14 @@ userSchema.methods.passwordChangedAfter = function (issuedTimestamp) {
   return false;
 };
 
-userSchema.methods.createPasswordResetToken = function () {
-  const resetToken = crypto.randomBytes(32).toString('hex');
+userSchema.methods.hashPasswordResetToken = function (resetToken) {
   const hashedResetToken = crypto
     .createHash('sha256')
     .update(resetToken)
     .digest('hex');
 
-  this.passwordResetToken = resetToken;
+  this.passwordResetToken = hashedResetToken;
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
-
-  return { resetToken };
 };
 
 const User = mongoose.model('User', userSchema);

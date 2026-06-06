@@ -2,6 +2,8 @@ import User from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
 import AppError from '../utils/AppError.js';
 import { promisify } from 'util';
+import nodemailer from 'nodemailer';
+import crypto from 'crypto';
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -122,14 +124,41 @@ export const forgotPassword = async (req, res, next) => {
       return next(new AppError('User does not exist', 404));
     }
 
-    const { resetToken } = user.createPasswordResetToken();
+    const resetToken = crypto.randomBytes(32).toString('hex');
+
+    user.hashPasswordResetToken(resetToken);
     await user.save({ validateBeforeSave: false });
 
     const resetUrl = `${req.protocol}://${req.get('host')}/api/auth/reset-password/${resetToken}`;
-    console.log(resetUrl);
+
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.MAIL_USERNAME,
+        pass: process.env.MAIL_PASSWORD,
+      },
+    });
+
+    const message = `
+      Forgot your password?
+
+      Click the link below to reset it:
+
+      ${resetUrl}
+
+      This link will expire in 10 minutes.
+    `;
+
+    await transporter.sendMail({
+      from: process.env.MAIL_USERNAME,
+      to: 'asaphstrong100@gmail.com',
+      subject: 'Password Reset',
+      text: message,
+    });
 
     res.status(200).json({
       status: 'success',
+      message: 'Password reset link sent to email',
     });
   } catch (err) {
     next(err);
@@ -138,7 +167,17 @@ export const forgotPassword = async (req, res, next) => {
 
 export const resetPassword = async (req, res, next) => {
   try {
-    console.log(req.body);
+    const resetToken = req.params.token;
+
+    const hashedResetToken = crypto
+      .createHash('sha256')
+      .update(resetToken)
+      .digest('hex');
+
+    const user = await User.find({
+      passwordResetToken: { $eq: hashedResetToken },
+      passwordResetExpires: { $gte: Date.now() },
+    });
 
     res.status(200).json({
       status: 'success',
