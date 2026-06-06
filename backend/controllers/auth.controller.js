@@ -1,9 +1,10 @@
 import User from '../models/user.model.js';
 import jwt from 'jsonwebtoken';
-import AppError from '../utils/AppError.js';
+import AppError from '../utils/appError.js';
 import { promisify } from 'util';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
+import { sendResetPasswordEmail } from '../utils/email.js';
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
@@ -130,15 +131,6 @@ export const forgotPassword = async (req, res, next) => {
     await user.save({ validateBeforeSave: false });
 
     const resetUrl = `${req.protocol}://${req.get('host')}/api/auth/reset-password/${resetToken}`;
-
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.MAIL_USERNAME,
-        pass: process.env.MAIL_PASSWORD,
-      },
-    });
-
     const message = `
       Forgot your password?
 
@@ -149,9 +141,9 @@ export const forgotPassword = async (req, res, next) => {
       This link will expire in 10 minutes.
     `;
 
-    await transporter.sendMail({
+    sendResetPasswordEmail({
       from: process.env.MAIL_USERNAME,
-      to: 'asaphstrong100@gmail.com',
+      to: user.email,
       subject: 'Password Reset',
       text: message,
     });
@@ -161,7 +153,11 @@ export const forgotPassword = async (req, res, next) => {
       message: 'Password reset link sent to email',
     });
   } catch (err) {
-    next(err);
+    this.passwordResetToken = undefined;
+    this.passwordResetExpires = undefined;
+    await user.save({ validateBeforeSave: false });
+
+    next(new AppError('Failed to send email. Please try again'));
   }
 };
 
