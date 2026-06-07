@@ -111,29 +111,29 @@ export const restrictTo = (...roles) => {
 };
 
 export const forgotPassword = async (req, res, next) => {
-  try {
-    const { email } = req.body;
-    if (!email) return next(new AppError('Please enter email', 400));
+  const { email } = req.body;
+  if (!email) return next(new AppError('Please enter email', 400));
 
-    const user = await User.findOne({ email: email });
-    if (!user) return next(new AppError('User does not exist', 404));
+  const user = await User.findOne({ email: email });
+  if (!user) return next(new AppError('User does not exist', 404));
 
-    const resetToken = crypto.randomBytes(32).toString('hex');
-    user.hashPasswordResetToken(resetToken);
-    await user.save({ validateBeforeSave: false });
+  const resetToken = crypto.randomBytes(32).toString('hex');
+  user.hashPasswordResetToken(resetToken);
+  await user.save({ validateBeforeSave: false });
 
-    const resetUrl = `${req.protocol}://${req.get('host')}/api/auth/reset-password/${resetToken}`;
-    const message = `
-      Forgot your password?
+  const resetUrl = `${req.protocol}://${req.get('host')}/api/auth/reset-password/${resetToken}`;
+  const message = `
+    Forgot your password?
 
-      Click the link below to reset it:
-
-      ${resetUrl}
-
-      This link will expire in 10 minutes.
+    Click the link below to reset it:
+    
+    ${resetUrl}
+    
+    This link will expire in 10 minutes.
     `;
 
-    sendResetPasswordEmail({
+  try {
+    await sendResetPasswordEmail({
       from: process.env.MAIL_USERNAME,
       to: user.email,
       subject: 'Password Reset',
@@ -162,13 +162,13 @@ export const resetPassword = async (req, res, next) => {
       .update(resetToken)
       .digest('hex');
 
-    const user = await User.find({
+    const user = await User.findOne({
       passwordResetToken: { $eq: hashedResetToken },
       passwordResetExpires: { $gte: Date.now() },
     });
 
     if (!user) {
-      next(new AppError('Invalid token or token has expired'));
+      return next(new AppError('Invalid token or token has expired'));
     }
 
     user.password = req.body.password;
@@ -189,7 +189,10 @@ export const updatePassword = async (req, res, next) => {
   try {
     const user = User.findById(req.user.id);
     const { password } = req.body;
+
     const isCorrect = await user.comparePasswords(password, user.password);
+    if (!isCorrect) return next(new AppError('Incorrect password'));
+
     console.log(user, password, isCorrect);
 
     res.status(200).json({

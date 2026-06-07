@@ -1,9 +1,12 @@
+import nodemailer from 'nodemailer';
+
 export const sendResetPasswordEmail = async (mailOptions) => {
   const transporter = nodemailer.createTransport({
-    service: 'gmail',
+    host: 'sandbox.smtp.mailtrap.io',
+    port: 2525,
     auth: {
-      user: process.env.MAIL_USERNAME,
-      pass: process.env.MAIL_PASSWORD,
+      user: 'a7b4fcbe8bf5d9',
+      pass: 'd192b86faaa735',
     },
   });
 
