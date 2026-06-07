@@ -46,7 +46,7 @@ export const login = async (req, res, next) => {
     const user = await User.findOne({ email }).select('+password');
 
     if (!user || !(await user.comparePasswords(password, user.password))) {
-      return next(new AppError('invalid email or password', 400));
+      return next(new AppError('incorrect email or password', 400));
     }
 
     const token = signToken(user._id);
@@ -84,7 +84,7 @@ export const authenticate = async (req, res, next) => {
       );
     }
 
-    if (user.passwordChangeddAfter(decoded.iat)) {
+    if (user.passwordChangedAfter(decoded.iat)) {
       return next(
         new AppError('Password recently changed. Please login again', 401),
       );
@@ -175,10 +175,15 @@ export const resetPassword = async (req, res, next) => {
     user.passwordConfirm = req.body.passwordConfirm;
     user.passwordResetToken = undefined;
     user.passwordResetExpires = undefined;
+
     await user.save();
+
+    const token = signToken(user._id);
 
     res.status(200).json({
       status: 'success',
+      token: token,
+      message: 'Password reset successful',
     });
   } catch (err) {
     next(err);
@@ -187,13 +192,15 @@ export const resetPassword = async (req, res, next) => {
 
 export const updatePassword = async (req, res, next) => {
   try {
-    const user = User.findById(req.user.id);
+    const user = await User.findById(req.user.id).select('+password');
     const { password } = req.body;
 
     const isCorrect = await user.comparePasswords(password, user.password);
     if (!isCorrect) return next(new AppError('Incorrect password'));
 
-    console.log(user, password, isCorrect);
+    user.password = req.body.newPassword;
+    user.passwordConfirm = req.body.newPasswordConfirm;
+    user.save();
 
     res.status(200).json({
       status: 'success',
