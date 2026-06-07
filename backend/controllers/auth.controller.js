@@ -4,7 +4,7 @@ import AppError from '../utils/appError.js';
 import { promisify } from 'util';
 import nodemailer from 'nodemailer';
 import crypto from 'crypto';
-import { sendResetPasswordEmail } from '../utils/email.js';
+import { sendResetPasswordEmail } from '../utils/appEmail.js';
 
 const signToken = (id) => {
   return jwt.sign({ id }, process.env.JWT_SECRET, {
