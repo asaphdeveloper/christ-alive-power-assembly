@@ -80,11 +80,8 @@ userSchema.pre('findOneAndUpdate', async function () {
   }
 });
 
-userSchema.methods.comparePasswords = async function (
-  candidatePassword,
-  savedPassword,
-) {
-  return await bcrypt.compare(candidatePassword, savedPassword);
+userSchema.methods.comparePasswords = async function (password, savedPassword) {
+  return await bcrypt.compare(password, savedPassword);
 };
 
 userSchema.methods.passwordChangedAfter = function (issuedTimestamp) {

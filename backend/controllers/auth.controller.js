@@ -76,7 +76,6 @@ export const authenticate = async (req, res, next) => {
     }
 
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
-
     const user = await User.findById(decoded.id);
 
     if (!user) {
@@ -114,19 +113,12 @@ export const restrictTo = (...roles) => {
 export const forgotPassword = async (req, res, next) => {
   try {
     const { email } = req.body;
-
-    if (!email) {
-      return next(new AppError('Please enter email', 400));
-    }
+    if (!email) return next(new AppError('Please enter email', 400));
 
     const user = await User.findOne({ email: email });
-
-    if (!user) {
-      return next(new AppError('User does not exist', 404));
-    }
+    if (!user) return next(new AppError('User does not exist', 404));
 
     const resetToken = crypto.randomBytes(32).toString('hex');
-
     user.hashPasswordResetToken(resetToken);
     await user.save({ validateBeforeSave: false });
 
@@ -153,8 +145,8 @@ export const forgotPassword = async (req, res, next) => {
       message: 'Password reset link sent to email',
     });
   } catch (err) {
-    this.passwordResetToken = undefined;
-    this.passwordResetExpires = undefined;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
     await user.save({ validateBeforeSave: false });
 
     next(new AppError('Failed to send email. Please try again'));
@@ -174,6 +166,31 @@ export const resetPassword = async (req, res, next) => {
       passwordResetToken: { $eq: hashedResetToken },
       passwordResetExpires: { $gte: Date.now() },
     });
+
+    if (!user) {
+      next(new AppError('Invalid token or token has expired'));
+    }
+
+    user.password = req.body.password;
+    user.passwordConfirm = req.body.passwordConfirm;
+    user.passwordResetToken = undefined;
+    user.passwordResetExpires = undefined;
+    await user.save();
+
+    res.status(200).json({
+      status: 'success',
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const updatePassword = async (req, res, next) => {
+  try {
+    const user = User.findById(req.user.id);
+    const { password } = req.body;
+    const isCorrect = await user.comparePasswords(password, user.password);
+    console.log(user, password, isCorrect);
 
     res.status(200).json({
       status: 'success',
