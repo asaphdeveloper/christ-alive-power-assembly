@@ -1,9 +1,9 @@
-import User from '../models/user.model.js';
+import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
+import nodemailer from 'nodemailer';
+import User from '../models/user.model.js';
 import AppError from '../utils/appError.js';
 import { promisify } from 'util';
-import nodemailer from 'nodemailer';
-import crypto from 'crypto';
 import { sendResetPasswordEmail } from '../utils/appEmail.js';
 
 const signToken = (id) => {
@@ -200,10 +200,15 @@ export const updatePassword = async (req, res, next) => {
 
     user.password = req.body.newPassword;
     user.passwordConfirm = req.body.newPasswordConfirm;
+
     user.save();
+
+    const token = signToken(user._id);
 
     res.status(200).json({
       status: 'success',
+      token: token,
+      message: 'Password update successful',
     });
   } catch (err) {
     next(err);

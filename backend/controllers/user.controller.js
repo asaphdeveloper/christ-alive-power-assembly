@@ -2,6 +2,60 @@ import mongoose from 'mongoose';
 import User from '../models/user.model.js';
 import AppError from '../utils/AppError.js';
 
+export const updateMe = async (req, res, next) => {
+  try {
+    if (req.body.password || req.body.passwordConfirm) {
+      return next(
+        new AppError('Use /update-password route for password update', 400),
+      );
+    }
+
+    const filterBody = (object, ...allowedFields) => {
+      const newObject = {};
+
+      Object.keys(object).forEach((key) => {
+        if (allowedFields.includes(key)) newObject[key] = object[key];
+      });
+
+      return newObject;
+    };
+
+    const filteredBody = filterBody(req.body, 'name', 'email');
+
+    const updatedUser = await User.findByIdAndUpdate(
+      req.user._id,
+      filteredBody,
+      {
+        returnDocument: 'after',
+        runValidators: true,
+      },
+    );
+
+    if (!updatedUser) {
+      return next(new AppError('User not found', 404));
+    }
+
+    res.status(200).json({
+      status: 'success',
+      updatedUser,
+      message: 'Password update successful',
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+export const deleteMe = async (req, res, next) => {
+  try {
+    res.status(200).json({
+      status: 'success',
+      message: 'delete successful',
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const getAllUsers = async (req, res, next) => {
   try {
     const users = await User.find();
@@ -53,30 +107,6 @@ export const createUser = async (req, res, next) => {
     res.status(201).json({
       status: 'success',
       data: { newUser },
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
-export const updateUser = async (req, res, next) => {
-  try {
-    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
-      return next(new AppError('Invalid ID', 400));
-    }
-
-    const updatedUser = await User.findByIdAndUpdate(req.params.id, req.body, {
-      returnDocument: 'after',
-      runValidators: true,
-    });
-
-    if (!updatedUser) {
-      return next(new AppError('User not found', 404));
-    }
-
-    res.status(200).json({
-      status: 'success',
-      data: { updatedUser },
     });
   } catch (err) {
     next(err);

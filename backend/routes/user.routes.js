@@ -14,5 +14,15 @@ router.delete(
 );
 
 router.get('/:id', userController.getUser);
-router.patch('/:id', userController.updateUser);
 router.delete('/:id', authController.authenticate, userController.deleteUser);
+
+router.patch(
+  '/update-me',
+  authController.authenticate,
+  userController.updateMe,
+);
+router.delete(
+  '/delete-me',
+  authController.authenticate,
+  userController.updateMe,
+);

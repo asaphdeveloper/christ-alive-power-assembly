@@ -1,2 +1,1 @@
-HASH password when updated
-move passwordChangedAt to model
+HASH password when updated (use .save())
