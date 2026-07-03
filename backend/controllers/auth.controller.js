@@ -202,7 +202,6 @@ export const updatePassword = async (req, res, next) => {
     user.passwordConfirm = req.body.newPasswordConfirm;
 
     user.save();
-
     const token = signToken(user._id);
 
     res.status(200).json({

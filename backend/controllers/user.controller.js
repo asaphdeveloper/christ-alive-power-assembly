@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 import User from '../models/user.model.js';
-import AppError from '../utils/AppError.js';
+import AppError from '../utils/appError.js';
 
 export const updateMe = async (req, res, next) => {
   try {

@@ -1,4 +1,4 @@
-import AppError from '../utils/AppError.js';
+import AppError from '../utils/appError.js';
 
 export const globalErrorHandler = (error, req, res, next) => {
   let err = error;
@@ -28,6 +28,8 @@ export const globalErrorHandler = (error, req, res, next) => {
         message: err.message,
       });
     }
+
+    console.log('ERROR: ', error);
 
     return res.status(500).json({
       status: 'error',

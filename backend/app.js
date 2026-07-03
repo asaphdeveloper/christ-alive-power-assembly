@@ -1,6 +1,6 @@
 import express from 'express';
 import morgan from 'morgan';
-import AppError from './utils/AppError.js';
+import AppError from './utils/appError.js';
 import { router as userRouter } from './routes/user.routes.js';
 import { router as authRouter } from './routes/auth.routes.js';
 import { globalErrorHandler } from './controllers/error.controller.js';

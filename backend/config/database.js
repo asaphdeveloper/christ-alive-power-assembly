@@ -1,11 +1,11 @@
 import mongoose from 'mongoose';
 
-export const connectDB = async () => {
+export const connectDatabase = async () => {
   try {
     const DB =
       process.env.NODE_ENV === 'development'
-        ? process.env.DATABASE_DEV
-        : process.env.DATABASE_PROD;
+        ? process.env.DATABASE_DEVELOPMENT
+        : process.env.DATABASE_PRODUCTION;
 
     const conn = await mongoose.connect(DB);
     console.log(
