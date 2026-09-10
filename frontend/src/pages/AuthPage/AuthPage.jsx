@@ -17,19 +17,19 @@ export const AuthPage = ({ initialMode = 'login' }) => {
           <span className="brand-name">Christ Alive Power Assembly</span>
         </div>
 
-        <div className="orbital-scene" aria-hidden="true">
-          <div className="orbit orbit-one" />
-          <div className="orbit orbit-two" />
-          <div className="orbit orbit-three" />
-          <div className="core"><span /></div>
-          <i className="signal signal-one" />
-          <i className="signal signal-two" />
-          <i className="signal signal-three" />
+        <div className="church-scene" aria-hidden="true">
+          <div className="church-halo" />
+          <div className="church-rays church-rays-left" />
+          <div className="church-rays church-rays-right" />
+          <div className="church-arch">
+            <div className="church-cross"><span /></div>
+          </div>
+          <div className="church-ground" />
         </div>
 
         <div className="visual-copy">
           <p className="eyebrow">A place to belong</p>
-          <h1 id="page-title">Make room for <span>what matters.</span></h1>
+          <h1 id="page-title">Christ Alive  <br /><span>Power Assembly.</span></h1>
           <p className="visual-description">
             Stay connected to the people, purpose, and faith community moving us forward together.
           </p>

@@ -44,6 +44,21 @@
   background-size: 4rem 4rem;
   content: '';
   mask-image: linear-gradient(to bottom, black, transparent 75%);
+  animation: auth-grid-drift 22s ease-in-out infinite alternate;
+}
+
+.auth-page .visual-panel::after {
+  position: absolute;
+  top: 18%;
+  left: 35%;
+  width: 22rem;
+  height: 22rem;
+  border-radius: 50%;
+  background: rgba(210, 255, 79, 0.07);
+  filter: blur(4rem);
+  content: '';
+  pointer-events: none;
+  animation: auth-light-drift 12s ease-in-out infinite alternate;
 }
 
 .auth-page .visual-copy {
@@ -62,10 +77,10 @@
 }
 
 .auth-page h1 {
-  max-width: 11ch;
+  max-width: 12ch;
   margin: 0;
   color: #f5f2ea;
-  font-size: clamp(3.5rem, 9vw, 8.5rem);
+  font-size: clamp(2.8rem, 6vw, 5.6rem);
   font-weight: 600;
   letter-spacing: -0.06em;
   line-height: 0.92;
@@ -108,93 +123,98 @@
   background: rgba(210, 255, 79, 0.4);
 }
 
-.auth-page .orbital-scene {
+.auth-page .church-scene {
   position: absolute;
-  top: 50%;
-  left: 54%;
-  width: min(34vw, 28rem);
+  top: 43%;
+  left: 58%;
+  width: min(32vw, 27rem);
   aspect-ratio: 1;
-  transform: translate(-50%, -53%);
+  transform: translate(-50%, -50%);
+  animation: auth-scene-float 9s ease-in-out infinite;
 }
 
-.auth-page .orbit,
-.auth-page .core,
-.auth-page .signal {
+.auth-page .church-halo,
+.auth-page .church-rays,
+.auth-page .church-arch,
+.auth-page .church-cross,
+.auth-page .church-ground {
   position: absolute;
 }
 
-.auth-page .orbit {
-  top: 50%;
+.auth-page .church-halo {
+  top: 9%;
   left: 50%;
-  border: 1px solid rgba(210, 255, 79, 0.28);
-  border-radius: 50%;
-  transform: translate(-50%, -50%) rotate(-28deg);
-}
-
-.auth-page .orbit-one {
   width: 58%;
-  height: 94%;
-  animation: auth-orbit-spin 18s linear infinite;
+  height: 58%;
+  border: 1px solid rgba(210, 255, 79, 0.38);
+  border-radius: 50%;
+  box-shadow: 0 0 4rem rgba(210, 255, 79, 0.12), inset 0 0 2rem rgba(210, 255, 79, 0.08);
+  transform: translateX(-50%);
+  animation: auth-halo-pulse 5s ease-in-out infinite;
 }
 
-.auth-page .orbit-two {
-  width: 82%;
-  height: 52%;
-  animation: auth-orbit-spin 24s linear infinite reverse;
+.auth-page .church-rays {
+  top: 31%;
+  width: 38%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(210, 255, 79, 0.38));
+  transform-origin: center right;
+  animation: auth-ray-breathe 5s ease-in-out infinite;
 }
 
-.auth-page .orbit-three {
-  width: 98%;
-  height: 98%;
-  border-color: rgba(210, 255, 79, 0.1);
-  animation: auth-orbit-spin 30s linear infinite;
+.auth-page .church-rays-left {
+  left: 2%;
+  transform: rotate(24deg);
 }
 
-.auth-page .core {
-  top: 50%;
+.auth-page .church-rays-right {
+  right: 2%;
+  background: linear-gradient(90deg, rgba(210, 255, 79, 0.38), transparent);
+  transform-origin: center left;
+  transform: rotate(-24deg);
+  animation-name: auth-ray-breathe-right;
+}
+
+.auth-page .church-arch {
+  bottom: 8%;
   left: 50%;
-  display: grid;
-  width: 7rem;
-  height: 7rem;
-  place-items: center;
-  border: 1px solid rgba(210, 255, 79, 0.7);
-  border-radius: 50%;
-  box-shadow: 0 0 5rem rgba(210, 255, 79, 0.16), inset 0 0 2rem rgba(210, 255, 79, 0.12);
-  transform: translate(-50%, -50%);
-  animation: auth-breathe 4s ease-in-out infinite;
+  width: 58%;
+  height: 68%;
+  border: 1px solid rgba(210, 255, 79, 0.48);
+  border-bottom: 0;
+  border-radius: 50% 50% 0 0;
+  transform: translateX(-50%);
+  box-shadow: inset 0 1rem 2rem rgba(210, 255, 79, 0.04);
 }
 
-.auth-page .core span,
-.auth-page .signal {
-  border-radius: 50%;
+.auth-page .church-cross {
+  top: 19%;
+  left: 50%;
+  width: 4.6rem;
+  height: 8rem;
+  border-left: 0.8rem solid var(--auth-accent);
+  filter: drop-shadow(0 0 1.25rem rgba(210, 255, 79, 0.5));
+  transform: translateX(-50%);
+  animation: auth-cross-glow 5s ease-in-out infinite;
+}
+
+.auth-page .church-cross::before {
+  position: absolute;
+  top: 1.65rem;
+  left: -2rem;
+  width: 4rem;
+  height: 0.8rem;
   background: var(--auth-accent);
-  box-shadow: 0 0 1rem var(--auth-accent);
+  content: '';
 }
 
-.auth-page .core span {
-  width: 1rem;
-  height: 1rem;
-  box-shadow: 0 0 2rem var(--auth-accent);
-}
-
-.auth-page .signal {
-  width: 0.45rem;
-  height: 0.45rem;
-}
-
-.auth-page .signal-one {
-  top: 12%;
-  left: 71%;
-}
-
-.auth-page .signal-two {
-  top: 75%;
-  left: 17%;
-}
-
-.auth-page .signal-three {
-  top: 33%;
-  left: 4%;
+.auth-page .church-ground {
+  right: 8%;
+  bottom: 8%;
+  left: 8%;
+  height: 1px;
+  background: rgba(210, 255, 79, 0.36);
+  box-shadow: 0 0 1.5rem rgba(210, 255, 79, 0.22);
 }
 
 .auth-page .form-panel {
@@ -394,15 +414,64 @@
   letter-spacing: 0.08em;
 }
 
-@keyframes auth-orbit-spin {
-  to {
-    transform: translate(-50%, -50%) rotate(332deg);
+@keyframes auth-halo-pulse {
+  50% {
+    opacity: 0.58;
+    box-shadow: 0 0 5rem rgba(210, 255, 79, 0.2), inset 0 0 2rem rgba(210, 255, 79, 0.12);
   }
 }
 
-@keyframes auth-breathe {
+@keyframes auth-grid-drift {
+  from {
+    background-position: 0 0, 0 0;
+  }
+
+  to {
+    background-position: 2rem 1rem, 1rem 2rem;
+  }
+}
+
+@keyframes auth-light-drift {
+  from {
+    opacity: 0.35;
+    transform: translate(-2rem, -1rem) scale(0.9);
+  }
+
+  to {
+    opacity: 0.75;
+    transform: translate(5rem, 3rem) scale(1.15);
+  }
+}
+
+@keyframes auth-scene-float {
+
+  0%,
+  100% {
+    transform: translate(-50%, -50%);
+  }
+
   50% {
-    transform: translate(-50%, -50%) scale(1.08);
+    transform: translate(-50%, calc(-50% - 0.65rem));
+  }
+}
+
+@keyframes auth-ray-breathe {
+  50% {
+    opacity: 0.38;
+    transform: rotate(24deg) scaleX(0.72);
+  }
+}
+
+@keyframes auth-ray-breathe-right {
+  50% {
+    opacity: 0.38;
+    transform: rotate(-24deg) scaleX(0.72);
+  }
+}
+
+@keyframes auth-cross-glow {
+  50% {
+    filter: drop-shadow(0 0 2rem rgba(210, 255, 79, 0.8));
   }
 }
 
@@ -429,10 +498,10 @@
   }
 
   .auth-page h1 {
-    font-size: clamp(3.4rem, 13vw, 6rem);
+    font-size: clamp(2.8rem, 10vw, 4.8rem);
   }
 
-  .auth-page .orbital-scene {
+  .auth-page .church-scene {
     top: 45%;
     left: 70%;
     width: min(65vw, 24rem);
@@ -468,7 +537,7 @@
     max-width: 18rem;
   }
 
-  .auth-page .orbital-scene {
+  .auth-page .church-scene {
     top: 43%;
     left: 73%;
     width: 15rem;
