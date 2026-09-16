@@ -1,15 +1,16 @@
-import { useState } from "react";
-import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  ArrowRight01Icon,
-  Notification01Icon,
-  ArrowDown01Icon,
-} from "@hugeicons/core-free-icons";
-import "./UpcomingSection.css";
+import { useState } from 'react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { ArrowRight01Icon, Notification01Icon } from '@hugeicons/core-free-icons';
+import PrayerImage from '../../assets/images/slide-02.jpg';
+import ConventionImage from '../../assets/images/slide-01.jpg';
+import CelebrationImage from '../../assets/images/slide-03.jpg';
+import YouthImage from '../../assets/images/slide-04.jpg';
+import './UpcomingSection.css';
 
 const events = [
   {
     id: 1,
+    image: PrayerImage,
     num: "01",
     title: "Annual Prayer & Fasting",
     date: "7th August, 2025",
@@ -21,6 +22,7 @@ const events = [
   },
   {
     id: 2,
+    image: ConventionImage,
     num: "02",
     title: "Grace & Glory Convention",
     date: "14th August, 2025",
@@ -32,6 +34,7 @@ const events = [
   },
   {
     id: 3,
+    image: CelebrationImage,
     num: "03",
     title: "Women's Day Celebration",
     date: "Date to be announced",
@@ -43,6 +46,7 @@ const events = [
   },
   {
     id: 4,
+    image: YouthImage,
     num: "04",
     title: "Youth Summer Retreat",
     date: "Date to be announced",
@@ -54,101 +58,50 @@ const events = [
   },
 ];
 
-const EventRow = ({ event, index, isActive, onToggle }) => (
-  <div
-    className={`event-row ${isActive ? "event-row-active" : ""}`}
-    style={{ "-i": index }}
-    onClick={onToggle}
-    role="button"
-    tabIndex={0}
-    aria-expanded={isActive}
-    aria-label={event.title}
-    onKeyDown={(e) => (e.key === "Enter" || e.key === " ") && onToggle()}
-  >
-    <div className="event-row-fill" aria-hidden="true" />
-
-    <div className="event-row-track">
-      <div className="event-row-index" aria-hidden="true">
-        <span className="event-row-num">{event.num}</span>
-        <span className="event-row-connector" />
-      </div>
-
-      <div className="event-row-main">
-        <div className="event-row-top-line">
-          <span className="event-row-category">{event.category}</span>
-          {event.tag && <span className="event-row-tag">{event.tag}</span>}
-        </div>
-
-        <h3 className="event-row-title">{event.title}</h3>
-
-        <div className="event-row-detail">
-          <div>
-            <p className="event-row-desc">{event.description}</p>
-            <div className="event-row-actions">
-              <a
-                href="#"
-                className="event-row-cta"
-                aria-label={`View details for ${event.title}`}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <span>View Details</span>
-                <HugeiconsIcon icon={ArrowRight01Icon} size={13} strokeWidth={2.5} />
-              </a>
-              <button
-                className="event-row-notify"
-                aria-label={`Get notified about ${event.title}`}
-                onClick={(e) => e.stopPropagation()}
-              >
-                <HugeiconsIcon icon={Notification01Icon} size={13} />
-                <span>Notify Me</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div className="event-row-right">
-        <div className="event-row-date-block">
-          <span className="event-row-date">{event.date}</span>
-          <span className="event-row-time">{event.time}</span>
-        </div>
-        <span className="event-row-chevron" aria-hidden="true">
-          <HugeiconsIcon icon={ArrowDown01Icon} size={16} strokeWidth={2} />
-        </span>
-      </div>
-    </div>
-
-    <div className="event-row-sep" aria-hidden="true" />
-  </div>
-);
-
 export const Upcoming = () => {
-  const [activeId, setActiveId] = useState(null);
-  const toggle = (id) => setActiveId((prev) => (prev === id ? null : id));
+  const [showAll, setShowAll] = useState(false);
+  const visibleEvents = showAll ? events : events.slice(0, 3);
 
   return (
-    <section className="upcoming-section" id="upcoming-section">
-      <div className="section-header">
-        <div className="upcoming-heading">
-          <button className="btn-secondary upcoming-btn">
-            <HugeiconsIcon icon={Notification01Icon} className="icon" />
-            <span>What's coming</span>
-          </button>
-          <h2><span>Upcoming</span> Events</h2>
-        </div>
+    <section className="upcoming-section" id="upcoming-section" aria-labelledby="upcoming-title">
+      <div className="upcoming-header">
+      <div className="upcoming-intro">
+        <span className="upcoming-label">
+          <HugeiconsIcon icon={Notification01Icon} size={14} aria-hidden="true" />
+          What's coming
+        </span>
+        <h2 id="upcoming-title">Come together.<br /><span>Grow in faith.</span></h2>
+        <p>Upcoming events at Christ Alive Power Assembly.</p>
       </div>
 
-      <div className="events-list" role="list">
-        {events.map((event, i) => (
-          <EventRow
-            key={event.id}
-            event={event}
-            index={i}
-            isActive={activeId === event.id}
-            onToggle={() => toggle(event.id)}
-          />
+      {events.length > 3 && <div className="upcoming-more">
+        <button type="button" onClick={() => setShowAll((current) => !current)} aria-expanded={showAll}>
+          {showAll ? 'Show fewer events' : 'View all events'}
+          <HugeiconsIcon icon={ArrowRight01Icon} size={18} aria-hidden="true" />
+        </button>
+      </div>}
+      </div>
+
+      <div className="upcoming-cards">
+        {visibleEvents.map((event) => (
+          <article className="upcoming-card" key={event.id}>
+            <img className="upcoming-card-photo" src={event.image} alt="Christ Alive Power Assembly church gathering" loading="lazy" width="1920" height="1280" />
+            <details className="upcoming-card-details">
+              <summary>
+                <h3>{event.title}</h3>
+                <HugeiconsIcon icon={ArrowRight01Icon} size={22} aria-hidden="true" />
+              </summary>
+              <dl className="upcoming-card-schedule">
+                <div><dt>Date</dt><dd>{event.date}</dd></div>
+                <div><dt>Time</dt><dd>{event.time}</dd></div>
+                {event.tag && <div><dt>Who can attend</dt><dd>{event.tag}</dd></div>}
+              </dl>
+            </details>
+            <p className="upcoming-card-description">{event.description}</p>
+          </article>
         ))}
       </div>
+
     </section>
   );
 };

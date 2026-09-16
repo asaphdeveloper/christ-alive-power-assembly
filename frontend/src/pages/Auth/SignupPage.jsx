@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { AuthLayout } from './AuthLayout';
+import ChurchImage from '../../assets/images/slide-03.jpg';
 import './SignupPage.css';
 
 export const SignupPage = () => {
@@ -16,7 +17,7 @@ export const SignupPage = () => {
   };
 
   return (
-    <AuthLayout className="signup-page">
+    <AuthLayout image={ChurchImage} className="signup-page">
       <div className="form-heading">
         <p className="eyebrow">Welcome back</p>
         <h2 id="form-title">Start your journey.</h2>

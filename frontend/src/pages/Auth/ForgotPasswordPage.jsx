@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { AuthLayout } from './AuthLayout';
+import ChurchImage from '../../assets/images/slide-04.jpg';
 import './ForgotPasswordPage.css';
 
 export const ForgotPasswordPage = () => {
@@ -15,7 +16,7 @@ export const ForgotPasswordPage = () => {
   };
 
   return (
-    <AuthLayout className="forgot-password-page">
+    <AuthLayout image={ChurchImage} className="forgot-password-page">
       <div className="form-heading">
         <p className="eyebrow">Account recovery</p>
         <h2 id="form-title">Reset your password.</h2>

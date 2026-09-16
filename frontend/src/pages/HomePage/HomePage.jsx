@@ -1,5 +1,6 @@
 import { About } from './AboutSection';
 import { Branches } from './BranchesSection';
+import { Resources } from './ResourcesSection';
 import { Upcoming } from './UpcomingSection';
 import { Pastor } from './PastorSection';
 import { Giving } from './GivingSection';
@@ -94,6 +95,7 @@ export const HomePage = () => {
         <About />
         <Pastor />
         <Branches />
+        <Resources />
         <Upcoming />
         <Giving />
       </main>
