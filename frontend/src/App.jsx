@@ -1,3 +1,4 @@
+import { EventsPage } from './pages/EventsPage/EventsPage';
 import { HomePage } from './pages/HomePage/HomePage';
 import { BranchPage } from './pages/Branch/BranchPage';
 import { PageNotFound } from './pages/PageNotFound';
@@ -12,6 +13,7 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route index element={<HomePage />} />
+        <Route path='/events' element={<EventsPage />} />
         <Route path='/auth' element={<Navigate to='/login' replace />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/signup' element={<SignupPage />} />
