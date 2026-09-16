@@ -238,190 +238,12 @@
   animation: auth-rise-in 700ms 100ms ease-out both;
 }
 
-.auth-page .form-heading h2 {
-  margin: 0;
-  color: #171b18;
-  font-size: clamp(2.4rem, 4vw, 3.7rem);
-  font-weight: 500;
-  letter-spacing: -0.06em;
-  line-height: 0.98;
-}
-
-.auth-page .form-heading p:last-child {
-  margin: 1.25rem 0 0;
-  color: #687068;
-  line-height: 1.5;
-}
-
-.auth-page .mode-switch {
-  display: flex;
-  gap: 1.5rem;
-  margin: 2.8rem 0 2rem;
-  border-bottom: 1px solid #d9ded9;
-}
-
-.auth-page .mode-switch button,
-.auth-page .mode-switch a,
-.auth-page .form-note button,
-.auth-page .password-toggle {
-  border: 0;
-  color: #687068;
-  background: transparent;
-  cursor: pointer;
-}
-
-.auth-page .mode-switch button {
-  position: relative;
-  padding: 0 0 0.9rem;
-  font-size: 0.95rem;
-}
-
-.auth-page .mode-switch a {
-  position: relative;
-  padding: 0 0 0.9rem;
-  color: #687068;
-  font-size: 0.95rem;
-  text-decoration: none;
-}
-
-.auth-page .mode-switch button.active,
-.auth-page .mode-switch a.active {
-  color: #171b18;
-}
-
-.auth-page .mode-switch button.active::after,
-.auth-page .mode-switch a.active::after {
-  position: absolute;
-  right: 0;
-  bottom: -1px;
-  left: 0;
-  height: 2px;
-  background: #8baa28;
-  content: '';
-}
-
-.auth-page form {
-  display: grid;
-  gap: 1.35rem;
-}
-
-.auth-page .form-heading+form {
-  margin-top: 2.8rem;
-}
-
-.auth-page label {
-  display: grid;
-  gap: 0.55rem;
-  color: #687068;
-  font-size: 0.78rem;
-}
-
-.auth-page input[type='text'],
-.auth-page input[type='email'],
-.auth-page input[type='password'] {
-  width: 100%;
-  border: 0;
-  border-bottom: 1px solid #cdd3cd;
-  border-radius: 0;
-  padding: 0.55rem 0;
-  outline: 0;
-  color: #171b18;
-  background: transparent;
-  transition: border-color 180ms ease;
-}
-
-.auth-page input:focus {
-  border-color: #8baa28;
-}
-
-.auth-page input::placeholder {
-  color: #929a92;
-}
-
-.auth-page .password-field {
-  position: relative;
-}
-
-.auth-page .password-field input {
-  padding-right: 3rem;
-}
-
-.auth-page .password-toggle {
-  position: absolute;
-  right: 0;
-  bottom: 0.55rem;
-  padding: 0;
-  font-size: 0.72rem;
-}
-
-.auth-page .forgot-link {
-  justify-self: end;
-  margin-top: -0.35rem;
-  color: #687068;
-  font-size: 0.78rem;
-  text-decoration: none;
-}
-
-.auth-page .check-label {
-  display: flex;
-  align-items: start;
-  gap: 0.6rem;
-  line-height: 1.4;
-}
-
-.auth-page .check-label input {
-  accent-color: var(--auth-accent);
-  margin-top: 0.15rem;
-}
-
 .auth-page a {
   color: #8baa28;
 }
 
-.auth-page a:hover,
-.auth-page .password-toggle:hover,
-.auth-page .form-note button:hover {
+.auth-page a:hover {
   color: #6d8619;
-}
-
-.auth-page .submit-button {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  margin-top: 0.75rem;
-  border: 0;
-  padding: 1rem 1.2rem;
-  color: #151814;
-  background: var(--auth-accent);
-  cursor: pointer;
-  font-weight: 600;
-  transition: background 180ms ease, transform 180ms ease;
-}
-
-.auth-page .submit-button:hover {
-  background: #d9ff80;
-  transform: translateY(-2px);
-}
-
-.auth-page .form-note {
-  margin: 2.2rem 0 0;
-  color: #697169;
-  font-size: 0.8rem;
-  text-align: center;
-}
-
-.auth-page .form-note button {
-  color: #8baa28;
-  font-size: inherit;
-  text-decoration: underline;
-  text-underline-offset: 0.2rem;
-}
-
-.auth-page .form-message {
-  margin: 1.25rem 0 0;
-  color: #687068;
-  font-size: 0.8rem;
-  line-height: 1.45;
 }
 
 .auth-page .mobile-brand {
@@ -513,171 +335,142 @@
 
 @media (max-width: 800px) {
   .auth-page {
-    display: block;
-    min-width: 0;
-    overflow-x: hidden;
-  }
+      display: block;
+      min-width: 0;
+      overflow-x: hidden;
+    }
 
   .auth-page .visual-panel {
-    min-height: clamp(27rem, 92svh, 34rem);
-    padding: 1.25rem clamp(1.25rem, 5vw, 2rem) 1.5rem;
-  }
+      min-height: clamp(27rem, 92svh, 34rem);
+      padding: 1.25rem clamp(1.25rem, 5vw, 2rem) 1.5rem;
+    }
 
   .auth-page .visual-topbar {
-    align-items: center;
-    gap: 0.6rem;
-    min-width: 0;
-  }
+      align-items: center;
+      gap: 0.6rem;
+      min-width: 0;
+    }
 
   .auth-page .visual-topbar .brand-name {
-    max-width: calc(100% - 2.5rem);
-    overflow-wrap: anywhere;
-    font-size: clamp(0.72rem, 2.4vw, 0.9rem);
-    line-height: 1.15;
-  }
+      max-width: calc(100% - 2.5rem);
+      overflow-wrap: anywhere;
+      font-size: clamp(0.72rem, 2.4vw, 0.9rem);
+      line-height: 1.15;
+    }
 
   .auth-page h1 {
-    max-width: 10ch;
-    font-size: clamp(2.7rem, 10vw, 4.8rem);
-  }
+      max-width: 10ch;
+      font-size: clamp(2.7rem, 10vw, 4.8rem);
+    }
 
   .auth-page .visual-description {
-    max-width: min(23rem, 70%);
-    margin-top: 1.25rem;
-    font-size: 0.9rem;
-  }
+      max-width: min(23rem, 70%);
+      margin-top: 1.25rem;
+      font-size: 0.9rem;
+    }
 
   .auth-page .church-scene {
-    top: 48%;
-    left: 74%;
-    width: min(60vw, 22rem);
-  }
+      top: 48%;
+      left: 74%;
+      width: min(60vw, 22rem);
+    }
 
   .auth-page .visual-footer {
-    gap: 0.5rem;
-    margin-top: 2rem;
-    font-size: 0.65rem;
-    white-space: nowrap;
-  }
+      gap: 0.5rem;
+      margin-top: 2rem;
+      font-size: 0.65rem;
+      white-space: nowrap;
+    }
 
   .auth-page .form-panel {
-    min-width: 0;
-    min-height: auto;
-    padding: clamp(2.75rem, 10vw, 4rem) clamp(1.25rem, 6vw, 2rem) 3.5rem;
-  }
+      min-width: 0;
+      min-height: auto;
+      padding: clamp(2.75rem, 10vw, 4rem) clamp(1.25rem, 6vw, 2rem) 3.5rem;
+    }
 
   .auth-page .form-wrap {
-    width: min(100%, 25rem);
-  }
-
-  .auth-page .form-heading h2 {
-    font-size: clamp(2.35rem, 10vw, 3.4rem);
-  }
-
-  .auth-page .form-heading p:last-child {
-    margin-top: 1rem;
-  }
-
-  .auth-page .mode-switch {
-    margin-top: 2rem;
-  }
-
-  .auth-page .submit-button {
-    min-height: 3.25rem;
-  }
+      width: min(100%, 25rem);
+    }
 
   .auth-page .mobile-brand {
-    display: flex;
-    align-items: center;
-    gap: 0.6rem;
-    margin-bottom: 4rem;
-    color: #a6aca3;
-    font-family: 'DM Mono', monospace;
-    font-size: 0.72rem;
-  }
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 4rem;
+      color: #a6aca3;
+      font-family: 'DM Mono', monospace;
+      font-size: 0.72rem;
+    }
 }
 
 @media (max-width: 420px) {
   .auth-page .visual-panel {
-    min-height: 28rem;
-    padding-inline: 1rem;
-  }
+      min-height: 28rem;
+      padding-inline: 1rem;
+    }
 
   .auth-page .visual-description {
-    max-width: 16rem;
-    font-size: 0.84rem;
-  }
+      max-width: 16rem;
+      font-size: 0.84rem;
+    }
 
   .auth-page .church-scene {
-    top: 49%;
-    left: 78%;
-    width: 14rem;
-  }
+      top: 49%;
+      left: 78%;
+      width: 14rem;
+    }
 
   .auth-page .form-panel {
-    padding: 2.75rem 1rem 3rem;
-  }
-
-  .auth-page .form-heading h2 {
-    font-size: clamp(2.25rem, 11vw, 2.7rem);
-  }
+      padding: 2.75rem 1rem 3rem;
+    }
 
   .auth-page .corner-number {
-    display: none;
-  }
+      display: none;
+    }
 }
 
 @media (max-width: 360px) {
   .auth-page .visual-panel {
-    min-height: 26rem;
-  }
+      min-height: 26rem;
+    }
 
   .auth-page .visual-topbar .brand-name {
-    font-size: 0.68rem;
-  }
+      font-size: 0.68rem;
+    }
 
   .auth-page h1 {
-    font-size: 2.45rem;
-  }
+      font-size: 2.45rem;
+    }
 
   .auth-page .visual-footer {
-    font-size: 0.57rem;
-  }
+      font-size: 0.57rem;
+    }
 
   .auth-page .church-scene {
-    left: 82%;
-    width: 12rem;
-  }
-
-  .auth-page .form-heading h2 {
-    font-size: 2.15rem;
-  }
-
-  .auth-page .mode-switch {
-    gap: 1.25rem;
-  }
+      left: 82%;
+      width: 12rem;
+    }
 }
 
 @media (max-height: 620px) and (max-width: 800px) {
   .auth-page .visual-panel {
-    min-height: 25rem;
-  }
+      min-height: 25rem;
+    }
 
   .auth-page .visual-footer {
-    display: none;
-  }
+      display: none;
+    }
 
   .auth-page .form-panel {
-    padding-block: 2.5rem;
-  }
+      padding-block: 2.5rem;
+    }
 }
 
 @media (prefers-reduced-motion: reduce) {
-
   .auth-page *,
   .auth-page *::before,
   .auth-page *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-  }
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+    }
 }

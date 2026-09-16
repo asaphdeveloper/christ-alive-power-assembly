@@ -1,0 +1,206 @@
+.signup-page .form-heading h2 {
+  margin: 0;
+  color: #171b18;
+  font-size: clamp(2.4rem, 4vw, 3.7rem);
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  line-height: 0.98;
+}
+
+.signup-page .form-heading p:last-child {
+  margin: 1.25rem 0 0;
+  color: #687068;
+  line-height: 1.5;
+}
+
+.signup-page .mode-switch {
+  display: flex;
+  gap: 1.5rem;
+  margin: 2.8rem 0 2rem;
+  border-bottom: 1px solid #d9ded9;
+}
+
+.signup-page .mode-switch button,
+.signup-page .mode-switch a,
+.signup-page .form-note button,
+.signup-page .password-toggle {
+  border: 0;
+  color: #687068;
+  background: transparent;
+  cursor: pointer;
+}
+
+.signup-page .mode-switch button {
+  position: relative;
+  padding: 0 0 0.9rem;
+  font-size: 0.95rem;
+}
+
+.signup-page .mode-switch a {
+  position: relative;
+  padding: 0 0 0.9rem;
+  color: #687068;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.signup-page .mode-switch button.active,
+.signup-page .mode-switch a.active {
+  color: #171b18;
+}
+
+.signup-page .mode-switch button.active::after,
+.signup-page .mode-switch a.active::after {
+  position: absolute;
+  right: 0;
+  bottom: -1px;
+  left: 0;
+  height: 2px;
+  background: #8baa28;
+  content: '';
+}
+
+.signup-page form {
+  display: grid;
+  gap: 1.35rem;
+}
+
+.signup-page .form-heading+form {
+  margin-top: 2.8rem;
+}
+
+.signup-page label {
+  display: grid;
+  gap: 0.55rem;
+  color: #687068;
+  font-size: 0.78rem;
+}
+
+.signup-page input[type='text'],
+.signup-page input[type='email'],
+.signup-page input[type='password'] {
+  width: 100%;
+  border: 0;
+  border-bottom: 1px solid #cdd3cd;
+  border-radius: 0;
+  padding: 0.55rem 0;
+  outline: 0;
+  color: #171b18;
+  background: transparent;
+  transition: border-color 180ms ease;
+}
+
+.signup-page input:focus {
+  border-color: #8baa28;
+}
+
+.signup-page input::placeholder {
+  color: #929a92;
+}
+
+.signup-page .password-field {
+  position: relative;
+}
+
+.signup-page .password-field input {
+  padding-right: 3rem;
+}
+
+.signup-page .password-toggle {
+  position: absolute;
+  right: 0;
+  bottom: 0.55rem;
+  padding: 0;
+  font-size: 0.72rem;
+}
+
+.signup-page .check-label {
+  display: flex;
+  align-items: start;
+  gap: 0.6rem;
+  line-height: 1.4;
+}
+
+.signup-page .check-label input {
+  accent-color: var(--auth-accent);
+  margin-top: 0.15rem;
+}
+
+.signup-page .password-toggle:hover,
+.signup-page .form-note button:hover {
+  color: #6d8619;
+}
+
+.signup-page .submit-button {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+  border: 0;
+  padding: 1rem 1.2rem;
+  color: #151814;
+  background: var(--auth-accent);
+  cursor: pointer;
+  font-weight: 600;
+  transition: background 180ms ease, transform 180ms ease;
+}
+
+.signup-page .submit-button:hover {
+  background: #d9ff80;
+  transform: translateY(-2px);
+}
+
+.signup-page .form-note {
+  margin: 2.2rem 0 0;
+  color: #697169;
+  font-size: 0.8rem;
+  text-align: center;
+}
+
+.signup-page .form-note button {
+  color: #8baa28;
+  font-size: inherit;
+  text-decoration: underline;
+  text-underline-offset: 0.2rem;
+}
+
+.signup-page .form-message {
+  margin: 1.25rem 0 0;
+  color: #687068;
+  font-size: 0.8rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 800px) {
+  .signup-page .form-heading h2 {
+      font-size: clamp(2.35rem, 10vw, 3.4rem);
+    }
+
+  .signup-page .form-heading p:last-child {
+      margin-top: 1rem;
+    }
+
+  .signup-page .mode-switch {
+      margin-top: 2rem;
+    }
+
+  .signup-page .submit-button {
+      min-height: 3.25rem;
+    }
+}
+
+@media (max-width: 420px) {
+  .signup-page .form-heading h2 {
+      font-size: clamp(2.25rem, 11vw, 2.7rem);
+    }
+}
+
+@media (max-width: 360px) {
+  .signup-page .form-heading h2 {
+      font-size: 2.15rem;
+    }
+
+  .signup-page .mode-switch {
+      gap: 1.25rem;
+    }
+}
