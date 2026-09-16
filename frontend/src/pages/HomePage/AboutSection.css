@@ -1,95 +1,188 @@
-.about-summary {
-  background-color: white;
-  min-height: 80vh;
-  margin: 0 70px;
+.church-about {
+  padding: clamp(4rem, 8vw, 7rem) clamp(1.25rem, 5vw, 4.5rem);
+  background: #f7f8f4;
+  scroll-margin-top: 5rem;
+}
 
-  display: flex;
-  justify-content: center;
+.church-about-inner {
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
   align-items: center;
+  gap: clamp(2.5rem, 6vw, 6rem);
+  max-width: 1200px;
+  margin: 0 auto;
 }
-.about-us-heading {
-  margin-bottom: 75px;
-  justify-self: start;
-}
-.about-us h2 {
-  text-align: center;
-  text-wrap: nowrap;
-  font-size: 30px;
+
+.church-about-photo {
   position: relative;
-  justify-self: center;
-  padding: 0 20px;
-  color: #333;
-  z-index: 1;
-  width: fit-content;
-  left: 10px;
-  width: 100%;
+  overflow: hidden;
+  margin: 0;
+  border-radius: 4px;
+  background: #183d32;
+  aspect-ratio: 1 / 1.08;
 }
-.about-us h2::after {
+
+.church-about-photo img {
   display: block;
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 100%;
   width: 100%;
-  z-index: -1;
-  opacity: 0.75;
-  transform: scale(1.07, 1.05) skewX(-15deg);
-  background-image: var(--gradient-primary);
+  height: 100%;
+  object-fit: cover;
+  object-position: 42% center;
 }
-.about-us-contents {
+
+.church-about-photo::after {
+  position: absolute;
+  inset: 35% 0 0;
+  background: linear-gradient(transparent, rgba(9, 30, 23, 0.94));
+  content: '';
+}
+
+.church-about-photo figcaption {
+  position: absolute;
+  z-index: 1;
+  right: 2rem;
+  bottom: 2rem;
+  left: 2rem;
+  padding-left: 1.25rem;
+  border-left: 2px solid #a8d9b5;
+  color: #fff;
+}
+
+.church-about-photo figcaption span,
+.church-about-photo cite {
+  font-family: Outfit, sans-serif;
+  font-size: 0.8rem;
+  font-style: normal;
+  color: #d7e7dd;
+}
+
+.church-about-photo figcaption span {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.church-about-photo figcaption p {
+  margin: 0.65rem 0 0.5rem;
+  font-size: clamp(1.4rem, 2.4vw, 2rem);
+  font-weight: 500;
+  line-height: 1.25;
+}
+
+.church-about-eyebrow {
+  margin-bottom: 1.25rem;
+  color: #087f5b;
+  font-family: Outfit, sans-serif;
+  font-size: 0.75rem;
+  font-weight: 600;
+  line-height: 1.6;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.church-about-content h2 {
+  margin: 0 0 1.5rem;
+  color: #19382e;
+  font-size: clamp(2.25rem, 3.7vw, 3.5rem);
+  font-weight: 600;
+  letter-spacing: -0.035em;
+  line-height: 1.12;
+}
+
+.church-about-content h2 span {
+  color: #087f5b;
+}
+
+.church-about-description {
+  max-width: 36rem;
+  color: #57625b;
+  font-family: Outfit, sans-serif;
+  font-size: 1.05rem;
+  line-height: 1.8;
+}
+
+.church-about-values {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  row-gap: 100px;
-  column-gap: 25px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1rem;
+  margin: 2rem 0;
+  padding: 1.5rem 0;
+  border-top: 1px solid #dce3da;
+  border-bottom: 1px solid #dce3da;
 }
-.about-us-content {
-  display: grid;
-  grid-template-columns: 50px 1fr;
-  gap: 15px;
-  opacity: 1;
-  transform: translateY(0px);
-  transition: all 1s ease;
+
+.church-about-values dt {
+  margin-bottom: 0.5rem;
+  color: #19382e;
+  font-size: 1.05rem;
+  font-weight: 600;
 }
-.about-us-content-1.hidden {
-  opacity: 0;
-  transform: translateY(100px);
+
+.church-about-values dd {
+  margin: 0;
+  color: #57625b;
+  font-family: Outfit, sans-serif;
+  font-size: 0.88rem;
+  line-height: 1.6;
 }
-.about-us-content-2.hidden {
-  opacity: 0;
-  transform: translateY(200px);
-}
-.about-us-content-3.hidden {
-  opacity: 0;
-  transform: translateY(300px);
-}
-.about-us-content-left {
-  height: 50px;
-  width: 50px;
-  background-color: var(--primary-color-tint);
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
+
+.church-about-link {
+  display: inline-flex;
   align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  min-height: 48px;
+  padding: 0.85rem 1.25rem;
+  border-radius: 3px;
+  background: #087f5b;
+  color: #fff;
+  font-family: Outfit, sans-serif;
+  font-size: 0.95rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background-color 180ms ease;
 }
-.about-us-content-left img {
-  width: 20px;
+
+.church-about-link span {
+  font-size: 1.25rem;
 }
-.about-us-content-right {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
+
+.church-about-link:hover {
+  background: #066447;
 }
-.about-us-content-right h3 {
-  color: #333;
-  word-spacing: 1px;
-  font-size: 24px;
+
+.church-about-link:focus-visible {
+  outline: 3px solid #087f5b;
+  outline-offset: 4px;
 }
-.about-us-content-right p {
-  font-size: 16px;
-  line-height: 2;
-  color: #555;
-  /* color: rgb(36, 36, 36); */
-  font-family: Outfit;
-  letter-spacing: -0.5px;
+
+@media (max-width: 800px) {
+  .church-about-inner {
+    grid-template-columns: 1fr;
+    max-width: 600px;
+  }
+
+  .church-about-photo {
+    aspect-ratio: 4 / 3;
+  }
+}
+
+@media (max-width: 420px) {
+  .church-about-photo figcaption {
+    right: 1.25rem;
+    bottom: 1.25rem;
+    left: 1.25rem;
+  }
+
+  .church-about-values {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .church-about-values dt {
+    margin-bottom: 0.2rem;
+  }
+
+  .church-about-link {
+    width: 100%;
+  }
 }

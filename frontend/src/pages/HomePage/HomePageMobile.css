@@ -3,12 +3,6 @@
   .services-summary {
     margin: 0 50px;
   }
-  .about-us-contents {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    row-gap: 100px;
-    column-gap: 25px;
-  }
 }
 
 @media (max-width: 1100px) {
@@ -22,12 +16,6 @@
   /* SERVICES */
   .services-summary {
     margin: 0 10px;
-  }
-  .about-us-contents {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    row-gap: 100px;
-    column-gap: 25px;
   }
 
   /* PASTOR */
@@ -84,13 +72,6 @@
   }
 
   /* ABOUT */
-  .about-summary {
-    margin: 0 25px;
-  }
-  .about-us-contents {
-    grid-template-columns: repeat(1, 1fr);
-    row-gap: 50px;
-  }
 
   /* RESOURCES */
   .resources-summary {
@@ -214,39 +195,6 @@
   }
 
   /* ABOUT US */
-  .about-summary {
-    padding-top: 20px;
-  }
-  .about-us-contents {
-    row-gap: 50px;
-    column-gap: 25px;
-  }
-  .about-us-content {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 15px;
-  }
-  .about-us-content-left {
-    height: 50px;
-    width: 50px;
-    background-color: var(--primary-color-tint);
-    border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  .about-us-content-left img {
-    width: 22px;
-  }
-  .about-us-content-left img {
-    width: 20px;
-  }
-  .about-us-content-right p {
-    font-size: 14px;
-  }
-  .about-us-heading {
-    width: 60%;
-  }
 
   /* SERVICES */
   .services-summary {
@@ -339,14 +287,6 @@
 
 @media (max-width: 450px) {
   /* ABOUT */
-  .about-summary {
-    padding-top: 25px;
-    padding-bottom: 25px;
-    margin: 0 10px;
-  }
-  .about-summary h2 {
-    display: none;
-  }
 
   /* CTA */
   .cta-text-box {
