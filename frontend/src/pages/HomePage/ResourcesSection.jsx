@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { CloudDownloadIcon, ViewIcon } from '@hugeicons/core-free-icons';
+import { CloudDownloadIcon, ViewIcon, BookOpen01Icon, GridViewIcon, News01Icon, HandPrayerIcon } from '@hugeicons/core-free-icons';
 import './ResourcesSection.css';
+
+const categoryIcons = { 'All materials': GridViewIcon, Bulletins: News01Icon, 'Bible study': BookOpen01Icon, Prayer: HandPrayerIcon };
 
 // Sample metadata for the static design; PDF files are not connected yet.
 const resourceTypes = [
@@ -27,7 +29,10 @@ export const Resources = ({ materials = resourceTypes }) => {
         <p className="church-resources-intro">Take the message with you. Browse our materials, read online, or download a PDF to keep.</p>
         <div className="church-resources-toolbar">
           <div className="church-resources-filters" role="group" aria-label="Filter resources">
-            {categories.map((name) => <button key={name} type="button" aria-pressed={name === category} onClick={() => setCategory(name)}>{name}</button>)}
+            {categories.map((name) => <button key={name} type="button" aria-pressed={name === category} onClick={() => setCategory(name)}><HugeiconsIcon icon={categoryIcons[name] || BookOpen01Icon} size={18} aria-hidden="true" />
+              <span>{name}</span>
+              <span className="church-resource-filter-count" aria-hidden="true">{name === 'All materials' ? materials.length : materials.filter((item) => item.category === name).length}</span>
+            </button>)}
           </div>
           <span className="church-resources-count" role="status">{visible.length} {visible.length === 1 ? 'material' : 'materials'}</span>
         </div>
@@ -62,8 +67,8 @@ export const Resources = ({ materials = resourceTypes }) => {
                     <a className="church-resource-open" href={item.pdfUrl} target="_blank" rel="noopener noreferrer" aria-label={`Open ${item.title} PDF in a new tab`}><HugeiconsIcon icon={ViewIcon} size={18} aria-hidden="true" /> Open PDF</a>
                     <a className="church-resource-download" href={item.downloadUrl || item.pdfUrl} download aria-label={`Download ${item.title}`}><HugeiconsIcon icon={CloudDownloadIcon} size={18} aria-hidden="true" /> Download</a>
                   </> : <>
-                    <button className="church-resource-open" type="button" disabled><HugeiconsIcon icon={ViewIcon} size={18} aria-hidden="true" /> Open PDF</button>
-                    <button className="church-resource-download" type="button" disabled><HugeiconsIcon icon={CloudDownloadIcon} size={18} aria-hidden="true" /> Download</button>
+                    <button className="church-resource-open" type="button" disabled title="Available when the PDF is published"><HugeiconsIcon icon={ViewIcon} size={18} aria-hidden="true" /> Open PDF</button>
+                    <button className="church-resource-download" type="button" disabled title="Available when the PDF is published"><HugeiconsIcon icon={CloudDownloadIcon} size={18} aria-hidden="true" /> Download</button>
                   </>}
                 </div>
               </li>
