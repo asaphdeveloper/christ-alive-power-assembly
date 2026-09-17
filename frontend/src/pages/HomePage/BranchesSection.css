@@ -9,20 +9,6 @@
   justify-self: start;
   margin-bottom: 50px;
 }
-.branches-heading h2 {
-  margin: 15px 0;
-  font-size: 35px;
-}
-.branches-heading h2 span {
-  color: var(--primary-color);
-}
-.branches-heading button {
-  justify-self: left;
-}
-.branches-heading button img {
-  width: 18px;
-  height: 18px;
-}
 
 .branches-cards {
   display: flex;

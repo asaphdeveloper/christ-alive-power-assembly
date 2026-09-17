@@ -1,4 +1,5 @@
 import { Link } from 'react-router';
+import { SectionHeading } from './SectionHeading';
 import { events } from '../EventsPage/events';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowRight01Icon, Notification01Icon } from '@hugeicons/core-free-icons';
@@ -10,13 +11,9 @@ export const Upcoming = () => {
   return (
     <section className="upcoming-section" id="upcoming-section" aria-labelledby="upcoming-title">
       <div className="upcoming-header">
-        <div className="upcoming-intro">
-          <span className="upcoming-label">
-            <HugeiconsIcon icon={Notification01Icon} size={14} aria-hidden="true" />
-            What's coming
-          </span>
-          <h2 id="upcoming-title"><span>Upcoming</span> Programs</h2>
-        </div>
+        <SectionHeading icon={Notification01Icon} label="Visit Us" titleId="upcoming-title">
+          <span>Upcoming</span> Programs
+        </SectionHeading>
 
         <div className="upcoming-more">
           <Link to="/events">

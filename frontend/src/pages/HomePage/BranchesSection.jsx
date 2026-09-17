@@ -5,20 +5,16 @@ import Slide2 from '../../assets/images/slide-02.jpg';
 import Slide3 from '../../assets/images/slide-03.jpg';
 import ArrowPrev from '../../assets/images/icons/arrow-prev.svg';
 import ArrowNext from '../../assets/images/icons/arrow-next.svg';
-import LocationIcon from '../../assets/images/icons/location-icon.svg';
+import { SectionHeading } from './SectionHeading';
 import RightUpIcon from '../../assets/images/icons/right-up.png';
 import './BranchesSection.css';
 
 export const Branches = () => {
   return (
-    <section className="branches-summary" id="branches-section">
-      <div className="branches-heading">
-        <button className="btn-secondary branches-btn">
-          <HugeiconsIcon icon={Location03Icon} className='icon' />
-          <span>Visit Us</span>
-        </button>
-        <h2>Visit Any Of Our<br /><span> Branches</span></h2>
-      </div>
+    <section className="branches-summary" id="branches-section" aria-labelledby="branches-title">
+      <SectionHeading className="branches-heading" icon={Location03Icon} label="Visit Us" titleId="branches-title">
+        Visit Any Of Our<br /><span>Branches</span>
+      </SectionHeading>
       <div className="branches-cards">
         <a href="/branch" className="branch-card branch-card-1 reveal-section">
           <div className="branch-card-image-container">
