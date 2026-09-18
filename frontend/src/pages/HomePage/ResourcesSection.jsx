@@ -1,20 +1,20 @@
 import { useState } from 'react';
 import { SectionHeading } from './SectionHeading';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { CloudDownloadIcon, ViewIcon, BookOpen01Icon, GridViewIcon, News01Icon, HandPrayerIcon, Pdf01Icon } from '@hugeicons/core-free-icons';
+import {
+  CloudDownloadIcon, ViewIcon, BookOpen01Icon, GridViewIcon,
+  News01Icon, HandPrayerIcon, Pdf01Icon
+} from '@hugeicons/core-free-icons';
 import './ResourcesSection.css';
 
 const categoryIcons = { 'All materials': GridViewIcon, Bulletins: News01Icon, 'Bible study': BookOpen01Icon, Prayer: HandPrayerIcon };
 
-// Sample metadata for the static design; PDF files are not connected yet.
 const resourceTypes = [
   { id: 'bulletin', title: 'Sunday Bulletin', category: 'Bulletins', description: 'Service notes, church announcements, and the week ahead.', uploadedAt: '2 days ago', fileType: 'PDF', fileSize: '882 KB' },
   { id: 'study', title: 'Bible Study Guide', category: 'Bible study', description: 'Scripture, study notes, and questions to grow in your faith.', uploadedAt: '2 months ago', fileType: 'PDF', fileSize: '2.4 MB' },
   { id: 'prayer', title: 'Prayer Guide', category: 'Prayer', description: 'Prayer points and Scripture for your personal quiet time.', uploadedAt: 'yesterday', fileType: 'PDF', fileSize: '516 KB' },
 ];
 
-// Replace the pending entries with published admin records containing pdfUrl,
-// downloadUrl (optional), fileType, fileSize (display text), and uploadedAt (ISO date).
 export const Resources = ({ materials = resourceTypes }) => {
   const [category, setCategory] = useState('All materials');
   const categories = ['All materials', ...new Set(materials.map((item) => item.category))];
@@ -26,7 +26,7 @@ export const Resources = ({ materials = resourceTypes }) => {
         <SectionHeading icon={CloudDownloadIcon} label="Grow in the Word" titleId="resources-title">
           <span>Church</span> Resources
         </SectionHeading>
-        <p className="church-resources-intro">Take the message with you. Browse our materials, read online, or download a PDF to keep.</p>
+        <p className="church-resources-intro">Browse our materials, read online, or download a PDF to keep.</p>
         <div className="church-resources-toolbar">
           <div className="church-resources-filters" role="group" aria-label="Filter resources">
             {categories.map((name) => <button key={name} type="button" aria-pressed={name === category} onClick={() => setCategory(name)}><HugeiconsIcon icon={categoryIcons[name] || BookOpen01Icon} size={18} aria-hidden="true" />
@@ -45,8 +45,7 @@ export const Resources = ({ materials = resourceTypes }) => {
             return (
               <li className="church-resource" key={item.id}>
                 <div className="church-resource-file" aria-hidden="true">
-                  {/* <svg width="26" height="30" viewBox="0 0 26 30" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M4 1h11l7 7v21H4z" /><path d="M15 1v8h7M8 15h10M8 20h10" /></svg> */}
-                  <HugeiconsIcon icon={Pdf01Icon} size={18} aria-hidden="true" />
+                  <svg width="26" height="30" viewBox="0 0 26 30" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M4 1h11l7 7v21H4z" /><path d="M15 1v8h7M8 15h10M8 20h10" /></svg>
                   <span>{fileType}</span>
                 </div>
                 <div className="church-resource-details">
@@ -67,8 +66,10 @@ export const Resources = ({ materials = resourceTypes }) => {
 
                 <div className="church-resource-actions">
                   {item.pdfUrl ? <>
-                    <a className="church-resource-open" href={item.pdfUrl} target="_blank" rel="noopener noreferrer" aria-label={`Open ${item.title} PDF in a new tab`}><HugeiconsIcon icon={ViewIcon} size={18} aria-hidden="true" /> Open PDF</a>
-                    <a className="church-resource-download" href={item.downloadUrl || item.pdfUrl} download aria-label={`Download ${item.title}`}><HugeiconsIcon icon={CloudDownloadIcon} size={18} aria-hidden="true" /> Download</a>
+                    <a className="church-resource-open" href={item.pdfUrl} target="_blank" rel="noopener noreferrer" aria-label={`Open ${item.title} PDF in a new tab`}>
+                      <HugeiconsIcon icon={ViewIcon} size={18} aria-hidden="true" /> Open PDF</a>
+                    <a className="church-resource-download" href={item.downloadUrl || item.pdfUrl} download aria-label={`Download ${item.title}`}>
+                      <HugeiconsIcon icon={CloudDownloadIcon} size={18} aria-hidden="true" /> Download</a>
                   </> : <>
                     <button className="church-resource-open" type="button" title="Available when the PDF is published">
                       <HugeiconsIcon icon={ViewIcon} size={18} aria-hidden="true" /> Open PDF</button>

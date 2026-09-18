@@ -11,7 +11,7 @@ export const Upcoming = () => {
   return (
     <section className="upcoming-section" id="upcoming-section" aria-labelledby="upcoming-title">
       <div className="upcoming-header">
-        <SectionHeading icon={Notification01Icon} label="Visit Us" titleId="upcoming-title">
+        <SectionHeading icon={Notification01Icon} label="Coming Soon" titleId="upcoming-title">
           <span>Upcoming</span> Programs
         </SectionHeading>
 

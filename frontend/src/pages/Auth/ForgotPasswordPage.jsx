@@ -134,7 +134,7 @@ export const ForgotPasswordPage = () => {
         <canvas ref={canvasRef} className="auth-panel-canvas" aria-hidden="true" />
         <Link to="/" className="auth-brand">
           <img className="auth-logo" src={ChurchLogo} alt="" width="48" height="48" />
-          <span>Christ Alive<br />Power Assembly</span>
+          <span>Christ Alive Power Assembly</span>
         </Link>
         <div className="auth-panel-hero">
           <h1>Christ Alive<br />Power Assembly</h1>
@@ -145,21 +145,21 @@ export const ForgotPasswordPage = () => {
       </section>
       <section className="form-panel" aria-labelledby="form-title">
         <div className="form-wrap">
-      <div className="form-heading">
-        <p className="eyebrow">Account recovery</p>
-        <h2 id="form-title">Reset your password.</h2>
-        <p>Enter your email and we will send you a secure reset link.</p>
-      </div>
+          <div className="form-heading">
+            <p className="eyebrow">Account recovery</p>
+            <h2 id="form-title">Reset your password.</h2>
+            <p>Enter your email and we will send you a secure reset link.</p>
+          </div>
 
-      <form onSubmit={handleSubmit}>
-        <label htmlFor="email">Email address<input id="email" name="email" type="email" placeholder="you@example.com" autoComplete="email" required /></label>
-        <button className="submit-button" type="submit">Send reset link <span aria-hidden="true">↗</span></button>
-      </form>
+          <form onSubmit={handleSubmit}>
+            <label htmlFor="email">Email address<input id="email" name="email" type="email" placeholder="you@example.com" autoComplete="email" required /></label>
+            <button className="submit-button" type="submit">Send reset link <span aria-hidden="true">↗</span></button>
+          </form>
 
-      {formMessage && <p className="form-message" role="status">{formMessage}</p>}
+          {formMessage && <p className="form-message" role="status">{formMessage}</p>}
 
-      <p className="form-note"><Link to="/login">Back to log in</Link></p>
-      </div>
+          <p className="form-note"><Link to="/login">Back to log in</Link></p>
+        </div>
       </section>
     </main>
   );
