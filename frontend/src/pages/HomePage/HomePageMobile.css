@@ -7,14 +7,6 @@
 }
 
 @media (max-width: 1100px) {
-  .hero-overlay-content p.hero-overlay-text {
-    font-size: 22px;
-  }
-
-  .hero-overlay-content h1.hero-overlay-title {
-    font-size: 3.5rem;
-  }
-
   /* SERVICES */
   .services-summary {
     margin: 0 10px;
@@ -66,14 +58,6 @@
 }
 
 @media (max-width: 900px) {
-  .hero-overlay-content p.hero-overlay-text {
-    font-size: 20px;
-  }
-
-  .hero-overlay-content h1.hero-overlay-title {
-    font-size: 45px;
-  }
-
   /* ABOUT */
 
   /* RESOURCES */
@@ -96,19 +80,6 @@
 }
 
 @media (max-width: 750px) {
-  .hero-overlay-content p.hero-overlay-text {
-    font-size: 20px;
-  }
-
-  .hero-overlay-content h1.hero-overlay-title {
-    font-size: 45px;
-  }
-
-  .swiper-button-next,
-  .swiper-button-prev {
-    display: none;
-  }
-
   /* BRANCHES */
   .branches-swiper-btns {
     padding: 20px;
@@ -184,28 +155,6 @@
 @media (max-width: 520px) {
   .services-summary {
     padding-top: 75px;
-  }
-
-  .hero-overlay-content {
-    top: 50%;
-    padding-top: 50px;
-  }
-
-  .hero-overlay-content p.hero-overlay-text {
-    font-size: 16px;
-  }
-
-  .hero-overlay-content h1.hero-overlay-title {
-    font-size: 40px;
-    display: flex;
-    flex-direction: column;
-    line-height: 1;
-    gap: 8px;
-  }
-
-  .hero-overlay-content h1.hero-overlay-title div {
-    flex-direction: column;
-    line-height: 0.8;
   }
 
   /* ABOUT US */

@@ -1,0 +1,181 @@
+/* Each section observes once; only its visible content moves. */
+.home-reveal :is(
+  .church-about-photo,
+  .church-about-content,
+  .pastor-heading,
+  .pastor-body,
+  .pastor-btn,
+  .branches-heading,
+  .branch-card,
+  .church-resources .section-heading,
+  .church-resources-toolbar,
+  .church-resource,
+  .upcoming-header,
+  .upcoming-card,
+  .cta-box,
+  .church-footer-welcome,
+  .church-footer-main
+) {
+  opacity: 0;
+  transform: translate3d(var(--reveal-x, 0px), var(--reveal-y, 36px), 0) scale(var(--reveal-scale, 1));
+  transition:
+    opacity var(--reveal-duration, 0.75s) ease-out var(--reveal-delay, 0s),
+    transform var(--reveal-duration, 0.75s) cubic-bezier(0.22, 1, 0.36, 1) var(--reveal-delay, 0s);
+}
+
+.home-reveal :is(
+  .church-about-photo,
+  .church-about-content,
+  .pastor-heading,
+  .pastor-body,
+  .pastor-btn,
+  .branches-heading,
+  .branch-card,
+  .church-resources .section-heading,
+  .church-resources-toolbar,
+  .church-resource,
+  .upcoming-header,
+  .upcoming-card,
+  .cta-box,
+  .church-footer-welcome,
+  .church-footer-main
+)[data-revealed='true'] {
+  opacity: 1;
+  transform: none;
+}
+
+.home-reveal--about .church-about-photo {
+  --reveal-x: -44px;
+  --reveal-y: 24px;
+  --reveal-scale: 0.97;
+  --reveal-duration: 0.9s;
+}
+
+.home-reveal--about .church-about-content {
+  --reveal-x: 44px;
+  --reveal-y: 24px;
+  --reveal-delay: 0.13s;
+  --reveal-duration: 0.9s;
+}
+
+.home-reveal--pastor .pastor-heading {
+  --reveal-y: 32px;
+  --reveal-delay: 0.08s;
+}
+
+.home-reveal--pastor .pastor-body {
+  --reveal-y: 44px;
+  --reveal-delay: 0.2s;
+  --reveal-duration: 0.9s;
+}
+
+.home-reveal--pastor .pastor-btn {
+  --reveal-y: 24px;
+  --reveal-delay: 0.38s;
+}
+
+.home-reveal--branches .branches-heading,
+.home-reveal--resources .section-heading,
+.home-reveal--upcoming .upcoming-header {
+  --reveal-y: 32px;
+  --reveal-delay: 0.04s;
+}
+
+.home-reveal--branches .branch-card {
+  --reveal-y: 52px;
+  --reveal-scale: 0.96;
+  --reveal-duration: 0.85s;
+}
+
+.home-reveal--branches .branch-card:nth-child(1) { --reveal-delay: 0.15s; }
+.home-reveal--branches .branch-card:nth-child(2) { --reveal-delay: 0.25s; }
+.home-reveal--branches .branch-card:nth-child(3) { --reveal-delay: 0.35s; }
+
+.home-reveal--resources .church-resources-toolbar {
+  --reveal-y: 28px;
+  --reveal-delay: 0.16s;
+}
+
+.home-reveal--resources .church-resource {
+  --reveal-y: 38px;
+}
+
+.home-reveal--resources .church-resource:nth-child(1) { --reveal-delay: 0.24s; }
+.home-reveal--resources .church-resource:nth-child(2) { --reveal-delay: 0.32s; }
+.home-reveal--resources .church-resource:nth-child(3) { --reveal-delay: 0.4s; }
+
+.home-reveal--upcoming .upcoming-card {
+  --reveal-x: 28px;
+  --reveal-y: 34px;
+  --reveal-scale: 0.975;
+  --reveal-duration: 0.85s;
+}
+
+.home-reveal--upcoming .upcoming-card:nth-child(1) { --reveal-delay: 0.17s; }
+.home-reveal--upcoming .upcoming-card:nth-child(2) { --reveal-delay: 0.27s; }
+.home-reveal--upcoming .upcoming-card:nth-child(3) { --reveal-delay: 0.37s; }
+
+.home-reveal--giving .cta-box {
+  --reveal-y: 58px;
+  --reveal-scale: 0.945;
+  --reveal-duration: 1s;
+}
+
+.home-reveal--footer .church-footer-welcome {
+  --reveal-y: 30px;
+}
+
+.home-reveal--footer .church-footer-main {
+  --reveal-y: 40px;
+  --reveal-delay: 0.16s;
+}
+
+@media (max-width: 600px) {
+  .home-reveal :is(
+    .church-about-photo,
+    .church-about-content,
+    .pastor-heading,
+    .pastor-body,
+    .pastor-btn,
+    .branches-heading,
+    .branch-card,
+    .church-resources .section-heading,
+    .church-resources-toolbar,
+    .church-resource,
+    .upcoming-header,
+    .upcoming-card,
+    .cta-box,
+    .church-footer-welcome,
+    .church-footer-main
+  ) {
+    --reveal-x: 0px;
+    --reveal-y: 24px;
+    --reveal-scale: 0.985;
+    --reveal-duration: 0.62s;
+    transition-delay: 0s;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .home-reveal :is(
+    .church-about-photo,
+    .church-about-content,
+    .pastor-heading,
+    .pastor-body,
+    .pastor-btn,
+    .branches-heading,
+    .branch-card,
+    .church-resources .section-heading,
+    .church-resources-toolbar,
+    .church-resource,
+    .upcoming-header,
+    .upcoming-card,
+    .cta-box,
+    .church-footer-welcome,
+    .church-footer-main
+  ) {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
