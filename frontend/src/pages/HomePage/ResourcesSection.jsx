@@ -56,7 +56,7 @@ export const Resources = () => {
 
               <div className="church-resource-actions">
                 <button className="church-resource-open" type="button" title="Available when the PDF is published">
-                  <HugeiconsIcon icon={ViewIcon} size={18} aria-hidden="true" /> Open PDF</button>
+                  <HugeiconsIcon icon={ViewIcon} size={18} aria-hidden="true" /> Open</button>
                 <button className="church-resource-download" type="button" title="Available when the PDF is published">
                   <HugeiconsIcon icon={CloudDownloadIcon} size={18} aria-hidden="true" /> Download</button>
               </div>
