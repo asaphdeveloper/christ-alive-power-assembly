@@ -1,4 +1,5 @@
 @media (max-width: 1250px) {
+
   /* SERVICES */
   .services-summary {
     margin: 0 50px;
@@ -9,6 +10,7 @@
   .hero-overlay-content p.hero-overlay-text {
     font-size: 22px;
   }
+
   .hero-overlay-content h1.hero-overlay-title {
     font-size: 3.5rem;
   }
@@ -22,6 +24,7 @@
   .pastor-details {
     max-width: 450px;
   }
+
   .pastor-heading h2 {
     font-size: 40px;
   }
@@ -35,22 +38,26 @@
     gap: 50px;
     grid-template-columns: 2fr 1fr;
   }
+
   .cta-text-box {
     padding: 35px 30px 20px;
     color: white;
     max-width: 100%;
   }
+
   .cta-box .heading-secondary {
     margin-bottom: 25px;
     font-size: 30px;
     font-weight: 600;
   }
+
   .cta-text {
     font-size: 16px;
     word-spacing: 2px;
     line-height: 1.5;
     margin-bottom: 25px;
   }
+
   .cta-box a {
     width: 50%;
   }
@@ -62,6 +69,7 @@
   .hero-overlay-content p.hero-overlay-text {
     font-size: 20px;
   }
+
   .hero-overlay-content h1.hero-overlay-title {
     font-size: 45px;
   }
@@ -72,6 +80,7 @@
   .resources-summary {
     padding: 150px 25px 25px;
   }
+
   .resources-heading h2 {
     font-size: 30px;
   }
@@ -80,6 +89,7 @@
   .upcoming-summary {
     padding: 150px 25px 25px;
   }
+
   .upcoming-heading h2 {
     font-size: 30px;
   }
@@ -89,9 +99,11 @@
   .hero-overlay-content p.hero-overlay-text {
     font-size: 20px;
   }
+
   .hero-overlay-content h1.hero-overlay-title {
     font-size: 45px;
   }
+
   .swiper-button-next,
   .swiper-button-prev {
     display: none;
@@ -102,26 +114,33 @@
     padding: 20px;
     gap: 10px;
   }
+
   .branches-swiper-btn {
     width: 42px;
     height: 42px;
   }
-  .branches-swiper-btn img {
+
+  .branches-swiper-btn svg {
     width: 18px;
   }
+
   /* PASTOR */
   .pastor-details {
     max-width: 400px;
   }
+
   .pastor-body {
     padding: 40px 20px 40px 10px;
   }
+
   .pastor-heading h2 {
     font-size: 35px;
   }
+
   .pastor-details {
     left: 2%;
   }
+
   .pastor-body-row p {
     line-height: 1.5;
   }
@@ -134,12 +153,14 @@
     gap: 15px;
     padding-bottom: 15px;
   }
+
   .cta-img-box {
     height: 150px;
     grid-row: 1;
     background-position: center;
     transform: scale(1.5);
   }
+
   .cta-box h2 {
     font-size: 30px;
     margin-bottom: 15px;
@@ -147,10 +168,12 @@
     justify-self: center;
     width: 100%;
   }
+
   .cta-box p {
     font-size: 16px;
     text-align: center;
   }
+
   .cta-box a {
     width: 100%;
   }
@@ -162,13 +185,16 @@
   .services-summary {
     padding-top: 75px;
   }
+
   .hero-overlay-content {
     top: 50%;
     padding-top: 50px;
   }
+
   .hero-overlay-content p.hero-overlay-text {
     font-size: 16px;
   }
+
   .hero-overlay-content h1.hero-overlay-title {
     font-size: 40px;
     display: flex;
@@ -176,6 +202,7 @@
     line-height: 1;
     gap: 8px;
   }
+
   .hero-overlay-content h1.hero-overlay-title div {
     flex-direction: column;
     line-height: 0.8;
@@ -187,18 +214,22 @@
   .services-summary {
     padding-top: 75px;
   }
+
   .services-heading {
     text-align: center;
     padding: 25px 0;
     margin-bottom: 0px;
   }
+
   .services-heading button {
     padding: 10px 15px;
   }
+
   .services-heading button svg {
     width: 15px;
     height: 15px;
   }
+
   .services-heading h2 {
     margin: 20px 0 20px 0;
     font-size: 26px;
@@ -208,12 +239,15 @@
   .pastor-details {
     max-width: 275px;
   }
+
   .pastor-body {
     padding: 20px;
   }
+
   .pastor-body-row {
     grid-template-columns: 1fr;
   }
+
   .pastor-body-row-icon {
     background-color: whitesmoke;
     border-radius: 50%;
@@ -222,15 +256,19 @@
     margin-bottom: 10px;
     /* display: none; */
   }
+
   .pastor-heading h2 {
     font-size: 30px;
   }
+
   .pastor-body-row p {
     line-height: 1.2;
   }
+
   .pastor-body-row h3 {
     line-height: 1;
   }
+
   .pastor-body-row p {
     line-height: 1.4;
   }
@@ -247,6 +285,7 @@
     align-items: center;
     flex-direction: column;
   }
+
   .upcoming-heading h2,
   .resources-heading h2 {
     font-size: 28px;
@@ -256,13 +295,16 @@
   .cta-text-box {
     padding: 0;
   }
+
   .cta-box h2 {
     font-size: 28px;
   }
+
   .cta-box p {
     font-size: 14px;
     font-weight: 400;
   }
+
   .cta-box a {
     width: 100%;
   }
@@ -275,13 +317,16 @@
   .cta-text-box {
     padding: 0;
   }
+
   .cta-box h2 {
     font-size: 24px;
   }
+
   .cta-box p {
     font-size: 14px;
     font-weight: 400;
   }
+
   .cta-box a {
     width: 100%;
   }
@@ -290,13 +335,16 @@
   .pastor-body {
     padding: 30px 25px;
   }
+
   .pastor-body-row-icon {
     background-color: transparent;
     display: none;
   }
+
   .pastor-details {
     transition: 1s ease;
   }
+
   .pastor-body-row h3 {
     font-size: 16px;
   }
@@ -308,6 +356,7 @@
   .footer-top {
     padding: 0;
   }
+
   .copyright {
     font-size: 10px;
   }

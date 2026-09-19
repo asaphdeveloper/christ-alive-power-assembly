@@ -11,6 +11,7 @@ header {
 .hero {
   height: 100dvh;
 }
+
 .hero-overlay-content {
   position: absolute;
   z-index: 10;
@@ -19,12 +20,14 @@ header {
   top: 55%;
   transform: translate(-50%, -50%);
 }
+
 .hero-overlay-content .btn-primary .btn-primary-icon {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 12px;
 }
+
 .hero-overlay-content .hero-overlay-text {
   font-size: 25px;
   word-spacing: 2px;
@@ -34,6 +37,7 @@ header {
   text-align: center;
   animation: slideInTop 0.5s ease-out;
 }
+
 @keyframes slideInTop {
   0% {
     opacity: 0;
@@ -45,25 +49,30 @@ header {
     transform: translateY(0);
   }
 }
+
 .hero-overlay-content .hero-overlay-title {
   font-size: 3.8rem;
   font-weight: 800;
   line-height: 1.1;
   margin-bottom: 30px;
 }
+
 .hero-overlay-content .hero-overlay-title div {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 12px;
 }
+
 .hero-overlay-content .hero-overlay-title div span {
   text-transform: uppercase;
 }
+
 .hero-overlay-title .text-1 {
   animation: slideInLeft 0.75s ease-out 0.75s;
   animation-fill-mode: backwards;
 }
+
 @keyframes slideInLeft {
   0% {
     opacity: 0;
@@ -75,10 +84,12 @@ header {
     transform: translateX(0);
   }
 }
+
 .hero-overlay-title .text-2 {
   animation: slideInRight 0.75s ease-out 1.5s;
   animation-fill-mode: backwards;
 }
+
 @keyframes slideInRight {
   0% {
     opacity: 0;
@@ -90,12 +101,14 @@ header {
     transform: translateX(0);
   }
 }
+
 .hero-btn {
   justify-self: center;
   user-select: none;
   animation: slideInBottom 0.5s ease-out 2.5s;
   animation-fill-mode: backwards;
 }
+
 @keyframes slideInBottom {
   0% {
     opacity: 0;
@@ -115,6 +128,7 @@ header {
   position: relative;
   overflow: hidden;
 }
+
 .swiper-slide {
   display: flex;
   justify-content: center;
@@ -126,12 +140,14 @@ header {
   height: 100%;
   transition: transform 0.5s ease-in;
 }
+
 .swiper-slide .swiper-image {
   display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
 }
+
 .swiper-overlay {
   position: absolute;
   height: 100%;
@@ -148,18 +164,22 @@ header {
   position: absolute;
   top: 50%;
 }
+
 .swiper-button-next {
   transform: translate(-50%, -50%);
   right: 0;
 }
+
 .swiper-button-prev {
   transform: translate(50%, -50%);
   left: 0;
 }
+
 .swiper-button-next:hover,
 .swiper-button-prev:hover {
   cursor: pointer;
 }
+
 .swiper-button-next img,
 .swiper-button-prev img {
   width: 50px;
@@ -182,16 +202,19 @@ header {
   transform: translateX(-50%);
   background-color: rgba(255, 255, 255, 0.25);
 }
+
 .swiper-pagination .dot {
   height: 6px;
   width: 10px;
   border-radius: 50px;
   background-color: gray;
 }
+
 .swiper-pagination .dot:hover {
   cursor: pointer;
   background-color: gainsboro;
 }
+
 .swiper-pagination .dot.active {
   background-color: white;
   height: 6px;

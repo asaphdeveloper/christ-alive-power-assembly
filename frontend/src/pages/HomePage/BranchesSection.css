@@ -162,14 +162,14 @@
   cursor: pointer;
   z-index: 1;
 }
-.branches-swiper-btn img {
+.branches-swiper-btn svg {
   width: 20px;
   transition: 0.2s ease;
   transform: translateX(0%);
 }
-.branches-swiper-btn.prev-btn:hover img {
+.branches-swiper-btn.prev-btn:hover svg {
   transform: translateX(-15%);
 }
-.branches-swiper-btn.next-btn:hover img {
+.branches-swiper-btn.next-btn:hover svg {
   transform: translateX(15%);
 }

@@ -1,10 +1,8 @@
 import { HugeiconsIcon } from '@hugeicons/react';
-import { Location03Icon, Location01Icon } from '@hugeicons/core-free-icons';
+import { ArrowLeft01Icon, ArrowRight01Icon, Location03Icon, Location01Icon } from '@hugeicons/core-free-icons';
 import Slide1 from '../../assets/images/slide-01.jpg';
 import Slide2 from '../../assets/images/slide-02.jpg';
 import Slide3 from '../../assets/images/slide-03.jpg';
-import ArrowPrev from '../../assets/images/icons/arrow-prev.svg';
-import ArrowNext from '../../assets/images/icons/arrow-next.svg';
 import { SectionHeading } from './SectionHeading';
 import RightUpIcon from '../../assets/images/icons/right-up.png';
 import './BranchesSection.css';
@@ -81,11 +79,11 @@ export const Branches = () => {
         </a>
       </div>
       <div className="branches-swiper-btns">
-        <button className="branches-swiper-btn prev-btn">
-          <img src={ArrowPrev} alt="" />
+        <button className="branches-swiper-btn prev-btn" aria-label="Previous branches">
+          <HugeiconsIcon icon={ArrowLeft01Icon} size={20} aria-hidden="true" />
         </button>
-        <button className="branches-swiper-btn next-btn">
-          <img src={ArrowNext} alt="" />
+        <button className="branches-swiper-btn next-btn" aria-label="Next branches">
+          <HugeiconsIcon icon={ArrowRight01Icon} size={20} aria-hidden="true" />
         </button>
       </div>
     </section>
