@@ -1,5 +1,5 @@
 .church-about {
-  padding: clamp(4rem, 8vw, 7rem) clamp(1.25rem, 5vw, 4.5rem);
+  padding: var(--section-space) var(--section-gutter);
   background: #f7f8f4;
   scroll-margin-top: 5rem;
 }

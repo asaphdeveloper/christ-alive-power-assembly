@@ -3,9 +3,10 @@ header {
   height: 100dvh;
 }
 
-/* main section {
-  padding: 50px 25px;
-} */
+.main {
+  --section-space: clamp(64px, 7vw, 96px);
+  --section-gutter: clamp(20px, 3vw, 32px);
+}
 
 .hero {
   height: 100dvh;

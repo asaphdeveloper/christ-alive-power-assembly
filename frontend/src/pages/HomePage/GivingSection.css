@@ -1,6 +1,6 @@
 .section-cta {
   width: 100%;
-  padding: clamp(32px, 5vw, 64px) 24px clamp(64px, 8vw, 100px);
+  padding: var(--section-space) var(--section-gutter);
 }
 
 .cta-box {

@@ -1,5 +1,5 @@
 .church-resources {
-  padding: 100px 24px 120px;
+  padding: var(--section-space) var(--section-gutter);
   background: #fff;
   color: #26372e;
   scroll-margin-top: 5rem;
@@ -210,10 +210,6 @@
 }
 
 @media (max-width: 600px) {
-  .church-resources {
-    padding: 64px 20px 80px;
-  }
-
   .church-resources-toolbar {
     align-items: flex-start;
     flex-direction: column;

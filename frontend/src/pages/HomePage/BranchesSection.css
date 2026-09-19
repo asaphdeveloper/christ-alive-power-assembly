@@ -1,8 +1,7 @@
 .branches-summary {
-  padding: 150px 25px 100px;
+  padding: var(--section-space) var(--section-gutter);
   max-width: 1300px;
   margin: 0 auto;
-  min-height: 100dvh;
   background-color: white;
 }
 .branches-heading {

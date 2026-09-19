@@ -1,5 +1,5 @@
 .upcoming-section {
-  padding: clamp(64px, 7vw, 100px) 24px;
+  padding: var(--section-space) var(--section-gutter);
   max-width: 1296px;
   margin: 0 auto;
   background: #fff;
@@ -114,10 +114,6 @@
 }
 
 @media (max-width: 600px) {
-  .upcoming-section {
-    padding: 64px 20px;
-  }
-
   .upcoming-header {
     flex-direction: column;
     align-items: flex-start;

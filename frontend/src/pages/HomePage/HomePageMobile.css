@@ -98,10 +98,6 @@
   }
 
   /* BRANCHES */
-  .branches-summary {
-    padding: 150px 0px 50px 0px;
-  }
-
   .branches-swiper-btns {
     padding: 20px;
     gap: 10px;
@@ -291,9 +287,6 @@
   }
 
   /* PASTOR */
-  .pastor-summary {
-    margin-top: 50px;
-  }
   .pastor-body {
     padding: 30px 25px;
   }
