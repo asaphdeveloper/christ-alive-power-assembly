@@ -16,7 +16,7 @@ export const Branches = () => {
         Visit Any Of Our<br /><span>Branches</span>
       </SectionHeading>
       <div className="branches-cards">
-        <a href="/branch" className="branch-card branch-card-1 reveal-section">
+        <a href="/" className="branch-card branch-card-1 reveal-section">
           <div className="branch-card-image-container">
             <img
               className="branch-card-image"
@@ -37,7 +37,7 @@ export const Branches = () => {
             Alongside it's Headquater. Click To Learn More.
           </div>
         </a>
-        <a href="/branch" className="branch-card branch-card-2 reveal-section">
+        <a href="/" className="branch-card branch-card-2 reveal-section">
           <div className="branch-card-image-container">
             <img
               className="branch-card-image"
@@ -58,7 +58,7 @@ export const Branches = () => {
             Wukari To Be Precise. Learn More.
           </div>
         </a>
-        <a href="/branch" className="branch-card branch-card-3 reveal-section">
+        <a href="/" className="branch-card branch-card-3 reveal-section">
           <div className="branch-card-image-container">
             <img
               className="branch-card-image"

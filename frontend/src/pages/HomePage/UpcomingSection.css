@@ -40,38 +40,10 @@
   margin-top: 12px;
 }
 
-.upcoming-card-details summary {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  width: fit-content;
-  min-height: 44px;
-  list-style: none;
-  cursor: pointer;
-}
-
-.upcoming-card-details summary::-webkit-details-marker {
-  display: none;
-}
-
 .upcoming-card-details h3 {
   font: 500 20px/1.35 Outfit, sans-serif;
 }
 
-.upcoming-card-details summary svg {
-  flex-shrink: 0;
-  transition: transform 180ms ease;
-}
-
-.upcoming-card-details summary:hover {
-  color: var(--primary-color);
-}
-
-.upcoming-card-details[open] summary svg {
-  transform: rotate(90deg);
-}
-
-.upcoming-card-details summary:focus-visible,
 .upcoming-more a:focus-visible {
   outline: 2px solid var(--primary-color);
   outline-offset: 4px;
@@ -90,6 +62,7 @@
   border-left: 2px solid var(--primary-color);
   background: #f6f8f5;
   font: 13px/1.6 Outfit, sans-serif;
+  display: none;
 }
 
 .upcoming-card-schedule>div {
@@ -155,11 +128,5 @@
   .upcoming-cards {
     grid-template-columns: 1fr;
     gap: 32px;
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .upcoming-card-details summary svg {
-    transition: none;
   }
 }

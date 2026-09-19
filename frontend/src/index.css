@@ -91,6 +91,20 @@ body {
   align-items: center;
 }
 
+:where(button, a.btn-primary, a.btn-secondary, a.cta-button, a.church-resource-open, a.church-resource-download, a.church-about-link, a.church-footer-visit, a.church-footer-all-branches, a.branch-aside-card-btn):not(:disabled) {
+  transition: scale 150ms ease;
+}
+
+:where(button, a.btn-primary, a.btn-secondary, a.cta-button, a.church-resource-open, a.church-resource-download, a.church-about-link, a.church-footer-visit, a.church-footer-all-branches, a.branch-aside-card-btn):not(:disabled):active {
+  scale: 0.96;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :where(button, a.btn-primary, a.btn-secondary, a.cta-button, a.church-resource-open, a.church-resource-download, a.church-about-link, a.church-footer-visit, a.church-footer-all-branches, a.branch-aside-card-btn):not(:disabled) {
+    transition-duration: 0s;
+  }
+}
+
 /* Button Primary */
 .btn-primary {
   background-color: var(--primary-color);

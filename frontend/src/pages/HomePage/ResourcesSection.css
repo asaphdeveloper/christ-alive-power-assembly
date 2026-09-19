@@ -104,17 +104,11 @@
   letter-spacing: 1px;
 }
 
-.church-resource-date {
-  margin-bottom: 7px;
-  color: #087f5b;
-  font: 500 12px Outfit, sans-serif;
-  text-transform: uppercase;
-}
-
 .church-resource h3 {
   font-size: clamp(20px, 2.2vw, 26px);
   font-weight: 600;
   line-height: 1.2;
+  color: #222;
   overflow-wrap: anywhere;
 }
 
@@ -125,13 +119,13 @@
   overflow-wrap: anywhere;
 }
 
-.church-resource-meta {
+.church-resource-details div {
   display: flex;
-  flex-wrap: wrap;
-  gap: 16px;
+  gap: 1rem;
+  align-items: center;
+  font-size: 14px;
+  font: 14px Outfit, sans-serif;
   margin-top: 10px;
-  color: #748077;
-  font: 12px/1.5 Outfit, sans-serif;
 }
 
 .church-resource-actions {
@@ -168,6 +162,7 @@
 .church-resource-actions .church-resource-open:hover {
   background: #eef4f8;
   border-color: #879faf;
+  cursor: pointer;
 }
 
 .church-resource-download:hover {
@@ -255,24 +250,16 @@
   }
 }
 
-.church-resource-meta>div {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-}
-
-.church-resource-meta dt {
-  color: #637067;
-}
-
-.church-resource-meta dt::after {
-  content: ':';
-}
-
-.church-resource-meta dd {
-  margin: 0;
-  color: #35483d;
+.church-resource-new-badge {
+  display: inline-block;
+  padding: 2px 9px;
+  border-radius: 999px;
+  background: #e3f4e9;
+  color: #087f5b;
+  font-size: 14px;
   font-weight: 500;
+  /* text-transform: uppercase; */
+  /* letter-spacing: .04em; */
 }
 
 .church-resource-filter-count {

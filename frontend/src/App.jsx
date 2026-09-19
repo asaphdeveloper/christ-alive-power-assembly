@@ -1,6 +1,4 @@
-import { EventsPage } from './pages/EventsPage/EventsPage';
 import { HomePage } from './pages/HomePage/HomePage';
-import { BranchPage } from './pages/Branch/BranchPage';
 import { PageNotFound } from './pages/PageNotFound';
 import { LoginPage } from './pages/Auth/LoginPage';
 import { SignupPage } from './pages/Auth/SignupPage';
@@ -13,12 +11,10 @@ function App() {
     <BrowserRouter>
       <Routes>
         <Route index element={<HomePage />} />
-        <Route path='/events' element={<EventsPage />} />
         <Route path='/auth' element={<Navigate to='/login' replace />} />
         <Route path='/login' element={<LoginPage />} />
         <Route path='/signup' element={<SignupPage />} />
         <Route path='/forgot-password' element={<ForgotPasswordPage />} />
-        <Route path='/:expression' element={<BranchPage />} />
         <Route path='*' element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>
