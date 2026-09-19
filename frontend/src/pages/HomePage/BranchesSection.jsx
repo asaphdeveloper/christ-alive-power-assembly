@@ -1,3 +1,4 @@
+import { useEffect, useRef, useState } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowLeft01Icon, ArrowRight01Icon, Location03Icon, Location01Icon } from '@hugeicons/core-free-icons';
 import Slide1 from '../../assets/images/slide-01.jpg';
@@ -8,12 +9,84 @@ import RightUpIcon from '../../assets/images/icons/right-up.png';
 import './BranchesSection.css';
 
 export const Branches = () => {
+  const cardsRef = useRef(null);
+  const animationFrameRef = useRef(null);
+  const [scrollState, setScrollState] = useState({ overflow: false, atStart: true, atEnd: true });
+
+  useEffect(() => {
+    const cards = cardsRef.current;
+    if (!cards) return undefined;
+
+    const updateScrollState = () => {
+      const maxScroll = Math.max(0, cards.scrollWidth - cards.clientWidth);
+      setScrollState({
+        overflow: maxScroll > 1,
+        atStart: cards.scrollLeft <= 1,
+        atEnd: cards.scrollLeft >= maxScroll - 1,
+      });
+    };
+
+    updateScrollState();
+    cards.addEventListener('scroll', updateScrollState, { passive: true });
+    const stopAnimation = () => {
+      if (animationFrameRef.current !== null) cancelAnimationFrame(animationFrameRef.current);
+      animationFrameRef.current = null;
+      cards.style.scrollSnapType = '';
+    };
+    cards.addEventListener('pointerdown', stopAnimation);
+    cards.addEventListener('wheel', stopAnimation, { passive: true });
+    const observer = new ResizeObserver(updateScrollState);
+    observer.observe(cards);
+    Array.from(cards.children).forEach((card) => observer.observe(card));
+
+    return () => {
+      cards.removeEventListener('scroll', updateScrollState);
+      cards.removeEventListener('pointerdown', stopAnimation);
+      cards.removeEventListener('wheel', stopAnimation);
+      stopAnimation();
+      observer.disconnect();
+    };
+  }, []);
+
+  const moveCards = (direction) => {
+    const cards = cardsRef.current;
+    const card = cards?.querySelector('.branch-card');
+    if (!cards || !card || cards.scrollWidth <= cards.clientWidth + 1) return;
+    const gap = parseFloat(getComputedStyle(cards).columnGap) || 0;
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const start = cards.scrollLeft;
+    const target = Math.max(0, Math.min(cards.scrollWidth - cards.clientWidth, start + direction * (card.getBoundingClientRect().width + gap)));
+    if (animationFrameRef.current !== null) cancelAnimationFrame(animationFrameRef.current);
+    if (reducedMotion) {
+      cards.style.scrollSnapType = 'none';
+      cards.scrollLeft = target;
+      cards.style.scrollSnapType = '';
+      return;
+    }
+
+    cards.style.scrollSnapType = 'none';
+    const duration = 480;
+    const startedAt = performance.now();
+    const animate = (now) => {
+      const progress = Math.min((now - startedAt) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      cards.scrollLeft = start + (target - start) * eased;
+      if (progress < 1) {
+        animationFrameRef.current = requestAnimationFrame(animate);
+      } else {
+        animationFrameRef.current = null;
+        cards.style.scrollSnapType = '';
+      }
+    };
+    animationFrameRef.current = requestAnimationFrame(animate);
+  };
+
   return (
     <section className="branches-summary" id="branches-section" aria-labelledby="branches-title">
       <SectionHeading className="branches-heading" icon={Location03Icon} label="Visit Us" titleId="branches-title">
         Visit Any Of Our<br /><span>Branches</span>
       </SectionHeading>
-      <div className="branches-cards">
+      <div className={`branches-cards${scrollState.overflow ? ' has-overflow' : ''}`} ref={cardsRef}>
         <a href="/" className="branch-card branch-card-1 reveal-section">
           <div className="branch-card-image-container">
             <img
@@ -78,14 +151,14 @@ export const Branches = () => {
           </div>
         </a>
       </div>
-      <div className="branches-swiper-btns">
-        <button className="branches-swiper-btn prev-btn" aria-label="Previous branches">
+      {scrollState.overflow && <div className="branches-swiper-btns">
+        <button className="branches-swiper-btn prev-btn" type="button" aria-label="Previous branches" disabled={scrollState.atStart} onClick={() => moveCards(-1)}>
           <HugeiconsIcon icon={ArrowLeft01Icon} size={20} aria-hidden="true" />
         </button>
-        <button className="branches-swiper-btn next-btn" aria-label="Next branches">
+        <button className="branches-swiper-btn next-btn" type="button" aria-label="Next branches" disabled={scrollState.atEnd} onClick={() => moveCards(1)}>
           <HugeiconsIcon icon={ArrowRight01Icon} size={20} aria-hidden="true" />
         </button>
-      </div>
+      </div>}
     </section>
   );
 };

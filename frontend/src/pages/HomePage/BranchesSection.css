@@ -13,9 +13,12 @@
   display: flex;
   gap: 20px;
   padding: 0 10px;
-  overflow-x: scroll;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-inline: 10px;
   scrollbar-width: none;
 }
+.branches-cards::-webkit-scrollbar { display: none; }
 .branch-card {
   display: inline-block;
   border-radius: 8px;
@@ -24,6 +27,7 @@
   max-width: 400px;
   overflow: hidden;
   position: relative;
+  scroll-snap-align: start;
   transition: all 0.3s ease;
 }
 .branch-card.hidden {
@@ -162,14 +166,22 @@
   cursor: pointer;
   z-index: 1;
 }
+.branches-swiper-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+.branches-swiper-btn:focus-visible {
+  outline: 2px solid #087f5b;
+  outline-offset: 3px;
+}
 .branches-swiper-btn svg {
   width: 20px;
   transition: 0.2s ease;
   transform: translateX(0%);
 }
-.branches-swiper-btn.prev-btn:hover svg {
+.branches-swiper-btn.prev-btn:not(:disabled):hover svg {
   transform: translateX(-15%);
 }
-.branches-swiper-btn.next-btn:hover svg {
+.branches-swiper-btn.next-btn:not(:disabled):hover svg {
   transform: translateX(15%);
 }

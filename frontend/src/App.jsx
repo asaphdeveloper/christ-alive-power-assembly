@@ -3,6 +3,7 @@ import { PageNotFound } from './pages/PageNotFound';
 import { LoginPage } from './pages/Auth/LoginPage';
 import { SignupPage } from './pages/Auth/SignupPage';
 import { ForgotPasswordPage } from './pages/Auth/ForgotPasswordPage';
+import { AdminDashboardPage } from './pages/Admin/AdminDashboardPage';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router';
 import './App.css'
 
@@ -15,6 +16,7 @@ function App() {
         <Route path='/login' element={<LoginPage />} />
         <Route path='/signup' element={<SignupPage />} />
         <Route path='/forgot-password' element={<ForgotPasswordPage />} />
+        <Route path='/admin' element={<AdminDashboardPage />} />
         <Route path='*' element={<PageNotFound />} />
       </Routes>
     </BrowserRouter>

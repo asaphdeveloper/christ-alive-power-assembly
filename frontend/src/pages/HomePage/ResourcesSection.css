@@ -66,12 +66,6 @@
   box-shadow: 0 2px 5px #123c2520;
 }
 
-.church-resources-count {
-  flex-shrink: 0;
-  font: 13px Outfit, sans-serif;
-  color: #68766d;
-}
-
 .church-resources-list {
   list-style: none;
 }
@@ -83,6 +77,90 @@
   gap: 28px;
   padding: 30px 8px;
   border-bottom: 1px solid #e4eae5;
+}
+
+.church-resource-hymn {
+  padding: 30px 8px;
+  border-bottom: 1px solid #e4eae5;
+}
+
+.church-resource-hymn-heading {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.church-resource-hymn-icon {
+  display: grid;
+  place-items: center;
+  flex: 0 0 64px;
+  height: 64px;
+  border: 1px solid #d9e9df;
+  border-radius: 8px;
+  color: #087f5b;
+  background: #f5faf6;
+}
+
+.church-resource-hymn-label {
+  color: #087f5b;
+  font: 600 12px Outfit, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+.church-resource-hymn h3 {
+  margin-top: 4px;
+  color: #222;
+  font-size: clamp(20px, 2.2vw, 26px);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+.church-resource-hymn-heading p {
+  margin-top: 8px;
+  color: #637067;
+  font: 14px/1.7 Outfit, sans-serif;
+}
+
+.church-resource-hymn-read {
+  min-height: 44px;
+  margin: 18px 0 0 84px;
+  padding: 10px 16px;
+  border: 1px solid #dbe6de;
+  border-radius: 8px;
+  color: #087f5b;
+  background: #fff;
+  font: 500 14px Outfit, sans-serif;
+  cursor: pointer;
+  transition: background-color 160ms ease, border-color 160ms ease;
+}
+
+.church-resource-hymn-read:hover {
+  border-color: #a8c9b5;
+  background: #f5faf6;
+}
+
+.church-resource-hymn-verses {
+  display: grid;
+  gap: 28px;
+  margin: 28px 0 0 84px;
+  padding: 28px 32px;
+  border: 1px solid #e4eae5;
+  border-radius: 12px;
+  background: #fbfcfb;
+}
+
+.church-resource-hymn-verse > span {
+  color: #087f5b;
+  font: 600 12px Outfit, sans-serif;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+.church-resource-hymn-verse p {
+  margin-top: 10px;
+  color: #26372e;
+  font: 16px/1.8 Outfit, sans-serif;
 }
 
 .church-resource-file {
@@ -210,6 +288,12 @@
 }
 
 @media (max-width: 600px) {
+  .church-resource-hymn { padding: 24px 0; }
+  .church-resource-hymn-heading { align-items: flex-start; gap: 16px; }
+  .church-resource-hymn-icon { flex-basis: 48px; height: 48px; }
+  .church-resource-hymn-read, .church-resource-hymn-verses { margin-left: 0; }
+  .church-resource-hymn-verses { padding: 20px; }
+
   .church-resources-toolbar {
     align-items: flex-start;
     flex-direction: column;
@@ -238,11 +322,22 @@
 
   .church-resource-actions {
     grid-column: 1 / -1;
+    justify-content: flex-start;
+    gap: 8px;
   }
 
-  .church-resource-actions>* {
-    flex: 1;
-    padding-inline: 10px;
+  .church-resource-actions a,
+  .church-resource-actions button {
+    flex: 0 0 auto;
+    min-height: 44px;
+    padding: 8px 12px;
+    font-size: 12px;
+    gap: 6px;
+  }
+
+  .church-resource-actions svg {
+    width: 16px;
+    height: 16px;
   }
 }
 
@@ -293,10 +388,6 @@
     font-size: 13px;
   }
 
-  .church-resource-actions a,
-  .church-resource-actions button {
-    min-height: 48px;
-  }
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -91,6 +91,13 @@
 .home-reveal--branches .branch-card:nth-child(2) { --reveal-delay: 0.25s; }
 .home-reveal--branches .branch-card:nth-child(3) { --reveal-delay: 0.35s; }
 
+/* Cards in a horizontal carousel must stay visible as they scroll into view. */
+.home-reveal--branches .branches-cards.has-overflow .branch-card {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+
 .home-reveal--resources .church-resources-toolbar {
   --reveal-y: 28px;
   --reveal-delay: 0.16s;
