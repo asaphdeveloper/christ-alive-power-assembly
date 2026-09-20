@@ -1,4 +1,4 @@
-import CongregationImage from '../../assets/images/slide-02.jpg';
+import CongregationImage from '../../../assets/images/slide-02.jpg';
 import './AboutSection.css';
 
 export const About = () => {

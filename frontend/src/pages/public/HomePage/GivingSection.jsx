@@ -1,4 +1,4 @@
-import GivingImage from '../../assets/images/lead-pastor.jpg';
+import GivingImage from '../../../assets/images/lead-pastor.jpg';
 import './GivingSection.css';
 
 export const Giving = () => {

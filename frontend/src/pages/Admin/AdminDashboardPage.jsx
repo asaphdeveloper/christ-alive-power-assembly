@@ -39,13 +39,24 @@ export const AdminDashboardPage = () => (
 
       <nav className="admin-sidebar-nav" aria-label="Workspace">
         <p className="admin-sidebar-label">Workspace</p>
-        <a className="admin-sidebar-link active" href="#admin-overview" aria-current="page"><LayoutDashboard size={18} aria-hidden="true" /><span>Overview</span></a>
-        <a className="admin-sidebar-link" href="#admin-library"><Files size={18} aria-hidden="true" /><span>Resource library</span></a>
-        <a className="admin-sidebar-link" href="#admin-add-resource"><FilePlus2 size={18} aria-hidden="true" /><span>Add document</span></a>
+        <a className="admin-sidebar-link active" href="#admin-overview" aria-current="page">
+          <LayoutDashboard size={18} aria-hidden="true" />
+          <span>Overview</span>
+        </a>
+        <a className="admin-sidebar-link" href="#admin-library">
+          <Files size={18} aria-hidden="true" />
+          <span>Resource library</span>
+        </a>
+        <a className="admin-sidebar-link" href="#admin-add-resource">
+          <FilePlus2 size={18} aria-hidden="true" />
+          <span>Add document</span>
+        </a>
       </nav>
 
       <div className="admin-sidebar-bottom">
-        <span className="admin-avatar" aria-hidden="true"><CircleUserRound size={20} /></span>
+        <span className="admin-avatar" aria-hidden="true">
+          <CircleUserRound size={20} />
+        </span>
         <div className="admin-sidebar-user-info">
           <strong>Admin workspace</strong>
           <span>Resource manager</span>
@@ -70,10 +81,16 @@ export const AdminDashboardPage = () => (
             <span className="admin-sr-only">Search</span>
             <input type="search" placeholder="Search" />
           </label>
-          <button className="admin-icon-button has-dot" type="button" aria-label="Notifications"><Bell size={18} aria-hidden="true" /></button>
-          <Link to="/" className="admin-icon-button" aria-label="View website" title="View website"><ExternalLink size={18} aria-hidden="true" /></Link>
+          <button className="admin-icon-button has-dot" type="button" aria-label="Notifications">
+            <Bell size={18} aria-hidden="true" />
+          </button>
+          <Link to="/" className="admin-icon-button" aria-label="View website" title="View website">
+            <ExternalLink size={18} aria-hidden="true" />
+          </Link>
           <span className="admin-topbar-divider" aria-hidden="true" />
-          <span className="admin-topbar-avatar" aria-label="Admin workspace"><CircleUserRound size={22} aria-hidden="true" /></span>
+          <span className="admin-topbar-avatar" aria-label="Admin workspace">
+            <CircleUserRound size={22} aria-hidden="true" />
+          </span>
         </div>
       </header>
 

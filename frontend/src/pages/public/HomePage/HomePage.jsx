@@ -4,12 +4,12 @@ import { Resources } from './ResourcesSection';
 import { Upcoming } from './UpcomingSection';
 import { Pastor } from './PastorSection';
 import { Giving } from './GivingSection';
-import { Navbar } from '../../components/Navbar';
-import { Footer } from '../../components/Footer';
+import { Navbar } from '../../../components/Navbar';
+import { Footer } from '../../../components/Footer';
 import { Hero } from './Hero';
 import { SectionReveal } from './SectionReveal';
-import Logo from '../../assets/images/capa-logo.png';
-import '../../index.css';
+import Logo from '../../../assets/images/capa-logo.png';
+import '../../../index.css';
 import './HomePage.css';
 import './HomePageMobile.css';
 

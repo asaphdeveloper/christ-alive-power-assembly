@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowLeft01Icon, ArrowRight01Icon, Location03Icon, Location01Icon } from '@hugeicons/core-free-icons';
-import Slide1 from '../../assets/images/slide-01.jpg';
-import Slide2 from '../../assets/images/slide-02.jpg';
-import Slide3 from '../../assets/images/slide-03.jpg';
+import Slide1 from '../../../assets/images/slide-01.jpg';
+import Slide2 from '../../../assets/images/slide-02.jpg';
+import Slide3 from '../../../assets/images/slide-03.jpg';
 import { SectionHeading } from './SectionHeading';
-import RightUpIcon from '../../assets/images/icons/right-up.png';
+import RightUpIcon from '../../../assets/images/icons/right-up.png';
 import './BranchesSection.css';
 
 export const Branches = () => {

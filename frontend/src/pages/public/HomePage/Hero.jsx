@@ -2,11 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { AnimatePresence, motion as Motion, useReducedMotion } from 'framer-motion';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowLeft01Icon, ArrowRight01Icon } from '@hugeicons/core-free-icons';
-import Slide01 from '../../assets/images/slide-01.jpg';
-import Slide02 from '../../assets/images/slide-02.jpg';
-import Slide03 from '../../assets/images/slide-03.jpg';
-import Slide04 from '../../assets/images/slide-04.jpg';
-import RightUpBlackIcon from '../../assets/images/icons/right-up-black.png';
+import Slide01 from '../../../assets/images/slide-01.jpg';
+import Slide02 from '../../../assets/images/slide-02.jpg';
+import Slide03 from '../../../assets/images/slide-03.jpg';
+import Slide04 from '../../../assets/images/slide-04.jpg';
+import RightUpBlackIcon from '../../../assets/images/icons/right-up-black.png';
 import './Hero.css';
 
 const slides = [

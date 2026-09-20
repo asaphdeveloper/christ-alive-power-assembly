@@ -2,9 +2,9 @@ import { SectionHeading } from './SectionHeading';
 import { Link } from 'react-router';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowRight01Icon, Notification01Icon } from '@hugeicons/core-free-icons';
-import Image1 from '../../assets/images/slide-02.jpg';
-import Image2 from '../../assets/images/slide-01.jpg';
-import Image3 from '../../assets/images/slide-03.jpg';
+import Image1 from '../../../assets/images/slide-02.jpg';
+import Image2 from '../../../assets/images/slide-01.jpg';
+import Image3 from '../../../assets/images/slide-03.jpg';
 import './UpcomingSection.css';
 
 export const Upcoming = () => {
@@ -34,7 +34,10 @@ export const Upcoming = () => {
               <div><dt>Time</dt><dd>TBA</dd></div>
             </dl>
           </div>
-          <p className="upcoming-card-description">A sacred day of corporate prayer and fasting as we seek God's face together as a congregation. Come with an open heart — leave transformed.</p>
+          <p className="upcoming-card-description">
+            A sacred day of corporate prayer and fasting as we seek God's face together as a congregation.
+            Come with an open heart — leave transformed.
+          </p>
         </article>
 
         <article className="upcoming-card">
@@ -48,7 +51,10 @@ export const Upcoming = () => {
               <div><dt>Time</dt><dd>TBA</dd></div>
             </dl>
           </div>
-          <p className="upcoming-card-description">Three days of Spirit-led worship, powerful teaching, and rich fellowship with believers from across the region. One of the highlights of our church year.</p>
+          <p className="upcoming-card-description">
+            Three days of Spirit-led worship, powerful teaching, and rich fellowship with believers
+            from across the region. One of the highlights of our church year.
+          </p>
         </article>
 
         <article className="upcoming-card">

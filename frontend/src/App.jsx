@@ -1,4 +1,4 @@
-import { HomePage } from './pages/HomePage/HomePage';
+import { HomePage } from './pages/public/HomePage/HomePage';
 import { PageNotFound } from './pages/PageNotFound';
 import { LoginPage } from './pages/Auth/LoginPage';
 import { SignupPage } from './pages/Auth/SignupPage';

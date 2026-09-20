@@ -1,5 +1,5 @@
-import LeadPastor from '../../assets/images/lead-pastor.jpg';
-import RightUpBlackIcon from '../../assets/images/icons/right-up-black.png';
+import LeadPastor from '../../../assets/images/lead-pastor.jpg';
+import RightUpBlackIcon from '../../../assets/images/icons/right-up-black.png';
 import './PastorSection.css';
 
 export const Pastor = () => {
