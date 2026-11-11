@@ -10,8 +10,6 @@ Scores are **Performance / Accessibility / Best Practices / SEO**. The mobile ho
 | --- | --- | --- | --- |
 | `/` | mobile | 86 / 90 / 100 / 75 | 93 / 100 / 100 / 100 |
 | `/` | desktop | 96 / 95 / 100 / 75 | 100 / 100 / 100 / 100 |
-| `/login` | mobile | 83 / 91 / 100 / 75 | 100 / 100 / 100 / 100 |
-| `/login` | desktop | 99 / 86 / 100 / 75 | 100 / 100 / 100 / 100 |
 | `/signup` | mobile | 82 / 96 / 100 / 75 | 98 / 100 / 100 / 100 |
 | `/signup` | desktop | 99 / 82 / 100 / 75 | 100 / 100 / 100 / 100 |
 | `/forgot-password` | mobile | 83 / 95 / 100 / 75 | 99 / 100 / 100 / 100 |
@@ -64,9 +62,6 @@ Baseline failures included missing titles/descriptions and robots.txt; missing i
 | `src/pages/public/HomePage/UpcomingSection.jsx` | Responsive WebP event photos with dimensions and lazy decoding. |
 | `src/pages/public/HomePage/GivingSection.jsx`; `src/pages/public/HomePage/GivingSection.css` | Responsive lazy photo and removal of the broken unused background image URL that caused the build warning. |
 | `src/pages/public/HomePage/SectionReveal.jsx` | Keeps prerendered structure stable when reduced motion is enabled. |
-| `src/pages/Auth/LoginPage.jsx`; `src/pages/Auth/SignupPage.jsx`; `src/pages/Auth/ForgotPasswordPage.jsx` | Optimized logo, main focus target, removed console logging, and reused the shared background hook. |
-| `src/pages/Auth/LoginPage.css`; `src/pages/Auth/SignupPage.css`; `src/pages/Auth/ForgotPasswordPage.css` | Small contrast corrections; desktop password target expansion without moving its label; signup terms underline. |
-| `src/hooks/useAuthBackground.js` | Shared existing canvas behavior, cached particle glow sprites, and avoids duplicate resize work. |
 | `src/pages/PageNotFound.jsx`; `src/pages/PageNotFound.css` | Accessible 404 content, main landmark, and return-home navigation. |
 | `src/assets/fonts/ClashDisplay-Variable.woff2`; `src/assets/fonts/Outfit-VariableFont_wght.woff2` | Same font families converted to WOFF2 (approximately 62% smaller in total); original sources retained. |
 | `public/images/slide-{01,02,03,04}-{640,960,1280,1536,2048}.webp`; `public/images/lead-pastor-{640,1280,2048}.webp` | Responsive optimized versions of existing photographs. |
@@ -82,7 +77,7 @@ Existing staged branches changes and the user’s README changes were preserved.
 ## Hosting steps
 
 1. Set `VITE_SITE_URL` to the real HTTPS origin and rebuild.
-2. Publish `frontend/dist`, serve each prerendered route, redirect `/auth` to `/login`, and return `404.html` with HTTP 404 for missing pages.
+2. Publish `frontend/dist`, serve the prerendered homepage, and return `404.html` with HTTP 404 for missing pages.
 3. Apply generated `_headers` on compatible static hosts, or include generated `security-headers.nginx.conf` on Nginx; use the equivalent host settings elsewhere.
 4. Enable HTTPS and Brotli/gzip, immutable caching for hashed `/assets/*`, and revalidation for HTML and stable `/images/*` URLs.
 5. Submit the generated sitemap and rerun Lighthouse on the deployed domain. See [deploy/README.md](deploy/README.md) for details.

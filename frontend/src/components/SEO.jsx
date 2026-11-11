@@ -2,9 +2,6 @@ import { useLocation } from 'react-router';
 
 const pages = {
   '/': ['Christ Alive Power Assembly | Worship, Grow, Serve', 'Discover Christ Alive Power Assembly, our church branches, upcoming programs, and resources to grow in faith.'],
-  '/login': ['Log in | Christ Alive Power Assembly', 'Log in to your Christ Alive Power Assembly account.'],
-  '/signup': ['Create an account | Christ Alive Power Assembly', 'Join the Christ Alive Power Assembly community by creating your account.'],
-  '/forgot-password': ['Reset your password | Christ Alive Power Assembly', 'Recover access to your Christ Alive Power Assembly account.'],
 };
 
 export function SEO() {

@@ -27,11 +27,7 @@ export default defineConfig({
         server.middlewares.use(async (request, response, next) => {
           if (!request.headers.accept?.includes('text/html')) return next();
           const path = new URL(request.url, 'http://localhost').pathname.replace(/\/$/, '') || '/';
-          if (path === '/auth') {
-            response.writeHead(302, { Location: '/login' });
-            return response.end();
-          }
-          const known = ['/', '/login', '/signup', '/forgot-password'];
+          const known = ['/'];
           const file = path === '/' ? 'index.html' : known.includes(path) ? `${path.slice(1)}/index.html` : '404.html';
           try {
             const html = await readFile(new URL(`./dist/${file}`, import.meta.url));

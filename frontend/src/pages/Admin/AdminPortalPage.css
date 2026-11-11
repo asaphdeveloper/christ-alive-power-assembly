@@ -1,0 +1,18 @@
+.admin-simple-page {
+  display: grid;
+  min-height: 100vh;
+  min-height: 100dvh;
+  place-items: center;
+  padding: 24px;
+  color: #14201b;
+  background: #f5f7f5;
+  font-family: Outfit, sans-serif;
+  text-align: center;
+}
+
+.admin-simple-page h1 {
+  margin: 0;
+  font-size: clamp(28px, 6vw, 48px);
+  font-weight: 600;
+  letter-spacing: -.04em;
+}
