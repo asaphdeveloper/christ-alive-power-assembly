@@ -1,4 +1,4 @@
-import GivingImage from '../../../assets/images/lead-pastor.jpg';
+const GivingImage = '/images/lead-pastor-1280.webp';
 import './GivingSection.css';
 
 export const Giving = () => {
@@ -16,7 +16,7 @@ export const Giving = () => {
           <a className='cta-button' href="#">Give Now</a>
         </div>
         <div className="cta-img-box" role="img" aria-label="Giving">
-          <img src={GivingImage} className='cta-img' alt="" />
+          <img srcSet="/images/lead-pastor-640.webp 640w, /images/lead-pastor-1280.webp 1280w, /images/lead-pastor-2048.webp 2048w" sizes="(max-width: 750px) 100vw, 50vw" loading="lazy" fetchPriority="low" decoding="async" width="2048" height="1365" src={GivingImage} className='cta-img' alt="" />
         </div>
       </div>
     </div>

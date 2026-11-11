@@ -1,4 +1,4 @@
-import Logo from '../assets/images/capa-logo.png';
+import Logo from '../assets/images/logo.webp';
 import './Footer.css';
 
 const exploreLinks = [
@@ -29,7 +29,7 @@ export const Footer = () => (
       <div className="church-footer-main">
         <div className="church-footer-brand">
           <a className="church-footer-brand-link" href="/" aria-label="Christ Alive Power Assembly home">
-            <img src={Logo} alt="" width="56" height="56" loading="lazy" />
+            <img decoding="async" src={Logo} alt="" width="56" height="56" loading="lazy" />
             <span>Christ Alive<br />Power Assembly</span>
           </a>
           <p>A community centred on Jesus Christ. Growing through worship, grounded in the Word, and sharing His love with the world.</p>

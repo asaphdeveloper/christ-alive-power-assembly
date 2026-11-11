@@ -2,9 +2,9 @@ import { SectionHeading } from './SectionHeading';
 import { Link } from 'react-router';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowRight01Icon, Notification01Icon } from '@hugeicons/core-free-icons';
-import Image1 from '../../../assets/images/slide-02.jpg';
-import Image2 from '../../../assets/images/slide-01.jpg';
-import Image3 from '../../../assets/images/slide-03.jpg';
+const Image1 = '/images/slide-02-1280.webp';
+const Image2 = '/images/slide-01-1280.webp';
+const Image3 = '/images/slide-03-1280.webp';
 import './UpcomingSection.css';
 
 export const Upcoming = () => {
@@ -24,9 +24,9 @@ export const Upcoming = () => {
 
       <div className="upcoming-cards">
         <article className="upcoming-card">
-          <img className="upcoming-card-photo" src={Image1}
+          <img srcSet="/images/slide-02-640.webp 640w, /images/slide-02-1280.webp 1280w, /images/slide-02-2048.webp 2048w" sizes="(max-width: 750px) 100vw, 33vw" decoding="async" className="upcoming-card-photo" src={Image1}
             alt="Christ Alive Power Assembly church gathering"
-            loading="lazy" width="1920" height="1280" />
+            loading="lazy" fetchPriority="low" width="2048" height="1365" />
           <div className="upcoming-card-details">
             <h3>Annual Prayer &amp; Fasting</h3>
             <dl className="upcoming-card-schedule">
@@ -41,9 +41,9 @@ export const Upcoming = () => {
         </article>
 
         <article className="upcoming-card">
-          <img className="upcoming-card-photo" src={Image2}
+          <img srcSet="/images/slide-01-640.webp 640w, /images/slide-01-1280.webp 1280w, /images/slide-01-2048.webp 2048w" sizes="(max-width: 750px) 100vw, 33vw" decoding="async" className="upcoming-card-photo" src={Image2}
             alt="Christ Alive Power Assembly church gathering"
-            loading="lazy" width="1920" height="1280" />
+            loading="lazy" fetchPriority="low" width="2048" height="1365" />
           <div className="upcoming-card-details">
             <h3>Grace &amp; Glory Convention</h3>
             <dl className="upcoming-card-schedule">
@@ -58,9 +58,9 @@ export const Upcoming = () => {
         </article>
 
         <article className="upcoming-card">
-          <img className="upcoming-card-photo" src={Image3}
+          <img srcSet="/images/slide-03-640.webp 640w, /images/slide-03-1280.webp 1280w, /images/slide-03-2048.webp 2048w" sizes="(max-width: 750px) 100vw, 33vw" decoding="async" className="upcoming-card-photo" src={Image3}
             alt="Christ Alive Power Assembly church gathering"
-            loading="lazy" width="1920" height="1280" />
+            loading="lazy" fetchPriority="low" width="2048" height="1365" />
           <div className="upcoming-card-details">
             <h3>Women&apos;s Day Celebration</h3>
             <dl className="upcoming-card-schedule">

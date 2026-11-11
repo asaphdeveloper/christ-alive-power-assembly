@@ -5,7 +5,7 @@ import {
   Layers, LayoutDashboard, PencilLine, Search,
 } from 'lucide-react';
 import '@fontsource-variable/inter/wght.css';
-import ChurchLogo from '../../assets/images/capa-logo.png';
+import ChurchLogo from '../../assets/images/logo.webp';
 import './AdminDashboardPage.css';
 
 const stats = [
@@ -30,10 +30,10 @@ const activity = [
 ];
 
 export const AdminDashboardPage = () => (
-  <main className="admin-dashboard">
+  <main id="main-content" tabIndex={-1} className="admin-dashboard">
     <aside className="admin-sidebar" aria-label="Dashboard navigation">
       <Link className="admin-brand" to="/" aria-label="Christ Alive Power Assembly home">
-        <img src={ChurchLogo} alt="" width="36" height="36" />
+        <img decoding="async" src={ChurchLogo} alt="" width="36" height="36" />
         <span className="admin-brand-name">Christ Alive<br />Power Assembly</span>
       </Link>
 
@@ -67,7 +67,7 @@ export const AdminDashboardPage = () => (
     <div className="admin-dashboard-main" id="admin-overview">
       <header className="admin-topbar">
         <Link className="admin-topbar-brand" to="/" aria-label="Christ Alive Power Assembly home">
-          <img src={ChurchLogo} alt="" width="30" height="30" />
+          <img decoding="async" src={ChurchLogo} alt="" width="30" height="30" />
           <span>Christ Alive</span>
         </Link>
         <nav className="admin-breadcrumb" aria-label="Breadcrumb">
@@ -88,7 +88,7 @@ export const AdminDashboardPage = () => (
             <ExternalLink size={18} aria-hidden="true" />
           </Link>
           <span className="admin-topbar-divider" aria-hidden="true" />
-          <span className="admin-topbar-avatar" aria-label="Admin workspace">
+          <span className="admin-topbar-avatar" role="img" aria-label="Admin workspace">
             <CircleUserRound size={22} aria-hidden="true" />
           </span>
         </div>

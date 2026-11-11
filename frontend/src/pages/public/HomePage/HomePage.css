@@ -7,3 +7,4 @@
   --section-gutter: clamp(20px, 3vw, 32px);
   overflow-x: clip;
 }
+.resources-loading { min-height: 850px; }

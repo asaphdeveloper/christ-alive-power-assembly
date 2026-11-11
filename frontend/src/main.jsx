@@ -1,10 +1,10 @@
 import { StrictMode } from 'react';
-import { createRoot } from 'react-dom/client';
+import { createRoot, hydrateRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router';
 import App from './App.jsx';
 import './index.css';
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+const app = <StrictMode><BrowserRouter><App /></BrowserRouter></StrictMode>;
+const root = document.getElementById('root');
+if (root.hasChildNodes()) hydrateRoot(root, app);
+else createRoot(root).render(app);

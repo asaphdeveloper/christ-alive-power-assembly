@@ -2,11 +2,23 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/capa-logo.png" />
+    <link rel="icon" type="image/webp" href="/images/logo.webp" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="preload" href="/src/assets/fonts/ClashDisplay-Variable.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/src/assets/fonts/Outfit-VariableFont_wght.woff2" as="font" type="font/woff2" crossorigin />
+    <meta name="theme-color" content="#087f5b" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <script type="module">
+      // Paint prerendered content before starting React hydration.
+      const start = () => import('/src/main.jsx');
+      if (document.getElementById('root').hasChildNodes()) {
+        requestAnimationFrame(() => setTimeout(start, 0));
+      } else {
+        start();
+      }
+    </script>
   </body>
 </html>

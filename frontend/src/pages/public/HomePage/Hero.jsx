@@ -1,11 +1,11 @@
 import { useEffect, useRef, useState } from 'react';
-import { AnimatePresence, motion as Motion, useReducedMotion } from 'framer-motion';
+import { AnimatePresence, LazyMotion, domAnimation, m as Motion, useReducedMotion } from 'framer-motion';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowLeft01Icon, ArrowRight01Icon } from '@hugeicons/core-free-icons';
-import Slide01 from '../../../assets/images/slide-01.jpg';
-import Slide02 from '../../../assets/images/slide-02.jpg';
-import Slide03 from '../../../assets/images/slide-03.jpg';
-import Slide04 from '../../../assets/images/slide-04.jpg';
+const Slide01 = '/images/slide-01-1280.webp';
+const Slide02 = '/images/slide-02-1280.webp';
+const Slide03 = '/images/slide-03-1280.webp';
+const Slide04 = '/images/slide-04-1280.webp';
 import RightUpBlackIcon from '../../../assets/images/icons/right-up-black.png';
 import './Hero.css';
 
@@ -16,15 +16,10 @@ const slides = [
   { image: Slide01, alt: 'Lead pastor delivering a sermon to the congregation' },
 ];
 
-const entrance = (delay, reducedMotion) => ({
-  initial: reducedMotion ? false : { opacity: 0, y: 22 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: reducedMotion ? 0 : 0.55, delay: reducedMotion ? 0 : delay, ease: 'easeOut' },
-});
-
 export const Hero = () => {
   const [active, setActive] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [userPaused, setUserPaused] = useState(false);
   const [pageVisible, setPageVisible] = useState(true);
   const touchStart = useRef(null);
   const reducedMotion = useReducedMotion();
@@ -36,10 +31,10 @@ export const Hero = () => {
   }, []);
 
   useEffect(() => {
-    if (paused || !pageVisible || reducedMotion) return undefined;
+    if (paused || userPaused || !pageVisible || reducedMotion) return undefined;
     const timer = window.setTimeout(() => setActive((index) => (index + 1) % slides.length), 5000);
     return () => window.clearTimeout(timer);
-  }, [active, paused, pageVisible, reducedMotion]);
+  }, [active, paused, userPaused, pageVisible, reducedMotion]);
 
   const move = (step) => setActive((index) => (index + step + slides.length) % slides.length);
 
@@ -65,7 +60,7 @@ export const Hero = () => {
   };
 
   return (
-    <section
+    <LazyMotion features={domAnimation} strict><section
       className="hero"
       aria-label="Welcome slideshow"
       aria-roledescription="carousel"
@@ -92,6 +87,13 @@ export const Hero = () => {
           >
             <Motion.img
               src={slides[active].image}
+              srcSet={`${slides[active].image.replace('1280', '640')} 640w, ${slides[active].image.replace('1280', '960')} 960w, ${slides[active].image} 1280w, ${slides[active].image.replace('1280', '1536')} 1536w, ${slides[active].image.replace('1280', '2048')} 2048w`}
+              sizes="100vw"
+              width="2048"
+              height="1365"
+              loading="eager"
+              decoding="async"
+              fetchPriority={active === 0 ? 'high' : 'auto'}
               alt=""
               animate={{ scale: reducedMotion ? 1 : 1.08 }}
               initial={{ scale: 1 }}
@@ -103,19 +105,19 @@ export const Hero = () => {
       <div className="hero-shade" aria-hidden="true" />
 
       <div className="hero-content" key={active}>
-        <Motion.p className="hero-eyebrow" {...entrance(0.05, reducedMotion)}>Welcome To</Motion.p>
-        <Motion.h1 className="hero-title" {...entrance(0.17, reducedMotion)}>
+        <p className="hero-eyebrow">Welcome To</p>
+        <h1 className="hero-title">
           <span className="hero-title-line"><span>Christ</span><span>Alive</span></span>
           <span className="hero-title-line"><span>Power</span><span>Assembly</span></span>
-        </Motion.h1>
-        <Motion.div className="hero-action" {...entrance(0.31, reducedMotion)}>
+        </h1>
+        <div className="hero-action">
           <a href="#resources-section" className="btn-primary hero-btn">
             <span>Get Resource</span>
             <span className="btn-primary-icon center" aria-hidden="true">
-              <img src={RightUpBlackIcon} alt="" />
+              <img decoding="async" width="16" height="16" src={RightUpBlackIcon} alt="" />
             </span>
           </a>
-        </Motion.div>
+        </div>
       </div>
 
       <button className="hero-arrow hero-arrow-prev" type="button" onClick={() => move(-1)} aria-label="Previous slide">
@@ -125,6 +127,9 @@ export const Hero = () => {
         <HugeiconsIcon icon={ArrowRight01Icon} size={22} aria-hidden="true" />
       </button>
       <div className="hero-dots" role="group" aria-label="Choose a slide">
+        <button className="hero-pause" type="button" onClick={() => setUserPaused((value) => !value)} aria-label={userPaused ? 'Play slideshow' : 'Pause slideshow'} aria-pressed={userPaused}>
+          <span aria-hidden="true">{userPaused ? '▶' : 'Ⅱ'}</span>
+        </button>
         {slides.map((slide, index) => (
           <button
             className="hero-dot"
@@ -136,7 +141,7 @@ export const Hero = () => {
           />
         ))}
       </div>
-      <span className="hero-sr-only" aria-live="polite">Slide {active + 1} of {slides.length}: {slides[active].alt}</span>
-    </section>
+      <span className="hero-sr-only" aria-live={paused || userPaused ? 'polite' : 'off'}>Slide {active + 1} of {slides.length}: {slides[active].alt}</span>
+    </section></LazyMotion>
   );
 };

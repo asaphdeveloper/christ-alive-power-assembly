@@ -3,3 +3,7 @@ Work on the space between the sections of the website. ensure that the spacing i
 ## Admin resource dashboard
 
 Run the frontend and open `/admin` to manage the resource list. PDFs added as drafts stay in the current page session. Server-side authentication, persistent file storage, and publishing to the public Resources section are not connected yet.
+
+reduce the spacing between hero-dot and make the pause/play button more auvious noticeable and professional
+
+for resources section hymn on desktop and width screen sizes if the hymn is more than 3 verses display it in 2 column grid

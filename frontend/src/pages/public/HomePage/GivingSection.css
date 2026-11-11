@@ -61,8 +61,7 @@
       to right bottom,
       rgba(8, 127, 91, 0.25),
       rgba(8, 127, 91, 0.1)
-    ),
-    url('../images/slide-01.jpg');
+    );
   background-size: cover;
   background-position: center;
   transform: scale(1.2);

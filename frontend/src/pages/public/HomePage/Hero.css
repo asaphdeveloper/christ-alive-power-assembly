@@ -226,3 +226,15 @@
     transition: none;
   }
 }
+
+.hero-pause { width: 44px; height: 44px; border: 0; background: transparent; color: white; font-size: 18px; cursor: pointer; }
+.hero-dot { position: relative; }
+.hero-dot::before { content: ''; position: absolute; width: 44px; height: 44px; }
+
+/* Start the same entrance motion from prerendered HTML, without waiting for JS. */
+@keyframes hero-entrance { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: translateY(0); } }
+@media (prefers-reduced-motion: no-preference) {
+  .hero-eyebrow { animation: hero-entrance 550ms ease-out 50ms both; }
+  .hero-title { animation: hero-entrance 550ms ease-out 170ms both; }
+  .hero-action { animation: hero-entrance 550ms ease-out 310ms both; }
+}

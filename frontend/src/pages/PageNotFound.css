@@ -1,0 +1,2 @@
+.not-found-page { min-height: 100svh; display: grid; align-content: center; justify-items: center; gap: 24px; padding: 32px; text-align: center; }
+.not-found-page a { color: #087f5b; padding: 12px; text-decoration: underline; }

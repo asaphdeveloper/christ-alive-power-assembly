@@ -1,9 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
 import { HugeiconsIcon } from '@hugeicons/react';
 import { ArrowLeft01Icon, ArrowRight01Icon, Location03Icon, Location01Icon } from '@hugeicons/core-free-icons';
-import Slide1 from '../../../assets/images/slide-01.jpg';
-import Slide2 from '../../../assets/images/slide-02.jpg';
-import Slide3 from '../../../assets/images/slide-03.jpg';
+const Slide1 = '/images/slide-01-1280.webp';
+const Slide2 = '/images/slide-02-1280.webp';
+const Slide3 = '/images/slide-03-1280.webp';
 import { SectionHeading } from './SectionHeading';
 import RightUpIcon from '../../../assets/images/icons/right-up.png';
 import './BranchesSection.css';
@@ -11,6 +11,7 @@ import './BranchesSection.css';
 export const Branches = () => {
   const cardsRef = useRef(null);
   const animationFrameRef = useRef(null);
+  const targetRef = useRef(null);
   const [scrollState, setScrollState] = useState({ overflow: false, atStart: true, atEnd: true });
 
   useEffect(() => {
@@ -19,11 +20,17 @@ export const Branches = () => {
 
     const updateScrollState = () => {
       const maxScroll = Math.max(0, cards.scrollWidth - cards.clientWidth);
-      setScrollState({
+      const nextState = {
         overflow: maxScroll > 1,
         atStart: cards.scrollLeft <= 1,
         atEnd: cards.scrollLeft >= maxScroll - 1,
-      });
+      };
+      setScrollState((previous) => (
+        previous.overflow === nextState.overflow
+        && previous.atStart === nextState.atStart
+        && previous.atEnd === nextState.atEnd
+          ? previous : nextState
+      ));
     };
 
     updateScrollState();
@@ -31,6 +38,7 @@ export const Branches = () => {
     const stopAnimation = () => {
       if (animationFrameRef.current !== null) cancelAnimationFrame(animationFrameRef.current);
       animationFrameRef.current = null;
+      targetRef.current = null;
       cards.style.scrollSnapType = '';
     };
     cards.addEventListener('pointerdown', stopAnimation);
@@ -52,20 +60,31 @@ export const Branches = () => {
     const cards = cardsRef.current;
     const card = cards?.querySelector('.branch-card');
     if (!cards || !card || cards.scrollWidth <= cards.clientWidth + 1) return;
-    const gap = parseFloat(getComputedStyle(cards).columnGap) || 0;
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
     const start = cards.scrollLeft;
-    const target = Math.max(0, Math.min(cards.scrollWidth - cards.clientWidth, start + direction * (card.getBoundingClientRect().width + gap)));
+    const maxScroll = cards.scrollWidth - cards.clientWidth;
+    const positions = [...new Set([
+      0,
+      ...Array.from(cards.children, (item) => Math.max(0, Math.min(maxScroll, item.offsetLeft - card.offsetLeft))),
+      maxScroll,
+    ])].sort((a, b) => a - b);
+    const currentTarget = targetRef.current ?? start;
+    const target = direction > 0
+      ? positions.find((position) => position > currentTarget + 1) ?? maxScroll
+      : positions.findLast((position) => position < currentTarget - 1) ?? 0;
     if (animationFrameRef.current !== null) cancelAnimationFrame(animationFrameRef.current);
+    animationFrameRef.current = null;
+    targetRef.current = target;
     if (reducedMotion) {
       cards.style.scrollSnapType = 'none';
       cards.scrollLeft = target;
       cards.style.scrollSnapType = '';
+      targetRef.current = null;
       return;
     }
 
     cards.style.scrollSnapType = 'none';
-    const duration = 480;
+    const duration = 300;
     const startedAt = performance.now();
     const animate = (now) => {
       const progress = Math.min((now - startedAt) / duration, 1);
@@ -75,6 +94,7 @@ export const Branches = () => {
         animationFrameRef.current = requestAnimationFrame(animate);
       } else {
         animationFrameRef.current = null;
+        targetRef.current = null;
         cards.style.scrollSnapType = '';
       }
     };
@@ -89,11 +109,10 @@ export const Branches = () => {
       <div className={`branches-cards${scrollState.overflow ? ' has-overflow' : ''}`} ref={cardsRef}>
         <a href="/" className="branch-card branch-card-1 reveal-section">
           <div className="branch-card-image-container">
-            <img
+            <img srcSet="/images/slide-01-640.webp 640w, /images/slide-01-1280.webp 1280w, /images/slide-01-2048.webp 2048w" sizes="(max-width: 750px) 300px, 400px" loading="lazy" fetchPriority="low" decoding="async" width="2048" height="1365"
               className="branch-card-image"
-              data-src="images/slide-01.jpg"
               src={Slide1}
-              alt="Branch card image"
+              alt=""
             />
           </div>
           <div className="branch-card-state">BAUCHI</div>
@@ -102,7 +121,7 @@ export const Branches = () => {
             <span>Bauchi</span>
           </div>
           <h3>Bauchi Expressions</h3>
-          <img src={RightUpIcon} className="branch-card-icon" />
+          <img loading="lazy" fetchPriority="low" decoding="async" width="16" height="16" alt="" src={RightUpIcon} className="branch-card-icon" />
           <div className="branch-card-box">
             Christ Alive Power Assembly Have Branches in Bauchi State,
             Alongside it's Headquater. Click To Learn More.
@@ -110,11 +129,10 @@ export const Branches = () => {
         </a>
         <a href="/" className="branch-card branch-card-2 reveal-section">
           <div className="branch-card-image-container">
-            <img
+            <img srcSet="/images/slide-02-640.webp 640w, /images/slide-02-1280.webp 1280w, /images/slide-02-2048.webp 2048w" sizes="(max-width: 750px) 300px, 400px" loading="lazy" fetchPriority="low" decoding="async" width="2048" height="1365"
               className="branch-card-image"
-              data-src="images/slide-02.jpg"
               src={Slide2}
-              alt="Branch card image"
+              alt=""
             />
           </div>
           <div className="branch-card-state">WUKARI</div>
@@ -123,7 +141,7 @@ export const Branches = () => {
             <span>Taraba</span>
           </div>
           <h3>Wukari Expressions</h3>
-          <img src={RightUpIcon} className="branch-card-icon" />
+          <img loading="lazy" fetchPriority="low" decoding="async" width="16" height="16" alt="" src={RightUpIcon} className="branch-card-icon" />
           <div className="branch-card-box">
             Christ Alive Power Assembly Have Branches Located in Taraba State,
             Wukari To Be Precise. Learn More.
@@ -131,11 +149,10 @@ export const Branches = () => {
         </a>
         <a href="/" className="branch-card branch-card-3 reveal-section">
           <div className="branch-card-image-container">
-            <img
+            <img srcSet="/images/slide-03-640.webp 640w, /images/slide-03-1280.webp 1280w, /images/slide-03-2048.webp 2048w" sizes="(max-width: 750px) 300px, 400px" loading="lazy" fetchPriority="low" decoding="async" width="2048" height="1365"
               className="branch-card-image"
-              data-src="images/slide-03.jpg"
               src={Slide3}
-              alt="Branch card image"
+              alt=""
             />
           </div>
           <div className="branch-card-state">JOS</div>
@@ -144,7 +161,7 @@ export const Branches = () => {
             <span>Plateau</span>
           </div>
           <h3>Jos Expressions</h3>
-          <img src={RightUpIcon} className="branch-card-icon" />
+          <img loading="lazy" fetchPriority="low" decoding="async" width="16" height="16" alt="" src={RightUpIcon} className="branch-card-icon" />
           <div className="branch-card-box">
             Christ Alive Power Assembly Have A Branch Located in Plateau
             State, Jos To Be Precise. Click To Learn More.

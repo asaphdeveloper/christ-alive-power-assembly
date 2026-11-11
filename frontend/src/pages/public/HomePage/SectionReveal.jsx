@@ -50,7 +50,5 @@ export const SectionReveal = ({ children, effect }) => {
     };
   }, [effect, reducedMotion]);
 
-  if (reducedMotion) return children;
-
   return <div ref={ref} className={`home-reveal home-reveal--${effect}`}>{children}</div>;
 };
