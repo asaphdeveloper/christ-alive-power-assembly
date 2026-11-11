@@ -16,10 +16,7 @@ Scores are **Performance / Accessibility / Best Practices / SEO**. The mobile ho
 | `/signup` | desktop | 99 / 82 / 100 / 75 | 100 / 100 / 100 / 100 |
 | `/forgot-password` | mobile | 83 / 95 / 100 / 75 | 99 / 100 / 100 / 100 |
 | `/forgot-password` | desktop | 99 / 91 / 100 / 75 | 100 / 100 / 100 / 100 |
-| `/admin` | mobile | 96 / 88 / 100 / 75 | 100 / 100 / 100 / 66 |
-| `/admin` | desktop | 100 / 88 / 100 / 75 | 100 / 100 / 100 / 66 |
-
-Baseline failures included missing titles/descriptions and robots.txt; missing image alternative text; an unnamed mobile menu; low-contrast authentication links; undersized password toggles; invalid admin ARIA; an admin button contrast failure; oversized JPEG/PNG/TTF assets; and all routes loading in one bundle.
+Baseline failures included missing titles/descriptions and robots.txt; missing image alternative text; an unnamed mobile menu; low-contrast authentication links; undersized password toggles; oversized JPEG/PNG/TTF assets; and all routes loading in one bundle.
 
 ## What remains
 
@@ -30,7 +27,6 @@ Baseline failures included missing titles/descriptions and robots.txt; missing i
 - `/forgot-password` mobile: FCP 1.2 s, LCP 1.9 s, TBT 110 ms, CLS 0.
 
 - Mobile homepage performance varied between 88 and 97 during the optimization passes. Its remaining scored issue is initial paint/LCP timing with the retained hero visuals and hydration. This is a code/rendering and measurement limitation, not something that can honestly be attributed entirely to hosting. The final table uses the final complete audit pass; for the variable mobile homepage result it uses a three-run median of 93 (individual scores: 88, 93, 93), rather than the highest score observed. Each repeat is preserved as `lh-after-home-mobile-run1.json` through `run3.json`.
-- Admin SEO intentionally remains below 100 because `/admin` is blocked in robots.txt and has `noindex`. Removing those protections merely to raise a score would expose the management page to search indexing.
 - The 404 page is prerendered, has a return-home link, and is served with HTTP 404 and `noindex`. Lighthouse does not give a normal successful-page score for that HTTP status. The baseline incorrectly returned HTTP 200 for missing pages.
 - Production domain and hosting provider were requested but have not been supplied. Canonical URLs, absolute social image URLs, and the populated sitemap depend on setting `VITE_SITE_URL`. The committed source sitemap deliberately contains no invented domain. Provider-specific deployment remains to be verified.
 
@@ -52,7 +48,7 @@ Baseline failures included missing titles/descriptions and robots.txt; missing i
 | `index.html` | Correct favicon type, Apple touch icon, theme color, critical font preloads, and a small inline module that starts hydration after the first paint. |
 | `src/main.jsx` | Hydrates prerendered HTML; mounts React normally during development. |
 | `src/App.jsx` | Lazy routes, Suspense, reusable SEO, route focus, and skip link. |
-| `src/components/SEO.jsx` | Unique metadata, configured canonical/Open Graph/Twitter URLs, Church/WebSite JSON-LD, and intentional admin/404 noindex. |
+| `src/components/SEO.jsx` | Unique metadata, configured canonical/Open Graph/Twitter URLs, Church/WebSite JSON-LD, and 404 noindex. |
 | `src/components/RouteFocus.jsx` | Moves keyboard focus to main content after client navigation, including lazy routes. |
 | `src/prerender.jsx` | Renders each route with StaticRouter using React’s existing server renderer. |
 | `scripts/prerender.mjs` | Builds static route HTML, inlines route CSS, generates sitemap/robots and header configurations. |
@@ -71,7 +67,6 @@ Baseline failures included missing titles/descriptions and robots.txt; missing i
 | `src/pages/Auth/LoginPage.jsx`; `src/pages/Auth/SignupPage.jsx`; `src/pages/Auth/ForgotPasswordPage.jsx` | Optimized logo, main focus target, removed console logging, and reused the shared background hook. |
 | `src/pages/Auth/LoginPage.css`; `src/pages/Auth/SignupPage.css`; `src/pages/Auth/ForgotPasswordPage.css` | Small contrast corrections; desktop password target expansion without moving its label; signup terms underline. |
 | `src/hooks/useAuthBackground.js` | Shared existing canvas behavior, cached particle glow sprites, and avoids duplicate resize work. |
-| `src/pages/Admin/AdminDashboardPage.jsx`; `src/pages/Admin/AdminDashboardPage.css` | Optimized images, focus target, valid avatar ARIA, and corrected primary-link contrast. |
 | `src/pages/PageNotFound.jsx`; `src/pages/PageNotFound.css` | Accessible 404 content, main landmark, and return-home navigation. |
 | `src/assets/fonts/ClashDisplay-Variable.woff2`; `src/assets/fonts/Outfit-VariableFont_wght.woff2` | Same font families converted to WOFF2 (approximately 62% smaller in total); original sources retained. |
 | `public/images/slide-{01,02,03,04}-{640,960,1280,1536,2048}.webp`; `public/images/lead-pastor-{640,1280,2048}.webp` | Responsive optimized versions of existing photographs. |

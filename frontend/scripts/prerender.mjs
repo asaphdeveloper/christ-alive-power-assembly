@@ -8,7 +8,7 @@ await build({ build: { ssr: 'src/prerender.jsx', outDir: '.prerender' } });
 const { render } = await import('../.prerender/prerender.js');
 const template = await readFile('dist/index.html', 'utf8');
 const manifest = JSON.parse(await readFile('dist/.vite/manifest.json', 'utf8'));
-const routes = { '/': 'public/HomePage/HomePage', '/login': 'Auth/LoginPage', '/signup': 'Auth/SignupPage', '/forgot-password': 'Auth/ForgotPasswordPage', '/admin': 'Admin/AdminDashboardPage', '/404': 'PageNotFound' };
+const routes = { '/': 'public/HomePage/HomePage', '/login': 'Auth/LoginPage', '/signup': 'Auth/SignupPage', '/forgot-password': 'Auth/ForgotPasswordPage', '/404': 'PageNotFound' };
 for (const [path, page] of Object.entries(routes)) {
   const chunk = manifest[`src/pages/${page}.jsx`] ?? Object.values(manifest).find((entry) => entry.name === page.split('/').at(-1) && entry.isDynamicEntry);
   const styles = new Set();
@@ -24,11 +24,6 @@ for (const [path, page] of Object.entries(routes)) {
   collect(manifest['src/main.jsx']);
   const criticalCSS = (await Promise.all([...styles].map((css) => readFile(`dist/${css}`, 'utf8')))).join('\n');
   let pageTemplate = template.replace(/<link[^>]*rel="stylesheet"[^>]*>/g, '');
-  if (path === '/admin') {
-    pageTemplate = pageTemplate.replace(/<link[^>]*as="font"[^>]*>/g, '');
-    const inter = Object.values(manifest).find((entry) => entry.src?.endsWith('inter-latin-wght-normal.woff2'));
-    pageTemplate = pageTemplate.replace('</head>', `<link rel="preload" href="/${inter.file}" as="font" type="font/woff2" crossorigin></head>`);
-  }
   let markup = await render(path);
   const metadata = [];
   markup = markup.replace(/<title>[\s\S]*?<\/title>|<meta\b[^>]*>|<link\b[^>]*>/g, (tag) => { metadata.push(tag); return ''; });
@@ -44,7 +39,7 @@ const env = { ...loadEnv('production', process.cwd(), ''), ...process.env };
 if (env.VITE_SITE_URL) {
   const origin = new URL(env.VITE_SITE_URL).origin;
   await writeFile('dist/sitemap.xml', `<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><url><loc>${origin}/</loc></url></urlset>\n`);
-  await writeFile('dist/robots.txt', `User-agent: *\nAllow: /\nDisallow: /admin\nSitemap: ${origin}/sitemap.xml\n`);
+  await writeFile('dist/robots.txt', `User-agent: *\nAllow: /\nSitemap: ${origin}/sitemap.xml\n`);
 }
 const headers = securityHeaders(await readFile('dist/index.html', 'utf8'));
 await writeFile('dist/_headers', `/*\n${Object.entries(headers).map(([key, value]) => `  ${key}: ${value}`).join('\n')}\n`);

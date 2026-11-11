@@ -5,7 +5,6 @@ const pages = {
   '/login': ['Log in | Christ Alive Power Assembly', 'Log in to your Christ Alive Power Assembly account.'],
   '/signup': ['Create an account | Christ Alive Power Assembly', 'Join the Christ Alive Power Assembly community by creating your account.'],
   '/forgot-password': ['Reset your password | Christ Alive Power Assembly', 'Recover access to your Christ Alive Power Assembly account.'],
-  '/admin': ['Resource dashboard | Christ Alive Power Assembly', 'Manage church documents and resources in the Christ Alive Power Assembly workspace.'],
 };
 
 export function SEO() {
@@ -19,7 +18,7 @@ export function SEO() {
     <title>{title}</title>
     <meta name="description" content={description} />
     {canonical && <link rel="canonical" href={canonical} />}
-    {(pathname === '/admin' || !pages[pathname]) && <meta name="robots" content="noindex, follow" />}
+    {!pages[pathname] && <meta name="robots" content="noindex, follow" />}
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Christ Alive Power Assembly" />
     <meta property="og:title" content={title} />

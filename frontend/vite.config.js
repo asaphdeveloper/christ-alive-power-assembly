@@ -31,7 +31,7 @@ export default defineConfig({
             response.writeHead(302, { Location: '/login' });
             return response.end();
           }
-          const known = ['/', '/login', '/signup', '/forgot-password', '/admin'];
+          const known = ['/', '/login', '/signup', '/forgot-password'];
           const file = path === '/' ? 'index.html' : known.includes(path) ? `${path.slice(1)}/index.html` : '404.html';
           try {
             const html = await readFile(new URL(`./dist/${file}`, import.meta.url));

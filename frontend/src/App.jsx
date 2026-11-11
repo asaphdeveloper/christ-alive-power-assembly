@@ -9,7 +9,6 @@ const PageNotFound = lazy(() => import('./pages/PageNotFound').then((module) => 
 const LoginPage = lazy(() => import('./pages/Auth/LoginPage').then((module) => ({ default: module.LoginPage })));
 const SignupPage = lazy(() => import('./pages/Auth/SignupPage').then((module) => ({ default: module.SignupPage })));
 const ForgotPasswordPage = lazy(() => import('./pages/Auth/ForgotPasswordPage').then((module) => ({ default: module.ForgotPasswordPage })));
-const AdminDashboardPage = lazy(() => import('./pages/Admin/AdminDashboardPage').then((module) => ({ default: module.AdminDashboardPage })));
 
 function App() {
   return (
@@ -24,7 +23,6 @@ function App() {
           <Route path='/login' element={<LoginPage />} />
           <Route path='/signup' element={<SignupPage />} />
           <Route path='/forgot-password' element={<ForgotPasswordPage />} />
-          <Route path='/admin' element={<AdminDashboardPage />} />
           <Route path='*' element={<PageNotFound />} />
         </Routes>
       </Suspense>
