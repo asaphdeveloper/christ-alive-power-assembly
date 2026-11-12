@@ -4,7 +4,6 @@
   margin-top: 20px;
   padding-bottom: 28px;
   color: #202630;
-  font-family: 'Google Sans', Arial, sans-serif;
 }
 
 .branches-page-heading {
@@ -27,6 +26,107 @@
   color: #828c96;
   font-size: 14px;
 }
+.branches-heading-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 8px;
+}
+.branches-filter-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.branches-filter-control {
+  position: relative;
+}
+.admin-shell .branches-filter-button {
+  text-transform: uppercase;
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  padding: 0 12px;
+  border: 1px solid #dfe3e7;
+  border-radius: 8px;
+  background: #fff;
+  color: #363d44;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition:
+    border-color 150ms ease,
+    background 150ms ease;
+}
+.admin-shell .branches-filter-button:not(:disabled):hover {
+  border-color: #cbd3d8;
+  background: #fff;
+  filter: none;
+}
+.admin-shell .branches-filter-button:not(:disabled):active {
+  scale: 1;
+  transform: none;
+}
+.branches-filter-button svg {
+  color: #758078;
+}
+.branches-filter-count {
+  display: grid;
+  width: 20px;
+  height: 20px;
+  place-items: center;
+  border-radius: 50%;
+  background: #fff1e9;
+  color: #b6562a;
+  font-size: 10px;
+  font-weight: 600;
+}
+.branches-filter-menu {
+  position: absolute;
+  z-index: 20;
+  top: calc(100% + 6px);
+  right: 0;
+  width: 210px;
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 5px;
+  border: 1px solid #e0e5e2;
+  border-radius: 9px;
+  background: #fff;
+}
+.branches-filter-option {
+  display: flex;
+  width: 100%;
+  min-height: 34px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 6px;
+  background: #fff;
+  color: #3f4943;
+  text-align: left;
+  font-size: 12px;
+  cursor: pointer;
+}
+.branches-filter-option:hover {
+  background: #f4f7f5;
+}
+.branches-filter-option.is-selected {
+  background: var(--admin-primary-soft);
+  color: var(--admin-primary);
+}
+.branches-filter-option svg {
+  flex: 0 0 auto;
+}
+.branches-empty-state {
+  padding: 36px 12px;
+  color: #7a867f;
+  text-align: center;
+  font-size: 14px;
+}
 .admin-shell .branches-add-button {
   display: inline-flex;
   flex: 0 0 auto;
@@ -41,7 +141,9 @@
   font-size: 12px;
   font-weight: 500;
   white-space: nowrap;
-  transition: background 150ms ease, border-color 150ms ease;
+  transition:
+    background 150ms ease,
+    border-color 150ms ease;
 }
 .branches-add-button:hover {
   border-color: var(--admin-primary-hover);
@@ -63,150 +165,254 @@
 .branch-card:hover {
   border-color: #c8ced5;
 }
-.branch-diagram {
+.branch-artwork {
   position: relative;
-  height: 120px;
+  display: grid;
+  min-height: 120px;
   overflow: hidden;
-  border: 1px solid #edf0f2;
+  padding: 14px;
+  place-items: center;
+  isolation: isolate;
+  border: 1px solid #f0e8ed;
   border-radius: 9px;
-  background-color: #f2f3f4;
-  background-image: radial-gradient(#dfe2e5 0.8px, transparent 0.8px);
-  background-position: 5px 5px;
-  background-size: 12px 12px;
+  background: var(--branch-base, #fffaf9);
 }
-.branch-type-pill {
-  position: absolute;
-  z-index: 2;
-  top: 9px;
-  right: 9px;
-  padding: 4px 9px;
-  border: 1px solid #e6e7e9;
-  border-radius: 20px;
-  background: #fff;
-  color: #555d66;
-  font-size: 11px;
-}
-.branch-type-pill.complex {
-  border-color: #f5d9e1;
-  background: #fff5f7;
-  color: #c14868;
-}
-.branch-connector {
+.branch-artwork::before {
   position: absolute;
   z-index: 0;
-  background: #d8dde2;
-}
-.connector-main {
-  top: 41px;
-  left: 50%;
-  width: 1px;
-  height: 25px;
-}
-.connector-left {
-  top: 65px;
-  left: 22%;
-  width: 56%;
-  height: 1px;
-}
-.connector-left::before,
-.connector-left::after {
-  position: absolute;
-  top: 0;
-  width: 1px;
-  height: 19px;
-  background: #d8dde2;
+  inset: 0;
+  background: var(--branch-mesh);
   content: '';
+  filter: blur(14px) brightness(0.9) saturate(1.08);
+  transform: scale(1.12);
+  pointer-events: none;
 }
-.connector-left::before {
-  left: 0;
+.branch-artwork--1 {
+  --branch-base: #fff9f8;
+  --branch-mesh:
+    radial-gradient(
+      ellipse 48% 72% at 0% 100%,
+      rgba(160, 165, 255, 0.88) 0%,
+      rgba(177, 178, 255, 0.56) 35%,
+      transparent 76%
+    ),
+    radial-gradient(
+      ellipse 55% 62% at 44% -8%,
+      rgba(255, 191, 164, 0.88) 0%,
+      rgba(255, 222, 198, 0.7) 42%,
+      transparent 78%
+    ),
+    radial-gradient(
+      ellipse 46% 60% at 54% 48%,
+      rgba(255, 255, 255, 0.98) 0%,
+      rgba(255, 255, 255, 0.82) 38%,
+      transparent 78%
+    ),
+    radial-gradient(
+      ellipse 55% 68% at 76% 112%,
+      rgba(234, 56, 145, 0.9) 0%,
+      rgba(244, 97, 165, 0.62) 38%,
+      transparent 78%
+    ),
+    radial-gradient(
+      ellipse 48% 70% at 105% -5%,
+      rgba(244, 91, 101, 0.9) 0%,
+      rgba(255, 159, 143, 0.65) 42%,
+      transparent 78%
+    );
 }
-.connector-left::after {
-  right: 0;
+.branch-artwork--2 {
+  --branch-base: #f7fcfb;
+  --branch-mesh:
+    radial-gradient(
+      ellipse 58% 78% at 8% 78%,
+      rgba(146, 224, 209, 0.82) 0%,
+      rgba(183, 239, 224, 0.58) 40%,
+      transparent 78%
+    ),
+    radial-gradient(
+      ellipse 52% 58% at 52% -6%,
+      rgba(255, 207, 174, 0.86) 0%,
+      rgba(255, 230, 203, 0.68) 42%,
+      transparent 80%
+    ),
+    radial-gradient(
+      ellipse 42% 56% at 52% 50%,
+      rgba(255, 255, 255, 0.99) 0%,
+      rgba(255, 255, 255, 0.8) 42%,
+      transparent 80%
+    ),
+    radial-gradient(
+      ellipse 58% 70% at 90% 108%,
+      rgba(236, 108, 159, 0.82) 0%,
+      rgba(249, 157, 188, 0.56) 42%,
+      transparent 80%
+    ),
+    radial-gradient(
+      ellipse 44% 62% at -4% -8%,
+      rgba(114, 177, 228, 0.78) 0%,
+      rgba(175, 214, 241, 0.56) 44%,
+      transparent 80%
+    );
 }
-.connector-right {
-  top: 84px;
-  left: 22%;
-  width: 56%;
-  height: 1px;
+.branch-artwork--3 {
+  --branch-base: #fcf9ff;
+  --branch-mesh:
+    radial-gradient(
+      ellipse 54% 70% at 2% 48%,
+      rgba(187, 164, 250, 0.84) 0%,
+      rgba(211, 195, 250, 0.58) 42%,
+      transparent 80%
+    ),
+    radial-gradient(
+      ellipse 60% 64% at 78% 0%,
+      rgba(255, 190, 164, 0.84) 0%,
+      rgba(255, 224, 204, 0.64) 43%,
+      transparent 80%
+    ),
+    radial-gradient(
+      ellipse 44% 62% at 48% 49%,
+      rgba(255, 255, 255, 0.99) 0%,
+      rgba(255, 255, 255, 0.84) 40%,
+      transparent 80%
+    ),
+    radial-gradient(
+      ellipse 64% 72% at 28% 112%,
+      rgba(230, 70, 155, 0.84) 0%,
+      rgba(244, 128, 184, 0.58) 42%,
+      transparent 82%
+    ),
+    radial-gradient(
+      ellipse 46% 58% at 106% 96%,
+      rgba(239, 112, 139, 0.76) 0%,
+      rgba(250, 178, 183, 0.56) 44%,
+      transparent 82%
+    );
 }
-.branch-node {
-  position: absolute;
+.branch-artwork--4 {
+  --branch-base: #fffdf5;
+  --branch-mesh:
+    radial-gradient(
+      ellipse 60% 72% at 0% 34%,
+      rgba(255, 222, 137, 0.84) 0%,
+      rgba(255, 237, 184, 0.58) 44%,
+      transparent 80%
+    ),
+    radial-gradient(
+      ellipse 50% 62% at 48% -10%,
+      rgba(255, 190, 153, 0.84) 0%,
+      rgba(255, 222, 192, 0.64) 43%,
+      transparent 80%
+    ),
+    radial-gradient(
+      ellipse 42% 58% at 55% 52%,
+      rgba(255, 255, 255, 0.99) 0%,
+      rgba(255, 255, 255, 0.82) 42%,
+      transparent 80%
+    ),
+    radial-gradient(
+      ellipse 58% 68% at 88% 108%,
+      rgba(239, 101, 159, 0.82) 0%,
+      rgba(249, 160, 186, 0.58) 42%,
+      transparent 82%
+    ),
+    radial-gradient(
+      ellipse 46% 66% at 106% 0%,
+      rgba(238, 108, 77, 0.8) 0%,
+      rgba(250, 171, 137, 0.6) 44%,
+      transparent 82%
+    );
+}
+.branch-artwork--5 {
+  --branch-base: #f7fcfa;
+  --branch-mesh:
+    radial-gradient(
+      ellipse 54% 68% at -2% 92%,
+      rgba(128, 210, 203, 0.84) 0%,
+      rgba(177, 232, 219, 0.58) 42%,
+      transparent 80%
+    ),
+    radial-gradient(
+      ellipse 58% 70% at 46% 2%,
+      rgba(255, 197, 170, 0.86) 0%,
+      rgba(255, 226, 205, 0.66) 44%,
+      transparent 82%
+    ),
+    radial-gradient(
+      ellipse 44% 56% at 57% 48%,
+      rgba(255, 255, 255, 0.99) 0%,
+      rgba(255, 255, 255, 0.84) 42%,
+      transparent 80%
+    ),
+    radial-gradient(
+      ellipse 60% 72% at 62% 112%,
+      rgba(231, 81, 148, 0.84) 0%,
+      rgba(246, 136, 177, 0.6) 44%,
+      transparent 82%
+    ),
+    radial-gradient(
+      ellipse 48% 62% at 106% 4%,
+      rgba(238, 103, 103, 0.82) 0%,
+      rgba(251, 171, 151, 0.6) 44%,
+      transparent 82%
+    );
+}
+.branch-artwork--6 {
+  --branch-base: #f8faff;
+  --branch-mesh:
+    radial-gradient(
+      ellipse 52% 72% at 12% 8%,
+      rgba(142, 180, 248, 0.82) 0%,
+      rgba(190, 209, 251, 0.58) 44%,
+      transparent 82%
+    ),
+    radial-gradient(
+      ellipse 58% 64% at 52% -10%,
+      rgba(255, 193, 161, 0.86) 0%,
+      rgba(255, 226, 199, 0.66) 44%,
+      transparent 82%
+    ),
+    radial-gradient(
+      ellipse 42% 58% at 52% 52%,
+      rgba(255, 255, 255, 0.99) 0%,
+      rgba(255, 255, 255, 0.84) 42%,
+      transparent 82%
+    ),
+    radial-gradient(
+      ellipse 62% 72% at 42% 112%,
+      rgba(232, 65, 153, 0.84) 0%,
+      rgba(246, 127, 179, 0.6) 44%,
+      transparent 82%
+    ),
+    radial-gradient(
+      ellipse 48% 66% at 108% 100%,
+      rgba(239, 93, 104, 0.84) 0%,
+      rgba(250, 166, 151, 0.6) 44%,
+      transparent 82%
+    );
+}
+.branch-artwork-title {
+  margin: 0;
+  color: #28302f;
+  font-size: clamp(13px, 1.2vw, 16px);
+  font-weight: 650;
+  text-align: center;
+  line-height: 1.3;
+  overflow-wrap: anywhere;
+}
+.branch-artwork-copy {
+  position: relative;
   z-index: 1;
-  display: flex;
-  min-width: 54px;
-  height: 22px;
-  align-items: center;
-  gap: 5px;
-  padding: 0 7px;
-  border: 1px solid #e7e9eb;
-  border-radius: 6px;
-  background: rgba(255, 255, 255, 0.92);
-  color: #707984;
-  font-size: 10px;
-  white-space: nowrap;
+  width: 100%;
+  text-align: center;
 }
-.branch-node i {
-  width: 6px;
-  height: 6px;
-  flex: 0 0 auto;
-  border-radius: 50%;
-  background: #7052ad;
-}
-.branch-node.node-1 {
-  top: 27px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.branch-node.node-2 {
-  top: 54px;
-  left: 15%;
-}
-.branch-node.node-2 i {
-  background: #20252b;
-}
-.branch-node.node-3 {
-  top: 54px;
-  right: 15%;
-}
-.branch-node.node-3 i {
-  background: #e28b34;
-}
-.branch-node.node-4 {
-  top: 82px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-.branch-node.node-4 i {
-  background: #51a78d;
-}
-.branch-diagram.blue .branch-node.node-1 i,
-.branch-diagram.blue .branch-node.node-4 i {
-  background: #4f82df;
-}
-.branch-diagram.green .branch-node.node-1 i,
-.branch-diagram.green .branch-node.node-4 i {
-  background: #55a98f;
-}
-.branch-diagram-footer {
-  position: absolute;
-  right: 8px;
-  bottom: 6px;
-  display: flex;
-  align-items: center;
-  gap: 4px;
-  color: #a1a8af;
-  font-size: 9px;
+.branch-artwork-slogan {
+  margin: 5px 0 0;
+  color: #59645e;
+  font-size: 12px;
+  font-weight: 500;
 }
 
-.branch-card h2 {
-  overflow: hidden;
-  margin: 12px 1px 6px;
-  color: #222831;
-  font-size: 17px;
-  font-weight: 600;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
 .branch-location {
   display: flex;
   min-width: 0;
@@ -224,57 +430,59 @@
   flex: 0 0 auto;
   color: #8d969f;
 }
-.branch-admin-information {
+.branch-details-grid {
   display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  align-items: center;
-  gap: 8px;
-  margin-top: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 9px 10px;
+  margin: 12px 0 0;
+  padding: 10px 0;
+  border-top: 1px solid #edf0ee;
+  border-bottom: 1px solid #edf0ee;
 }
-.branch-admin-assigned {
-  display: flex;
+.branch-detail-item {
   min-width: 0;
-  align-items: center;
-  gap: 8px;
-  margin: 0;
-  color: var(--admin-primary);
-  font-size: 13px;
-  font-weight: 600;
 }
-.branch-admin-assigned > svg {
+.branch-detail-wide {
+  grid-column: 1 / -1;
+}
+.branch-detail-item dt {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  color: #777;
+  font-size: 12px;
+}
+.branch-detail-item dt svg {
   flex: 0 0 auto;
+  color: #777;
 }
-.branch-admin-assigned span {
-  display: flex;
-  min-width: 0;
-  flex-direction: column;
-  gap: 2px;
+.branch-detail-item dd {
   overflow: hidden;
+  color: #555;
+  font-size: 13px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
-.branch-admin-assigned small {
-  color: #89948c;
-  font-size: 9px;
-  font-weight: 650;
-  letter-spacing: 0.08em;
-}
 .branch-admin-contact {
-  display: grid;
+  display: flex;
   min-width: 0;
-  gap: 6px;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
   color: #68717a;
-  font-size: 11px;
+  font-size: 13px;
 }
 .branch-admin-contact p {
   display: flex;
   min-width: 0;
+  flex: 1 1 0;
   align-items: center;
   gap: 7px;
 }
 .branch-admin-contact svg {
   flex: 0 0 auto;
-  color: #89958d;
+  color: #555;
 }
 .branch-admin-contact span {
   overflow: hidden;
@@ -290,8 +498,10 @@
   padding-top: 9px;
   border-top: 1px solid #edf0f2;
 }
-.branch-card-footer .branch-location { font-size: 11px; }
-.branch-preview-button {
+.branch-card-footer .branch-location {
+  font-size: 12px;
+}
+.admin-shell .branch-preview-button {
   display: inline-flex;
   height: 29px;
   align-items: center;
@@ -301,8 +511,8 @@
   border-radius: 18px;
   background: var(--admin-primary);
   color: #fff;
-  font-size: 11px;
-  cursor: default;
+  font-size: 12px;
+  font-family: inherit;
   transition:
     background 150ms ease,
     border-color 150ms ease;
@@ -310,7 +520,6 @@
 .branch-preview-button:hover {
   border-color: var(--admin-primary-hover);
   background: var(--admin-primary-hover);
-  cursor: pointer;
 }
 
 @media (max-width: 1100px) {
@@ -324,7 +533,15 @@
     margin-top: 16px;
   }
   .branches-page-heading {
-    min-height: 76px;
+    min-height: 0;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    row-gap: 12px;
+  }
+  .branches-heading-actions {
+    width: 100%;
+    justify-content: flex-end;
+    flex-wrap: wrap;
   }
   .branches-card-grid {
     gap: 10px;
@@ -332,24 +549,20 @@
   .branch-card {
     padding: 9px;
   }
-  .branch-diagram {
-    height: 105px;
+  .branch-artwork {
+    min-height: 105px;
   }
 }
 
 @media (max-width: 520px) {
   .branches-page-heading {
-    align-items: flex-start;
-    flex-wrap: wrap;
-  }
-  .branches-add-button {
-    margin-left: auto;
+    row-gap: 10px;
   }
   .branches-card-grid {
     grid-template-columns: minmax(0, 1fr);
   }
-  .branch-diagram {
-    height: 130px;
+  .branch-artwork {
+    min-height: 130px;
   }
   .branches-description {
     max-width: 230px;

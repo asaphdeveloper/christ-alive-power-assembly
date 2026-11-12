@@ -1,0 +1,80 @@
+[
+  {
+    "name": "Jos Branch",
+    "slogan": "Olive Camp",
+    "location": "Jos",
+    "state": "Plateau State",
+    "country": "Nigeria",
+    "lga": "Jos North",
+    "address": "18 Yakubu Gowon Way",
+    "leadPastor": "Pastor David Kanti",
+    "administrator": "Grace James",
+    "adminPhone": "+234 803 555 0101",
+    "adminEmail": "grace@capa.org"
+  },
+  {
+    "name": "Wukari Branch",
+    "slogan": "House of Joy",
+    "location": "Wukari",
+    "state": "Taraba State",
+    "country": "Nigeria",
+    "lga": "Wukari",
+    "address": "24 Hospital Road, Wukari",
+    "leadPastor": "Pastor Ayuba Maijamaa",
+    "administrator": "Peter Daniel",
+    "adminPhone": "+234 803 555 0102",
+    "adminEmail": "peter@capa.org"
+  },
+  {
+    "name": "Sabon Zaura Branch",
+    "slogan": "House of Praise",
+    "location": "Bauchi",
+    "state": "Bauchi State",
+    "country": "Nigeria",
+    "lga": "Bauchi",
+    "address": "7 Yandoka Road, Bauchi",
+    "leadPastor": "Pastor Emmanuel Musa",
+    "administrator": "Esther Musa",
+    "adminPhone": "+234 803 555 0103",
+    "adminEmail": "esther@capa.org"
+  },
+  {
+    "name": "Wuntin Dada Branch",
+    "slogan": "Olive Camp",
+    "location": "Bauchi",
+    "state": "Bauchi State",
+    "country": "Nigeria",
+    "lga": "Bauchi",
+    "address": "Plot 42 Gimbiya Street, Area 11, Garki",
+    "leadPastor": "Pastor David Okoro",
+    "administrator": "Samuel John",
+    "adminPhone": "+234 803 555 0104",
+    "adminEmail": "samuel@capa.org"
+  },
+  {
+    "name": "Zango Branch",
+    "slogan": "House of Joy",
+    "location": "Bauchi",
+    "state": "Bauchi State",
+    "country": "Nigeria",
+    "lga": "Bauchi",
+    "address": "15 Ali Akilu Road, Kaduna",
+    "leadPastor": "Pastor Samuel Yakubu",
+    "administrator": "Ruth David",
+    "adminPhone": "+234 803 555 0105",
+    "adminEmail": "ruth@capa.org"
+  },
+  {
+    "name": "Yola Branch",
+    "slogan": "Olive Camp",
+    "location": "Yola",
+    "state": "Adamawa State",
+    "country": "Nigeria",
+    "lga": "Yola North",
+    "address": "22 Atiku Abubakar Way, Jimeta",
+    "leadPastor": "Pastor Peter Bako",
+    "administrator": "Joseph Mark",
+    "adminPhone": "+234 803 555 0106",
+    "adminEmail": "joseph@capa.org"
+  }
+]

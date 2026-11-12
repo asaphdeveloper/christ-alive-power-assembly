@@ -1,0 +1,83 @@
+.general-overseer-page {
+  min-height: calc(100svh - 92px);
+  margin-top: 24px;
+  padding-bottom: 32px;
+  color: #17231e;
+}
+
+.general-overseer-heading {
+  padding: 22px 0 28px;
+}
+.general-overseer-kicker {
+  margin-bottom: 9px;
+  color: #7c8981;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.11em;
+}
+.general-overseer-heading h1 {
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.03em;
+}
+.general-overseer-heading > p:last-child {
+  margin-top: 8px;
+  color: #77837b;
+  font-size: 14px;
+}
+
+.general-overseer-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.general-overseer-card {
+  min-width: 0;
+  padding: 20px;
+  border: 1px solid #e3e9e5;
+  border-radius: 12px;
+  background: #fff;
+  transition: border-color 150ms ease, background 150ms ease;
+}
+.general-overseer-card:hover {
+  border-color: #c2d8ca;
+  background: #fdfefd;
+}
+.general-overseer-icon {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  place-items: center;
+  border-radius: 9px;
+  background: var(--admin-primary-soft);
+  color: var(--admin-primary);
+}
+.general-overseer-card h2 {
+  margin-top: 18px;
+  color: #253129;
+  font-size: 17px;
+  font-weight: 600;
+}
+.general-overseer-card p {
+  margin-top: 6px;
+  color: #77837b;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.general-overseer-card a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 18px;
+  color: var(--admin-primary);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.general-overseer-card a:hover { color: var(--admin-primary-hover); }
+
+@media (max-width: 760px) {
+  .general-overseer-heading h1 { font-size: 26px; }
+  .general-overseer-links { grid-template-columns: minmax(0, 1fr); gap: 11px; }
+  .general-overseer-card { padding: 16px; }
+}

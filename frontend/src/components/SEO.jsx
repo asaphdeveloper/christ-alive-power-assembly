@@ -5,13 +5,14 @@ const pages = {
   '/admin/developer': ['Developer Admin | Christ Alive Power Assembly', 'Developer workspace for the Christ Alive Power Assembly website.'],
   '/admin/developer/admins': ['Admins | Christ Alive Power Assembly', 'Manage the administrator directory for Christ Alive Power Assembly.'],
   '/admin/developer/branches': ['Branches | Christ Alive Power Assembly', 'View and manage Christ Alive Power Assembly branches.'],
+  '/admin/general-overseer': ['General Overseer | Christ Alive Power Assembly', 'General Overseer workspace for reviewing administrators and church branches.'],
 };
 
 export function SEO() {
   const { pathname: routePath } = useLocation();
   const pathname = routePath.replace(/\/+$/, '') || '/';
   const [title, description] = pages[pathname] ?? ['Page not found | Christ Alive Power Assembly', 'This page could not be found. Return to Christ Alive Power Assembly to explore our church and resources.'];
-  const isAdmin = pathname.startsWith('/admin/developer');
+  const isAdmin = pathname.startsWith('/admin');
   const siteUrl = import.meta.env.VITE_SITE_URL?.replace(/\/$/, '');
   const canonical = siteUrl && pages[pathname] ? `${siteUrl}${pathname}` : undefined;
   const image = siteUrl ? `${siteUrl}/images/slide-02-1280.webp` : undefined;

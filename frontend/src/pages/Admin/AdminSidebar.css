@@ -1,0 +1,194 @@
+.admin-sidebar {
+  position: sticky;
+  top: 14px;
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 14px);
+  height: calc(100svh - 28px);
+  min-height: 420px;
+  margin: 14px 0 14px 14px;
+  padding: 20px 12px 14px;
+  overflow: hidden;
+  border: 1px solid #e9eeeb;
+  border-radius: 18px;
+  background: #fff;
+}
+.admin-sidebar-heading {
+  display: flex;
+  align-items: center;
+  min-height: 42px;
+  margin-bottom: 30px;
+  padding: 0 4px 0 6px;
+}
+.admin-brand {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+  color: #18231e;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.admin-brand img {
+  width: 30px;
+  height: 30px;
+  flex: 0 0 auto;
+  object-fit: contain;
+}
+.admin-brand span {
+  position: relative;
+  top: 4px;
+}
+.admin-nav-list {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.admin-nav-link {
+  display: flex;
+  width: 100%;
+  min-height: 42px;
+  align-items: center;
+  gap: 11px;
+  padding: 0 10px;
+  border-radius: 9px;
+  background: #fff;
+  color: #555;
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: background 160ms ease, color 160ms ease;
+}
+.admin-nav-link:hover {
+  background: #f4f7f5;
+  color: var(--admin-primary);
+}
+.admin-nav-link.is-active {
+  background: var(--admin-primary-soft);
+  color: var(--admin-primary);
+}
+.admin-nav-link > svg { flex: 0 0 auto; }
+.admin-nav-label {
+  overflow: hidden;
+  flex: 1;
+  font-size: 12px;
+  white-space: nowrap;
+}
+.admin-sidebar-bottom {
+  display: flex;
+  min-height: 54px;
+  align-items: center;
+  margin-top: auto;
+  padding: 8px 5px 0;
+  border-top: 1px solid #eff2f0;
+}
+.admin-profile-button {
+  display: flex;
+  width: 100%;
+  min-width: 0;
+  align-items: center;
+  gap: 10px;
+  padding: 7px;
+  border: 1px solid #e5ebe7;
+  border-radius: 8px;
+  transition: background 150ms ease, border-color 150ms ease;
+}
+.admin-profile-button:hover {
+  background: #f5f7f6;
+  border-color: #cbd8d0;
+  cursor: pointer;
+}
+.admin-avatar {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--admin-primary-soft);
+  color: var(--admin-primary);
+  font-size: 13px;
+  font-weight: 650;
+}
+.admin-user-details {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 3px;
+  white-space: nowrap;
+}
+.admin-user-details strong {
+  color: #35433b;
+  font-size: 12px;
+  font-weight: 600;
+}
+.admin-user-details small { color: #99a29d; font-size: 10px; }
+
+.admin-shell.is-collapsed .admin-sidebar { padding-inline: 10px; }
+.admin-shell.is-collapsed .admin-sidebar-heading {
+  justify-content: center;
+  padding: 0;
+}
+.admin-shell.is-collapsed .admin-brand {
+  width: 100%;
+  justify-content: center;
+  gap: 0;
+}
+.admin-shell.is-collapsed .admin-brand img { width: 32px; height: 32px; }
+.admin-shell.is-collapsed .admin-brand span,
+.admin-shell.is-collapsed .admin-nav-label,
+.admin-shell.is-collapsed .admin-user-details { display: none; }
+.admin-shell.is-collapsed .admin-nav-link {
+  justify-content: center;
+  padding-inline: 0;
+}
+.admin-shell.is-collapsed .admin-sidebar-bottom {
+  justify-content: center;
+  padding-inline: 0;
+}
+
+@media (max-width: 760px) {
+  .admin-sidebar {
+    position: static;
+    width: auto;
+    height: auto;
+    min-height: 0;
+    margin: 10px 12px 0;
+    padding: 12px;
+    border-radius: 14px;
+  }
+  .admin-sidebar-heading { min-height: 34px; margin-bottom: 10px; }
+  .admin-brand img { width: 26px; height: 26px; }
+  .admin-shell.is-collapsed .admin-sidebar { padding: 12px; }
+  .admin-shell.is-collapsed .admin-sidebar-heading {
+    justify-content: flex-start;
+    padding: 0 4px 0 6px;
+  }
+  .admin-shell.is-collapsed .admin-brand { gap: 10px; }
+  .admin-shell.is-collapsed .admin-brand img { width: 26px; height: 26px; }
+  .admin-shell.is-collapsed .admin-brand span,
+  .admin-shell.is-collapsed .admin-nav-label { display: flex; }
+  .admin-nav-list { flex-direction: row; flex-wrap: wrap; gap: 4px; }
+  .admin-nav-link {
+    width: auto;
+    min-height: 36px;
+    flex: 1 1 auto;
+    padding-inline: 9px;
+  }
+  .admin-shell.is-collapsed .admin-nav-link {
+    justify-content: flex-start;
+    padding-inline: 9px;
+  }
+  .admin-nav-label { flex: 0 1 auto; font-size: 12px; }
+  .admin-sidebar-bottom { display: none; }
+}
+
+@media (max-width: 440px) {
+  .admin-brand { font-size: 13px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-nav-link,
+  .admin-profile-button { transition-duration: 0.01ms; }
+}
