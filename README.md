@@ -23,3 +23,5 @@ i want diffrent dashboard pages for diffrent admins the admins include:
 for now build a simple page displaying just the user role for each
 
 I want to build the admin pages. For now, I want to build just the front-end parts for each of the pages, just display just the admin role.
+
+switch to Bricolage Grotesque. make sure it supports increasing and redcing the font weight and remove all old unused font and their code

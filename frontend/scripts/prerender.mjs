@@ -8,7 +8,7 @@ await build({ build: { ssr: 'src/prerender.jsx', outDir: '.prerender' } });
 const { render } = await import('../.prerender/prerender.js');
 const template = await readFile('dist/index.html', 'utf8');
 const manifest = JSON.parse(await readFile('dist/.vite/manifest.json', 'utf8'));
-const routes = { '/': 'public/HomePage/HomePage', '/404': 'PageNotFound' };
+const routes = { '/': 'public/HomePage/HomePage', '/admin/developer': 'Admin/AdminPortalPage', '/404': 'PageNotFound' };
 for (const [path, page] of Object.entries(routes)) {
   const chunk = manifest[`src/pages/${page}.jsx`] ?? Object.values(manifest).find((entry) => entry.name === page.split('/').at(-1) && entry.isDynamicEntry);
   const styles = new Set();
