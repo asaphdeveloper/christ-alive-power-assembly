@@ -14,7 +14,9 @@
   max-width: 580px;
   margin: 0 0 36px;
   color: #637067;
-  font: 16px/1.75 Outfit, sans-serif;
+  font:
+    16px/1.75 Outfit,
+    sans-serif;
 }
 
 .church-resources-toolbar {
@@ -49,9 +51,14 @@
   padding: 10px 14px;
   background: transparent;
   color: #526159;
-  font: 500 14px Outfit, sans-serif;
+  font:
+    500 14px Outfit,
+    sans-serif;
   cursor: pointer;
-  transition: background-color 160ms ease, color 160ms ease, box-shadow 160ms ease;
+  transition:
+    background-color 160ms ease,
+    color 160ms ease,
+    box-shadow 160ms ease;
 }
 
 .church-resources-filters button:hover {
@@ -103,9 +110,11 @@
 
 .church-resource-hymn-label {
   color: #087f5b;
-  font: 600 12px Outfit, sans-serif;
+  font:
+    600 12px Outfit,
+    sans-serif;
   text-transform: uppercase;
-  letter-spacing: .08em;
+  letter-spacing: 0.08em;
 }
 
 .church-resource-hymn h3 {
@@ -119,7 +128,9 @@
 .church-resource-hymn-heading p {
   margin-top: 8px;
   color: #637067;
-  font: 14px/1.7 Outfit, sans-serif;
+  font:
+    14px/1.7 Outfit,
+    sans-serif;
 }
 
 .church-resource-hymn-read {
@@ -130,9 +141,13 @@
   border-radius: 8px;
   color: #087f5b;
   background: #fff;
-  font: 500 14px Outfit, sans-serif;
+  font:
+    500 14px Outfit,
+    sans-serif;
   cursor: pointer;
-  transition: background-color 160ms ease, border-color 160ms ease;
+  transition:
+    background-color 160ms ease,
+    border-color 160ms ease;
 }
 
 .church-resource-hymn-read:hover {
@@ -152,15 +167,19 @@
 
 .church-resource-hymn-verse > span {
   color: #087f5b;
-  font: 600 12px Outfit, sans-serif;
+  font:
+    600 12px Outfit,
+    sans-serif;
   text-transform: uppercase;
-  letter-spacing: .06em;
+  letter-spacing: 0.06em;
 }
 
 .church-resource-hymn-verse p {
   margin-top: 10px;
   color: #26372e;
-  font: 16px/1.8 Outfit, sans-serif;
+  font:
+    16px/1.8 Outfit,
+    sans-serif;
 }
 
 .church-resource-file {
@@ -178,7 +197,9 @@
 }
 
 .church-resource-file span {
-  font: 600 10px Outfit, sans-serif;
+  font:
+    600 10px Outfit,
+    sans-serif;
   letter-spacing: 1px;
 }
 
@@ -193,7 +214,9 @@
 .church-resource-description {
   margin-top: 8px;
   color: #637067;
-  font: 14px/1.7 Outfit, sans-serif;
+  font:
+    14px/1.7 Outfit,
+    sans-serif;
   overflow-wrap: anywhere;
 }
 
@@ -202,7 +225,9 @@
   gap: 1rem;
   align-items: center;
   font-size: 14px;
-  font: 14px Outfit, sans-serif;
+  font:
+    14px Outfit,
+    sans-serif;
   margin-top: 10px;
 }
 
@@ -221,7 +246,9 @@
   padding: 10px 16px;
   border: 1px solid #dbe6de;
   border-radius: 8px;
-  font: 500 14px Outfit, sans-serif;
+  font:
+    500 14px Outfit,
+    sans-serif;
   text-decoration: none;
 }
 
@@ -232,6 +259,7 @@
 }
 
 .church-resource-download {
+  border: none;
   background-color: #087f5b;
   color: #fff;
   cursor: pointer;
@@ -271,7 +299,9 @@
 
 .church-resources-empty {
   padding: 40px 20px;
-  font: 16px/1.7 Outfit, sans-serif;
+  font:
+    16px/1.7 Outfit,
+    sans-serif;
   text-align: center;
   color: #637067;
 }
@@ -288,11 +318,24 @@
 }
 
 @media (max-width: 600px) {
-  .church-resource-hymn { padding: 24px 0; }
-  .church-resource-hymn-heading { align-items: flex-start; gap: 16px; }
-  .church-resource-hymn-icon { flex-basis: 48px; height: 48px; }
-  .church-resource-hymn-read, .church-resource-hymn-verses { margin-left: 0; }
-  .church-resource-hymn-verses { padding: 20px; }
+  .church-resource-hymn {
+    padding: 24px 0;
+  }
+  .church-resource-hymn-heading {
+    align-items: flex-start;
+    gap: 16px;
+  }
+  .church-resource-hymn-icon {
+    flex-basis: 48px;
+    height: 48px;
+  }
+  .church-resource-hymn-read,
+  .church-resource-hymn-verses {
+    margin-left: 0;
+  }
+  .church-resource-hymn-verses {
+    padding: 20px;
+  }
 
   .church-resources-toolbar {
     align-items: flex-start;
@@ -365,7 +408,9 @@
   font-size: 11px;
 }
 
-.church-resources-filters button[aria-pressed='true'] .church-resource-filter-count {
+.church-resources-filters
+  button[aria-pressed='true']
+  .church-resource-filter-count {
   background: #ffffff24;
   color: #fff;
 }
@@ -387,7 +432,6 @@
     padding-inline: 8px;
     font-size: 13px;
   }
-
 }
 
 @media (prefers-reduced-motion: reduce) {

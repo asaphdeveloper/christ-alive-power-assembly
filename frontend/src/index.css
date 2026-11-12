@@ -49,12 +49,12 @@ body {
 @font-face {
   font-family: Outfit;
   font-display: swap;
-  src: url(./assets/fonts/Outfit-VariableFont_wght.woff2) format("woff2");
+  src: url(./assets/fonts/Outfit-VariableFont_wght.woff2) format('woff2');
 }
 @font-face {
   font-family: ClashDisplay;
   font-display: swap;
-  src: url(./assets/fonts/ClashDisplay-Variable.woff2) format("woff2");
+  src: url(./assets/fonts/ClashDisplay-Variable.woff2) format('woff2');
 }
 
 /* Classes */
@@ -93,16 +93,49 @@ body {
   align-items: center;
 }
 
-:where(button, a.btn-primary, a.btn-secondary, a.cta-button, a.church-resource-open, a.church-resource-download, a.church-about-link, a.church-footer-visit, a.church-footer-all-branches, a.branch-aside-card-btn):not(:disabled) {
+:where(
+  button,
+  a.btn-primary,
+  a.btn-secondary,
+  a.cta-button,
+  a.church-resource-open,
+  a.church-resource-download,
+  a.church-about-link,
+  a.church-footer-visit,
+  a.church-footer-all-branches,
+  a.branch-aside-card-btn
+):not(:disabled) {
   transition: scale 150ms ease;
 }
 
-:where(button, a.btn-primary, a.btn-secondary, a.cta-button, a.church-resource-open, a.church-resource-download, a.church-about-link, a.church-footer-visit, a.church-footer-all-branches, a.branch-aside-card-btn):not(:disabled):active {
+:where(
+    button,
+    a.btn-primary,
+    a.btn-secondary,
+    a.cta-button,
+    a.church-resource-open,
+    a.church-resource-download,
+    a.church-about-link,
+    a.church-footer-visit,
+    a.church-footer-all-branches,
+    a.branch-aside-card-btn
+  ):not(:disabled):active {
   scale: 0.96;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  :where(button, a.btn-primary, a.btn-secondary, a.cta-button, a.church-resource-open, a.church-resource-download, a.church-about-link, a.church-footer-visit, a.church-footer-all-branches, a.branch-aside-card-btn):not(:disabled) {
+  :where(
+    button,
+    a.btn-primary,
+    a.btn-secondary,
+    a.cta-button,
+    a.church-resource-open,
+    a.church-resource-download,
+    a.church-about-link,
+    a.church-footer-visit,
+    a.church-footer-all-branches,
+    a.branch-aside-card-btn
+  ):not(:disabled) {
     transition-duration: 0s;
   }
 }
@@ -254,14 +287,51 @@ url(../../images/cover-picture-02.jpg); */
   height: 16px;
 }
 
-:is(a, button, input, select, textarea, [tabindex]):focus-visible { outline: 3px solid #087f5b; outline-offset: 4px; }
-main:focus { outline: none; }
-.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; border: 0; }
-.skip-link { position: fixed; top: 8px; left: 8px; z-index: 1000; padding: 12px 18px; background: #fff; color: #075b42; transform: translateY(-150%); }
-.skip-link:focus { transform: translateY(0); }
-.route-loading { min-height: 100svh; }
+:is(a, button, input, select, textarea, [tabindex]):focus-visible {
+  outline: 3px solid #087f5b;
+  outline-offset: 4px;
+}
+main:focus {
+  outline: none;
+}
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+.skip-link {
+  position: fixed;
+  top: 8px;
+  left: 8px;
+  z-index: 1000;
+  padding: 12px 18px;
+  background: #fff;
+  color: #075b42;
+  transform: translateY(-150%);
+}
+.skip-link:focus {
+  transform: translateY(0);
+}
+.route-loading {
+  min-height: 100svh;
+}
 /* Preserve the intrinsic ratio when the logo width changes at breakpoints. */
-.logo { height: auto; }
+.logo {
+  height: auto;
+}
 @media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { scroll-behavior: auto !important; animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

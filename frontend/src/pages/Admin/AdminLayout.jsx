@@ -1,8 +1,10 @@
 import { useState } from 'react';
 import {
   ExternalLink,
+  Landmark,
   LayoutDashboard,
   MapPinned,
+  Upload,
   Users,
   Video,
   Wrench,
@@ -25,6 +27,16 @@ const developerNavItems = [
     to: '/admin/branch-media-admin',
     icon: Video,
   },
+  {
+    label: 'Branch finance secretary',
+    to: '/admin/branch-finance-secretary',
+    icon: Landmark,
+  },
+  {
+    label: 'Headquater media admin',
+    to: '/admin/headquater-media-admin',
+    icon: Video,
+  },
   { label: 'Public website', to: '/', icon: ExternalLink },
 ];
 
@@ -40,6 +52,47 @@ const branchMediaAdminNavItems = [
   { label: 'Public website', to: '/', icon: ExternalLink },
 ];
 
+const branchFinanceSecretaryNavItems = [
+  { label: 'Overview', to: '/admin/branch-finance-secretary', icon: LayoutDashboard },
+  { label: 'Developer workspace', to: '/admin/developer', icon: Wrench },
+  { label: 'Public website', to: '/', icon: ExternalLink },
+];
+
+const headquaterMediaAdminNavItems = [
+  { label: 'Overview', to: '/admin/headquater-media-admin', icon: LayoutDashboard },
+  { label: 'Upload documents', to: '/admin/headquater-media-admin/documents', icon: Upload },
+  { label: 'Developer workspace', to: '/admin/developer', icon: Wrench },
+  { label: 'Public website', to: '/', icon: ExternalLink },
+];
+
+const workspaces = {
+  developer: {
+    navItems: developerNavItems,
+    homeTo: '/admin/developer',
+    profileName: 'Developer',
+  },
+  'general-overseer': {
+    navItems: generalOverseerNavItems,
+    homeTo: '/admin/general-overseer',
+    profileName: 'General Overseer',
+  },
+  'branch-media-admin': {
+    navItems: branchMediaAdminNavItems,
+    homeTo: '/admin/branch-media-admin',
+    profileName: 'Branch Media Admin',
+  },
+  'branch-finance-secretary': {
+    navItems: branchFinanceSecretaryNavItems,
+    homeTo: '/admin/branch-finance-secretary',
+    profileName: 'Branch Finance Secretary',
+  },
+  'headquater-media-admin': {
+    navItems: headquaterMediaAdminNavItems,
+    homeTo: '/admin/headquater-media-admin',
+    profileName: 'Headquater Media Admin',
+  },
+};
+
 export function AdminLayout({
   children,
   workspace = 'developer',
@@ -47,23 +100,7 @@ export function AdminLayout({
 }) {
   const { pathname } = useLocation();
   const [collapsed, setCollapsed] = useState(false);
-  const isGeneralOverseer = workspace === 'general-overseer';
-  const isBranchMediaAdmin = workspace === 'branch-media-admin';
-  const navItems = isGeneralOverseer
-    ? generalOverseerNavItems
-    : isBranchMediaAdmin
-      ? branchMediaAdminNavItems
-      : developerNavItems;
-  const homeTo = isGeneralOverseer
-    ? '/admin/general-overseer'
-    : isBranchMediaAdmin
-      ? '/admin/branch-media-admin'
-      : '/admin/developer';
-  const profileName = isGeneralOverseer
-    ? 'General Overseer'
-    : isBranchMediaAdmin
-      ? 'Branch Media Admin'
-      : 'Developer';
+  const { navItems, homeTo, profileName } = workspaces[workspace] ?? workspaces.developer;
   const currentPage =
     navItems.find((item) => item.to === pathname)?.label ?? pageTitle;
 

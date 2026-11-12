@@ -7,6 +7,9 @@ const pages = {
   '/admin/developer/branches': ['Branches | Christ Alive Power Assembly', 'View and manage Christ Alive Power Assembly branches.'],
   '/admin/general-overseer': ['General Overseer | Christ Alive Power Assembly', 'General Overseer workspace for reviewing administrators and church branches.'],
   '/admin/branch-media-admin': ['Branch Media Admin | Christ Alive Power Assembly', 'Branch Media Admin workspace for Christ Alive Power Assembly.'],
+  '/admin/branch-finance-secretary': ['Branch Finance Secretary | Christ Alive Power Assembly', 'Branch Finance Secretary workspace for Christ Alive Power Assembly.'],
+  '/admin/headquater-media-admin': ['Headquater Media Admin | Christ Alive Power Assembly', 'Headquater Media Admin workspace for Christ Alive Power Assembly.'],
+  '/admin/headquater-media-admin/documents': ['Upload Documents | Christ Alive Power Assembly', 'Upload documents in the Headquater Media Admin workspace.'],
 };
 
 export function SEO() {
