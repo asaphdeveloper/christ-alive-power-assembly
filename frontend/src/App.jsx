@@ -7,6 +7,7 @@ import './App.css';
 const HomePage = lazy(() => import('./pages/public/HomePage/HomePage').then((module) => ({ default: module.HomePage })));
 const AdminPortalPage = lazy(() => import('./pages/Admin/AdminPortalPage').then((module) => ({ default: module.AdminPortalPage })));
 const GeneralOverseerPage = lazy(() => import('./pages/Admin/generalOverseer/GeneralOverseerPage').then((module) => ({ default: module.GeneralOverseerPage })));
+const BranchMediaAdminPage = lazy(() => import('./pages/Admin/branchMediaAdmin/BranchMediaAdminPage').then((module) => ({ default: module.BranchMediaAdminPage })));
 const AdminsPage = lazy(() => import('./pages/Admin/developer/pages/admins/AdminsPage').then((module) => ({ default: module.AdminsPage })));
 const BranchesPage = lazy(() => import('./pages/Admin/developer/pages/branches/BranchesPage').then((module) => ({ default: module.BranchesPage })));
 const PageNotFound = lazy(() => import('./pages/PageNotFound').then((module) => ({ default: module.PageNotFound })));
@@ -26,6 +27,7 @@ function App() {
             <Route path="branches" element={<BranchesPage />} />
           </Route>
           <Route path="admin/general-overseer" element={<GeneralOverseerPage />} />
+          <Route path="admin/branch-media-admin" element={<BranchMediaAdminPage />} />
           <Route path='*' element={<PageNotFound />} />
         </Routes>
       </Suspense>

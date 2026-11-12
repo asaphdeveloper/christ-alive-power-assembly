@@ -6,6 +6,7 @@ const pages = {
   '/admin/developer/admins': ['Admins | Christ Alive Power Assembly', 'Manage the administrator directory for Christ Alive Power Assembly.'],
   '/admin/developer/branches': ['Branches | Christ Alive Power Assembly', 'View and manage Christ Alive Power Assembly branches.'],
   '/admin/general-overseer': ['General Overseer | Christ Alive Power Assembly', 'General Overseer workspace for reviewing administrators and church branches.'],
+  '/admin/branch-media-admin': ['Branch Media Admin | Christ Alive Power Assembly', 'Branch Media Admin workspace for Christ Alive Power Assembly.'],
 };
 
 export function SEO() {
