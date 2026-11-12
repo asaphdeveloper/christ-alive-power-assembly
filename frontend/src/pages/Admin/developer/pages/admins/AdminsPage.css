@@ -14,13 +14,6 @@
   gap: 20px;
 }
 
-.admins-eyebrow {
-  margin-bottom: 7px;
-  color: #77838c;
-  font-size: 11px;
-  font-weight: 650;
-  letter-spacing: 0.12em;
-}
 .admins-page-heading h1 {
   color: #18221d;
   font-size: 30px;
@@ -32,6 +25,12 @@
   color: #7e8982;
   font-size: 14px;
 }
+.admins-heading-actions {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 10px;
+}
 .admins-count {
   flex: 0 0 auto;
   padding: 9px 13px;
@@ -39,6 +38,28 @@
   border-radius: 8px;
   color: #657168;
   font-size: 12px;
+}
+.admin-shell .admins-add-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border: 1px solid var(--admin-primary);
+  border-radius: 8px;
+  background: var(--admin-primary);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition:
+    background 150ms ease,
+    border-color 150ms ease;
+}
+.admins-add-button:hover {
+  border-color: var(--admin-primary-hover);
+  background: var(--admin-primary-hover);
 }
 
 .admins-grid {
@@ -63,7 +84,9 @@
   border-color: #b9d5c6;
   background: #fdfefd;
 }
-.admin-card.has-open-menu { z-index: 2; }
+.admin-card.has-open-menu {
+  z-index: 2;
+}
 .admin-card-heading {
   display: flex;
   min-width: 0;
@@ -196,8 +219,12 @@
 }
 .admin-record-details {
   display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 11px;
   margin-top: 20px;
+}
+.admin-contact-email {
+  grid-column: 1 / -1;
 }
 .admin-record-details p {
   display: flex;
@@ -211,14 +238,25 @@
   flex: 0 0 auto;
   color: #89958d;
 }
+.admin-record-details .admin-whatsapp-icon {
+  width: 16px;
+  height: 16px;
+  color: #25d366;
+}
 .admin-record-details span {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.admin-record-details .admin-contact-value {
+  display: grid;
+  min-width: 0;
+  gap: 3px;
+}
 .admin-record-details small {
   color: #929b95;
   font-size: 10px;
+  font-weight: 600;
 }
 .admin-assignment {
   display: flex;
@@ -289,9 +327,13 @@
   .admins-page-heading {
     align-items: flex-start;
     padding-top: 12px;
+    flex-wrap: wrap;
+  }
+  .admins-heading-actions {
+    width: 100%;
+    justify-content: flex-end;
   }
   .admins-count {
-    margin-top: 9px;
     padding: 7px 9px;
     font-size: 10px;
   }

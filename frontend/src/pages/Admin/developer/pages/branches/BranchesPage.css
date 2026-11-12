@@ -16,13 +16,6 @@
   margin-bottom: 8px;
 }
 
-.branches-eyebrow {
-  margin-bottom: 5px;
-  color: #78838e;
-  font-size: 11px;
-  font-weight: 650;
-  letter-spacing: 0.12em;
-}
 .branches-page-heading h1 {
   color: #202630;
   font-size: 30px;
@@ -33,6 +26,26 @@
   margin-top: 6px;
   color: #828c96;
   font-size: 14px;
+}
+.admin-shell .branches-add-button {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 8px 14px;
+  border: 1px solid var(--admin-primary);
+  border-radius: 8px;
+  background: var(--admin-primary);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background 150ms ease, border-color 150ms ease;
+}
+.branches-add-button:hover {
+  border-color: var(--admin-primary-hover);
+  background: var(--admin-primary-hover);
 }
 .branches-card-grid {
   display: grid;
@@ -196,38 +209,34 @@
 }
 .branch-location {
   display: flex;
+  min-width: 0;
   align-items: center;
   gap: 5px;
   color: #747d86;
   font-size: 13px;
 }
+.branch-location span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
 .branch-location svg {
   flex: 0 0 auto;
   color: #8d969f;
 }
-.branch-meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 12px;
-  margin-top: 10px;
-  color: #68717a;
-  font-size: 11px;
-  text-transform: uppercase;
-}
-.branch-meta span {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-}
-.branch-meta svg {
-  color: #777f88;
-}
-.branch-admin-assigned {
-  display: flex;
+.branch-admin-information {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
   align-items: center;
   gap: 8px;
   margin-top: 12px;
+}
+.branch-admin-assigned {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 8px;
+  margin: 0;
   color: var(--admin-primary);
   font-size: 13px;
   font-weight: 600;
@@ -237,14 +246,40 @@
 }
 .branch-admin-assigned span {
   display: flex;
+  min-width: 0;
   flex-direction: column;
   gap: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .branch-admin-assigned small {
   color: #89948c;
   font-size: 9px;
   font-weight: 650;
   letter-spacing: 0.08em;
+}
+.branch-admin-contact {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+  color: #68717a;
+  font-size: 11px;
+}
+.branch-admin-contact p {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 7px;
+}
+.branch-admin-contact svg {
+  flex: 0 0 auto;
+  color: #89958d;
+}
+.branch-admin-contact span {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .branch-card-footer {
   display: flex;
@@ -255,25 +290,7 @@
   padding-top: 9px;
   border-top: 1px solid #edf0f2;
 }
-.branch-services {
-  display: flex;
-  align-items: center;
-  gap: 4px;
-}
-.branch-services i {
-  display: grid;
-  width: 23px;
-  height: 23px;
-  place-items: center;
-  border: 1px solid #e2e6ea;
-  border-radius: 50%;
-  background: #fff;
-  color: #5266d9;
-  font-style: normal;
-}
-.branch-services i:first-child {
-  color: var(--admin-primary);
-}
+.branch-card-footer .branch-location { font-size: 11px; }
 .branch-preview-button {
   display: inline-flex;
   height: 29px;
@@ -321,6 +338,13 @@
 }
 
 @media (max-width: 520px) {
+  .branches-page-heading {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .branches-add-button {
+    margin-left: auto;
+  }
   .branches-card-grid {
     grid-template-columns: minmax(0, 1fr);
   }

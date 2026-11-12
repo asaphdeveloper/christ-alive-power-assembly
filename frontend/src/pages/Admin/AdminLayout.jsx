@@ -1,11 +1,19 @@
 import { useState } from 'react';
 import { Link, NavLink, useLocation } from 'react-router';
-import { ExternalLink, MapPinned, PanelLeftClose, PanelLeftOpen, Search, UsersRound } from 'lucide-react';
+import {
+  ExternalLink,
+  MapPinned,
+  PanelLeftClose,
+  PanelLeftOpen,
+  Search,
+  UserRound,
+  Users,
+} from 'lucide-react';
 import Logo from '../../assets/images/logo.webp';
 import './AdminLayout.css';
 
 const adminNavItems = [
-  { label: 'Admins', to: '/admin/developer/admins', icon: UsersRound },
+  { label: 'Administrators', to: '/admin/developer/admins', icon: Users },
   { label: 'Branches', to: '/admin/developer/branches', icon: MapPinned },
   { label: 'Public website', to: '/', icon: ExternalLink },
 ];
@@ -13,15 +21,23 @@ const adminNavItems = [
 export function AdminLayout({ children }) {
   const { pathname } = useLocation();
   const [collapsed, setCollapsed] = useState(false);
-  const currentPage = adminNavItems.find((item) => item.to === pathname)?.label ?? 'Admins';
+  const currentPage =
+    adminNavItems.find((item) => item.to === pathname)?.label ?? 'Admins';
 
   return (
     <div className={`admin-shell${collapsed ? ' is-collapsed' : ''}`}>
-      <aside className='admin-sidebar' aria-label='Developer workspace navigation'>
+      <aside
+        className='admin-sidebar'
+        aria-label='Developer workspace navigation'
+      >
         <div className='admin-sidebar-heading'>
-          <Link className='admin-brand' to='/admin/developer' aria-label='Developer workspace home'>
+          <Link
+            className='admin-brand'
+            to='/admin/developer'
+            aria-label='Developer workspace home'
+          >
             <img src={Logo} alt='' />
-            <span>CAPA <small>Developer</small></span>
+            <span>CAPA</span>
           </Link>
         </div>
 
@@ -31,7 +47,9 @@ export function AdminLayout({ children }) {
               key={to}
               to={to}
               end
-              className={({ isActive }) => `admin-nav-link${isActive ? ' is-active' : ''}`}
+              className={({ isActive }) =>
+                `admin-nav-link${isActive ? ' is-active' : ''}`
+              }
               title={collapsed ? label : undefined}
               aria-label={collapsed ? label : undefined}
             >
@@ -43,8 +61,11 @@ export function AdminLayout({ children }) {
 
         <div className='admin-sidebar-bottom'>
           <div className='admin-profile-button' aria-label='Developer profile'>
-            <span className='admin-avatar'>D</span>
-            <span className='admin-user-details'><strong>Developer</strong><small>Workspace access</small></span>
+            <span className='admin-avatar'><UserRound size={17} aria-hidden='true' /></span>
+            <span className='admin-user-details'>
+              <strong>Developer</strong>
+              <small>Workspace access</small>
+            </span>
           </div>
         </div>
       </aside>
@@ -58,12 +79,23 @@ export function AdminLayout({ children }) {
             aria-label={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
             title={collapsed ? 'Expand sidebar' : 'Collapse sidebar'}
           >
-            {collapsed ? <PanelLeftOpen size={18} /> : <PanelLeftClose size={18} />}
+            {collapsed ? (
+              <PanelLeftOpen size={18} />
+            ) : (
+              <PanelLeftClose size={18} />
+            )}
           </button>
-          <span className='admin-breadcrumb'>Workspace <span>/</span> <strong>{currentPage}</strong></span>
+          <span className='admin-breadcrumb'>
+            Workspace <span>/</span> <strong>{currentPage}</strong>
+          </span>
           <label className='admin-header-search'>
             <Search size={16} aria-hidden='true' />
-            <input type='search' placeholder='Search...' aria-label='Search' readOnly />
+            <input
+              type='search'
+              placeholder='Search...'
+              aria-label='Search'
+              readOnly
+            />
           </label>
         </header>
         {children}
