@@ -1,0 +1,334 @@
+.branches-page {
+  min-width: 0;
+  min-height: calc(100svh - 92px);
+  margin-top: 20px;
+  padding-bottom: 28px;
+  color: #202630;
+  font-family: 'Google Sans', Arial, sans-serif;
+}
+
+.branches-page-heading {
+  display: flex;
+  min-height: 90px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-bottom: 8px;
+}
+
+.branches-eyebrow {
+  margin-bottom: 5px;
+  color: #78838e;
+  font-size: 11px;
+  font-weight: 650;
+  letter-spacing: 0.12em;
+}
+.branches-page-heading h1 {
+  color: #202630;
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+}
+.branches-description {
+  margin-top: 6px;
+  color: #828c96;
+  font-size: 14px;
+}
+.branches-card-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+}
+.branch-card {
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #e1e4e8;
+  border-radius: 12px;
+  background: #fff;
+  transition: border-color 150ms ease;
+}
+.branch-card:hover {
+  border-color: #c8ced5;
+}
+.branch-diagram {
+  position: relative;
+  height: 120px;
+  overflow: hidden;
+  border: 1px solid #edf0f2;
+  border-radius: 9px;
+  background-color: #f2f3f4;
+  background-image: radial-gradient(#dfe2e5 0.8px, transparent 0.8px);
+  background-position: 5px 5px;
+  background-size: 12px 12px;
+}
+.branch-type-pill {
+  position: absolute;
+  z-index: 2;
+  top: 9px;
+  right: 9px;
+  padding: 4px 9px;
+  border: 1px solid #e6e7e9;
+  border-radius: 20px;
+  background: #fff;
+  color: #555d66;
+  font-size: 11px;
+}
+.branch-type-pill.complex {
+  border-color: #f5d9e1;
+  background: #fff5f7;
+  color: #c14868;
+}
+.branch-connector {
+  position: absolute;
+  z-index: 0;
+  background: #d8dde2;
+}
+.connector-main {
+  top: 41px;
+  left: 50%;
+  width: 1px;
+  height: 25px;
+}
+.connector-left {
+  top: 65px;
+  left: 22%;
+  width: 56%;
+  height: 1px;
+}
+.connector-left::before,
+.connector-left::after {
+  position: absolute;
+  top: 0;
+  width: 1px;
+  height: 19px;
+  background: #d8dde2;
+  content: '';
+}
+.connector-left::before {
+  left: 0;
+}
+.connector-left::after {
+  right: 0;
+}
+.connector-right {
+  top: 84px;
+  left: 22%;
+  width: 56%;
+  height: 1px;
+}
+.branch-node {
+  position: absolute;
+  z-index: 1;
+  display: flex;
+  min-width: 54px;
+  height: 22px;
+  align-items: center;
+  gap: 5px;
+  padding: 0 7px;
+  border: 1px solid #e7e9eb;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #707984;
+  font-size: 10px;
+  white-space: nowrap;
+}
+.branch-node i {
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-radius: 50%;
+  background: #7052ad;
+}
+.branch-node.node-1 {
+  top: 27px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.branch-node.node-2 {
+  top: 54px;
+  left: 15%;
+}
+.branch-node.node-2 i {
+  background: #20252b;
+}
+.branch-node.node-3 {
+  top: 54px;
+  right: 15%;
+}
+.branch-node.node-3 i {
+  background: #e28b34;
+}
+.branch-node.node-4 {
+  top: 82px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+.branch-node.node-4 i {
+  background: #51a78d;
+}
+.branch-diagram.blue .branch-node.node-1 i,
+.branch-diagram.blue .branch-node.node-4 i {
+  background: #4f82df;
+}
+.branch-diagram.green .branch-node.node-1 i,
+.branch-diagram.green .branch-node.node-4 i {
+  background: #55a98f;
+}
+.branch-diagram-footer {
+  position: absolute;
+  right: 8px;
+  bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  color: #a1a8af;
+  font-size: 9px;
+}
+
+.branch-card h2 {
+  overflow: hidden;
+  margin: 12px 1px 6px;
+  color: #222831;
+  font-size: 17px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.branch-location {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #747d86;
+  font-size: 13px;
+}
+.branch-location svg {
+  flex: 0 0 auto;
+  color: #8d969f;
+}
+.branch-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 12px;
+  margin-top: 10px;
+  color: #68717a;
+  font-size: 11px;
+  text-transform: uppercase;
+}
+.branch-meta span {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+.branch-meta svg {
+  color: #777f88;
+}
+.branch-admin-assigned {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 12px;
+  color: var(--admin-primary);
+  font-size: 13px;
+  font-weight: 600;
+}
+.branch-admin-assigned > svg {
+  flex: 0 0 auto;
+}
+.branch-admin-assigned span {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.branch-admin-assigned small {
+  color: #89948c;
+  font-size: 9px;
+  font-weight: 650;
+  letter-spacing: 0.08em;
+}
+.branch-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 9px;
+  border-top: 1px solid #edf0f2;
+}
+.branch-services {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.branch-services i {
+  display: grid;
+  width: 23px;
+  height: 23px;
+  place-items: center;
+  border: 1px solid #e2e6ea;
+  border-radius: 50%;
+  background: #fff;
+  color: #5266d9;
+  font-style: normal;
+}
+.branch-services i:first-child {
+  color: var(--admin-primary);
+}
+.branch-preview-button {
+  display: inline-flex;
+  height: 29px;
+  align-items: center;
+  gap: 4px;
+  padding: 0 10px;
+  border: 1px solid var(--admin-primary);
+  border-radius: 18px;
+  background: var(--admin-primary);
+  color: #fff;
+  font-size: 11px;
+  cursor: default;
+  transition:
+    background 150ms ease,
+    border-color 150ms ease;
+}
+.branch-preview-button:hover {
+  border-color: var(--admin-primary-hover);
+  background: var(--admin-primary-hover);
+  cursor: pointer;
+}
+
+@media (max-width: 1100px) {
+  .branches-card-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .branches-page {
+    margin-top: 16px;
+  }
+  .branches-page-heading {
+    min-height: 76px;
+  }
+  .branches-card-grid {
+    gap: 10px;
+  }
+  .branch-card {
+    padding: 9px;
+  }
+  .branch-diagram {
+    height: 105px;
+  }
+}
+
+@media (max-width: 520px) {
+  .branches-card-grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .branch-diagram {
+    height: 130px;
+  }
+  .branches-description {
+    max-width: 230px;
+    line-height: 1.5;
+  }
+}

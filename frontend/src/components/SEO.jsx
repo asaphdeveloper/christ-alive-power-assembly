@@ -3,13 +3,15 @@ import { useLocation } from 'react-router';
 const pages = {
   '/': ['Christ Alive Power Assembly | Worship, Grow, Serve', 'Discover Christ Alive Power Assembly, our church branches, upcoming programs, and resources to grow in faith.'],
   '/admin/developer': ['Developer Admin | Christ Alive Power Assembly', 'Developer workspace for the Christ Alive Power Assembly website.'],
+  '/admin/developer/admins': ['Admins | Christ Alive Power Assembly', 'Manage the administrator directory for Christ Alive Power Assembly.'],
+  '/admin/developer/branches': ['Branches | Christ Alive Power Assembly', 'View and manage Christ Alive Power Assembly branches.'],
 };
 
 export function SEO() {
   const { pathname: routePath } = useLocation();
   const pathname = routePath.replace(/\/+$/, '') || '/';
   const [title, description] = pages[pathname] ?? ['Page not found | Christ Alive Power Assembly', 'This page could not be found. Return to Christ Alive Power Assembly to explore our church and resources.'];
-  const isAdmin = pathname === '/admin/developer';
+  const isAdmin = pathname.startsWith('/admin/developer');
   const siteUrl = import.meta.env.VITE_SITE_URL?.replace(/\/$/, '');
   const canonical = siteUrl && pages[pathname] ? `${siteUrl}${pathname}` : undefined;
   const image = siteUrl ? `${siteUrl}/images/slide-02-1280.webp` : undefined;

@@ -8,9 +8,14 @@ await build({ build: { ssr: 'src/prerender.jsx', outDir: '.prerender' } });
 const { render } = await import('../.prerender/prerender.js');
 const template = await readFile('dist/index.html', 'utf8');
 const manifest = JSON.parse(await readFile('dist/.vite/manifest.json', 'utf8'));
-const routes = { '/': 'public/HomePage/HomePage', '/admin/developer': 'Admin/AdminPortalPage', '/404': 'PageNotFound' };
-for (const [path, page] of Object.entries(routes)) {
-  const chunk = manifest[`src/pages/${page}.jsx`] ?? Object.values(manifest).find((entry) => entry.name === page.split('/').at(-1) && entry.isDynamicEntry);
+const routes = {
+  '/': ['public/HomePage/HomePage'],
+  '/admin/developer': ['Admin/AdminPortalPage', 'pages/Admin/developer/pages/admins/AdminsPage'],
+  '/admin/developer/admins': ['Admin/AdminPortalPage', 'pages/Admin/developer/pages/admins/AdminsPage'],
+  '/admin/developer/branches': ['Admin/AdminPortalPage', 'pages/Admin/developer/pages/branches/BranchesPage'],
+  '/404': ['PageNotFound'],
+};
+for (const [path, pages] of Object.entries(routes)) {
   const styles = new Set();
   const visited = new Set();
   const collect = (entry) => {
@@ -20,7 +25,10 @@ for (const [path, page] of Object.entries(routes)) {
     entry?.imports?.forEach((key) => collect(manifest[key]));
     entry.dynamicImports?.filter((key) => key.endsWith('/ResourcesSection.jsx')).forEach((key) => collect(manifest[key]));
   };
-  collect(chunk);
+  for (const page of pages) {
+    const chunk = manifest[`src/pages/${page}.jsx`] ?? manifest[`src/${page}.jsx`] ?? Object.values(manifest).find((entry) => entry.name === page.split('/').at(-1) && entry.isDynamicEntry);
+    collect(chunk);
+  }
   collect(manifest['src/main.jsx']);
   const criticalCSS = (await Promise.all([...styles].map((css) => readFile(`dist/${css}`, 'utf8')))).join('\n');
   let pageTemplate = template.replace(/<link[^>]*rel="stylesheet"[^>]*>/g, '');

@@ -1,5 +1,6 @@
 import { AdminLayout } from './AdminLayout';
+import { Outlet } from 'react-router';
 
 export function AdminPortalPage() {
-  return <AdminLayout />;
+  return <AdminLayout><Outlet /></AdminLayout>;
 }

@@ -6,6 +6,8 @@ import './App.css';
 
 const HomePage = lazy(() => import('./pages/public/HomePage/HomePage').then((module) => ({ default: module.HomePage })));
 const AdminPortalPage = lazy(() => import('./pages/Admin/AdminPortalPage').then((module) => ({ default: module.AdminPortalPage })));
+const AdminsPage = lazy(() => import('./pages/Admin/developer/pages/admins/AdminsPage').then((module) => ({ default: module.AdminsPage })));
+const BranchesPage = lazy(() => import('./pages/Admin/developer/pages/branches/BranchesPage').then((module) => ({ default: module.BranchesPage })));
 const PageNotFound = lazy(() => import('./pages/PageNotFound').then((module) => ({ default: module.PageNotFound })));
 
 function App() {
@@ -17,7 +19,11 @@ function App() {
       <Suspense fallback={<main id="main-content" tabIndex={-1} aria-busy="true" className="route-loading"><span className="sr-only">Loading page…</span></main>}>
         <Routes>
           <Route index element={<HomePage />} />
-          <Route path="admin/developer" element={<AdminPortalPage />} />
+          <Route path="admin/developer" element={<AdminPortalPage />}>
+            <Route index element={<AdminsPage />} />
+            <Route path="admins" element={<AdminsPage />} />
+            <Route path="branches" element={<BranchesPage />} />
+          </Route>
           <Route path='*' element={<PageNotFound />} />
         </Routes>
       </Suspense>
