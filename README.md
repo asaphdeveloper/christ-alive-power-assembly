@@ -28,3 +28,5 @@ I want to build the admin pages. For now, I want to build just the front-end par
 switch to Bricolage Grotesque. make sure it supports increasing and redcing the font weight and remove all old unused font and their code
 
 remove branch-admin-assigned and place branch-admin-contact on same row
+
+add a visitors sidebar item for visitors page:

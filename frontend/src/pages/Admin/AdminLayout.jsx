@@ -4,7 +4,6 @@ import {
   Landmark,
   LayoutDashboard,
   MapPinned,
-  Upload,
   Users,
   Video,
   Wrench,
@@ -47,7 +46,7 @@ const generalOverseerNavItems = [
 ];
 
 const branchMediaAdminNavItems = [
-  { label: 'Overview', to: '/admin/branch-media-admin', icon: LayoutDashboard },
+  { label: 'Media resources', to: '/admin/branch-media-admin', icon: LayoutDashboard },
   { label: 'Developer workspace', to: '/admin/developer', icon: Wrench },
   { label: 'Public website', to: '/', icon: ExternalLink },
 ];
@@ -59,8 +58,7 @@ const branchFinanceSecretaryNavItems = [
 ];
 
 const headquaterMediaAdminNavItems = [
-  { label: 'Overview', to: '/admin/headquater-media-admin', icon: LayoutDashboard },
-  { label: 'Upload documents', to: '/admin/headquater-media-admin/documents', icon: Upload },
+  { label: 'Media resources', to: '/admin/headquater-media-admin', icon: LayoutDashboard },
   { label: 'Developer workspace', to: '/admin/developer', icon: Wrench },
   { label: 'Public website', to: '/', icon: ExternalLink },
 ];
