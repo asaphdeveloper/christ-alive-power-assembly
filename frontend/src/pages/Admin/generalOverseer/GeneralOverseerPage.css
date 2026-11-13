@@ -27,7 +27,7 @@
 .go-overview-card {
   display: grid;
   min-width: 0;
-  min-height: 142px;
+  min-height: 150px;
   grid-template-columns: 46px minmax(0, 1fr) 36px;
   align-items: start;
   gap: 15px;
@@ -46,11 +46,11 @@
 }
 .go-overview-icon {
   display: grid;
-  width: 46px;
-  height: 46px;
+  width: 45px;
+  height: 45px;
   place-items: center;
   border: 1px solid #e2eee6;
-  border-radius: 13px;
+  border-radius: 12px;
   background: linear-gradient(145deg, #f1f8f3, #e8f2eb);
   color: var(--admin-primary);
 }
@@ -81,7 +81,10 @@
   background: #fff;
   color: var(--admin-primary);
   text-decoration: none;
-  transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
+  transition:
+    background 150ms ease,
+    border-color 150ms ease,
+    transform 150ms ease;
 }
 .go-overview-card > a:hover {
   transform: translateX(2px);
