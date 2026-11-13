@@ -28,7 +28,6 @@ export const login = async (req, res, next) => {
     next(err);
   }
 };
-
 export const authenticate = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
@@ -111,21 +110,6 @@ export const resetPassword = async (req, res, next) => {
     await admin.save();
 
     res.status(200).json({ status: 'success', token: signToken(admin._id), message: 'Password reset successful' });
-  } catch (err) {
-    next(err);
-  }
-};
-
-export const updatePassword = async (req, res, next) => {
-  try {
-    const admin = await Admin.findById(req.admin.id).select('+password');
-    const isCorrect = await admin.comparePasswords(req.body.password, admin.password);
-    if (!isCorrect) return next(new AppError('Incorrect password', 401));
-
-    admin.password = req.body.newPassword;
-    admin.passwordConfirm = req.body.newPasswordConfirm;
-    await admin.save();
-    res.status(200).json({ status: 'success', token: signToken(admin._id), message: 'Password update successful' });
   } catch (err) {
     next(err);
   }

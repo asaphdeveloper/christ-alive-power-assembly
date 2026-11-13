@@ -26,3 +26,16 @@ router.get(
   authController.restrictTo('developer'),
   adminController.getAdminWorkspace('developer'),
 );
+
+router
+  .route('/')
+  .all(authController.restrictTo('developer'))
+  .get(adminController.getAllAdmins)
+  .post(adminController.createAdmin);
+
+router
+  .route('/:id')
+  .all(authController.restrictTo('developer'))
+  .get(adminController.getAdmin)
+  .patch(adminController.updateAdmin)
+  .delete(adminController.deleteAdmin);
