@@ -7,6 +7,7 @@ export function AdminSidebar({
   navItems,
   homeTo,
   homeLabel,
+  brandName,
   navigationLabel,
   profileName,
   profileDescription,
@@ -17,7 +18,7 @@ export function AdminSidebar({
       <div className='admin-sidebar-heading'>
         <Link className='admin-brand' to={homeTo} aria-label={homeLabel}>
           <img src={Logo} alt='' />
-          <span>CAPA</span>
+          <span>{brandName}</span>
         </Link>
       </div>
 

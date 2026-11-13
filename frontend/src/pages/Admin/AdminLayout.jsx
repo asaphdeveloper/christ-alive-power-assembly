@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import {
+  ClipboardCheck,
   ExternalLink,
   Landmark,
   LayoutDashboard,
@@ -47,6 +48,7 @@ const generalOverseerNavItems = [
 
 const branchMediaAdminNavItems = [
   { label: 'Media resources', to: '/admin/branch-media-admin', icon: LayoutDashboard },
+  { label: 'Attendance', to: '/admin/branch-media-admin/attendance', icon: ClipboardCheck },
   { label: 'Developer workspace', to: '/admin/developer', icon: Wrench },
   { label: 'Public website', to: '/', icon: ExternalLink },
 ];
@@ -78,6 +80,7 @@ const workspaces = {
     navItems: branchMediaAdminNavItems,
     homeTo: '/admin/branch-media-admin',
     profileName: 'Branch Media Admin',
+    brandName: 'CAPA BAUCHI',
   },
   'branch-finance-secretary': {
     navItems: branchFinanceSecretaryNavItems,
@@ -98,7 +101,7 @@ export function AdminLayout({
 }) {
   const { pathname } = useLocation();
   const [collapsed, setCollapsed] = useState(false);
-  const { navItems, homeTo, profileName } = workspaces[workspace] ?? workspaces.developer;
+  const { navItems, homeTo, profileName, brandName = 'CAPA BAUCHI' } = workspaces[workspace] ?? workspaces.developer;
   const currentPage =
     navItems.find((item) => item.to === pathname)?.label ?? pageTitle;
 
@@ -108,6 +111,7 @@ export function AdminLayout({
         navItems={navItems}
         homeTo={homeTo}
         homeLabel={`${profileName} workspace home`}
+        brandName={brandName}
         navigationLabel={`${profileName} workspace navigation`}
         profileName={profileName}
         profileDescription='Workspace access'

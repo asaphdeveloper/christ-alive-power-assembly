@@ -1,0 +1,42 @@
+[
+  {
+    "branch": "Bauchi Branch",
+    "serviceDate": "2026-11-09",
+    "serviceDay": "Monday",
+    "men": 18,
+    "women": 26,
+    "youth": 12,
+    "children": 9,
+    "status": "Delivered"
+  },
+  {
+    "branch": "Bauchi Branch",
+    "serviceDate": "2026-11-11",
+    "serviceDay": "Wednesday",
+    "men": 24,
+    "women": 33,
+    "youth": 17,
+    "children": 13,
+    "status": "Delivered"
+  },
+  {
+    "branch": "Bauchi Branch",
+    "serviceDate": "2026-11-13",
+    "serviceDay": "Friday",
+    "men": 21,
+    "women": 29,
+    "youth": 15,
+    "children": 11,
+    "status": "Pending"
+  },
+  {
+    "branch": "Bauchi Branch",
+    "serviceDate": "2026-11-15",
+    "serviceDay": "Sunday",
+    "men": 42,
+    "women": 58,
+    "youth": 31,
+    "children": 24,
+    "status": "Pending"
+  }
+]
