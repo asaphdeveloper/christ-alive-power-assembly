@@ -1,0 +1,30 @@
+[
+  {
+    "name": "Headquater Media Admin",
+    "email": "headquater-media-admin@christalivepowerassembly.org",
+    "role": "headquater-media-admin",
+    "password": "password123",
+    "passwordConfirm": "password123"
+  },
+  {
+    "name": "Jos Media Admin",
+    "email": "jos-media-admin@christalivepowerassembly.org",
+    "role": "jos-media-admin",
+    "password": "password123",
+    "passwordConfirm": "password123"
+  },
+  {
+    "name": "General Overseer",
+    "email": "general-overseer@christalivepowerassembly.org",
+    "role": "general-overseer",
+    "password": "password123",
+    "passwordConfirm": "password123"
+  },
+  {
+    "name": "Developer",
+    "email": "developer@christalivepowerassembly.org",
+    "role": "developer",
+    "password": "password123",
+    "passwordConfirm": "password123"
+  }
+]

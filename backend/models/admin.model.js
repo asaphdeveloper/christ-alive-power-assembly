@@ -3,7 +3,14 @@ import validator from 'validator';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 
-const userSchema = new mongoose.Schema(
+export const ADMIN_ROLES = [
+  'headquater-media-admin',
+  'jos-media-admin',
+  'general-overseer',
+  'developer',
+];
+
+const adminSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -12,7 +19,6 @@ const userSchema = new mongoose.Schema(
       minlength: 3,
       maxlength: 50,
     },
-
     email: {
       type: String,
       required: [true, 'Please provide your email'],
@@ -20,23 +26,20 @@ const userSchema = new mongoose.Schema(
       lowercase: true,
       validate: [validator.isEmail, 'Please provide a valid email'],
     },
-
     role: {
       type: String,
       enum: {
-        values: ['user', 'admin',],
-        message: 'Role must be either user or admin',
+        values: ADMIN_ROLES,
+        message: 'Role must be one of the supported admin roles',
       },
-      default: 'user',
+      required: [true, 'Please provide an admin role'],
     },
-
     password: {
       type: String,
       required: [true, 'Please provide a password'],
       minlength: 8,
       select: false,
     },
-
     passwordConfirm: {
       type: String,
       required: [true, 'Please confirm your password'],
@@ -47,66 +50,45 @@ const userSchema = new mongoose.Schema(
         message: 'Passwords are not the same',
       },
     },
-
-    passwordChangedAt: {
-      type: Date,
-    },
-
-    passwordResetToken: {
-      type: String,
-    },
-    passwordResetExpires: {
-      type: String,
-    },
+    passwordChangedAt: Date,
+    passwordResetToken: String,
+    passwordResetExpires: String,
   },
-  {
-    timestamps: true,
-  },
+  { timestamps: true },
 );
 
-userSchema.pre('save', async function () {
+adminSchema.pre('save', async function () {
   if (this.isModified('password')) {
     this.password = await bcrypt.hash(this.password, 12);
   }
-
   this.passwordConfirm = undefined;
 });
 
-userSchema.pre('findOneAndUpdate', async function () {
+adminSchema.pre('findOneAndUpdate', async function () {
   const update = this.getUpdate();
-
   if (update.password) {
     this.set({ passwordChangedAt: Date.now() - 1000 });
   }
 });
 
-userSchema.methods.comparePasswords = async function (password, savedPassword) {
-  return await bcrypt.compare(password, savedPassword);
+adminSchema.methods.comparePasswords = async function (password, savedPassword) {
+  return bcrypt.compare(password, savedPassword);
 };
 
-userSchema.methods.passwordChangedAfter = function (issuedTimestamp) {
-  if (this.passwordChangedAt) {
-    const changedTimestamp = parseInt(
-      this.passwordChangedAt.getTime() / 1000,
-      10,
-    );
-
-    return changedTimestamp > issuedTimestamp;
-  }
-
-  return false;
+adminSchema.methods.passwordChangedAfter = function (issuedTimestamp) {
+  if (!this.passwordChangedAt) return false;
+  const changedTimestamp = parseInt(this.passwordChangedAt.getTime() / 1000, 10);
+  return changedTimestamp > issuedTimestamp;
 };
 
-userSchema.methods.hashPasswordResetToken = function (resetToken) {
-  const hashedResetToken = crypto
+adminSchema.methods.hashPasswordResetToken = function (resetToken) {
+  this.passwordResetToken = crypto
     .createHash('sha256')
     .update(resetToken)
     .digest('hex');
-
-  this.passwordResetToken = hashedResetToken;
   this.passwordResetExpires = Date.now() + 10 * 60 * 1000;
 };
 
-const User = mongoose.model('User', userSchema);
+const Admin = mongoose.model('Admin', adminSchema);
 
-export default User;
+export default Admin;

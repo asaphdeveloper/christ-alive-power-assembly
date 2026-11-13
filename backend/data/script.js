@@ -1,7 +1,7 @@
 import dotenv from 'dotenv';
 dotenv.config({ path: './.env' });
 import { connectDatabase } from '../config/database.js';
-import User from '../models/user.model.js';
+import Admin from '../models/admin.model.js';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -11,16 +11,17 @@ const __dirname = path.dirname(__filename);
 
 await connectDatabase();
 
-const users = JSON.parse(
-  await fs.readFile(`${__dirname}/users.json`, 'utf-8'),
+const admins = JSON.parse(
+  await fs.readFile(`${__dirname}/admins.json`, 'utf-8'),
 );
 
-const importAll = async () => {
+const importAdmins = async () => {
   try {
-    await User.deleteMany();
-    await User.insertMany(users);
+    await Admin.deleteMany();
+    await Admin.insertMany(admins);
 
-    console.log('All Data Imported!');
+
+    console.log('Admins Data Imported!');
     process.exit();
   } catch (error) {
     console.error(`Error: ${error}`);
@@ -28,11 +29,11 @@ const importAll = async () => {
   }
 };
 
-const deleteAll = async () => {
+const deleteAdmins = async () => {
   try {
-    await User.deleteMany();
+    await Admin.deleteMany();
 
-    console.log('All Deleted!');
+    console.log('Admins Data Deleted!');
     process.exit();
   } catch (error) {
     console.error(`Error: ${error}`);
@@ -40,38 +41,8 @@ const deleteAll = async () => {
   }
 };
 
-const importUsers = async () => {
-  try {
-    await User.deleteMany();
-    await User.insertMany(users);
-
-
-    console.log('Users Data Imported!');
-    process.exit();
-  } catch (error) {
-    console.error(`Error: ${error}`);
-    process.exit(1);
-  }
-};
-
-const deleteUsers = async () => {
-  try {
-    await User.deleteMany();
-
-    console.log('Users Data Deleted!');
-    process.exit();
-  } catch (error) {
-    console.error(`Error: ${error}`);
-    process.exit(1);
-  }
-};
-
-if (process.argv[2] === '-i-u') {
-  importUsers();
-} else if (process.argv[2] === '-d-u') {
-  deleteUsers();
-} else if (process.argv[2] === '-i-a') {
-  importAll();
+if (process.argv[2] === '-i-a') {
+  importAdmins();
 } else if (process.argv[2] === '-d-a') {
-  deleteAll();
+  deleteAdmins();
 }
