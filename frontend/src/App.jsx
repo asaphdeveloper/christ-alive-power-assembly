@@ -7,6 +7,8 @@ import './App.css';
 const HomePage = lazy(() => import('./pages/public/HomePage/HomePage').then((module) => ({ default: module.HomePage })));
 const AdminPortalPage = lazy(() => import('./pages/Admin/AdminPortalPage').then((module) => ({ default: module.AdminPortalPage })));
 const GeneralOverseerPage = lazy(() => import('./pages/Admin/generalOverseer/GeneralOverseerPage').then((module) => ({ default: module.GeneralOverseerPage })));
+const GeneralOverseerAttendancePage = lazy(() => import('./pages/Admin/generalOverseer/attendance/AttendancePage').then((module) => ({ default: module.GeneralOverseerAttendancePage })));
+const GeneralOverseerFinancePage = lazy(() => import('./pages/Admin/generalOverseer/finance/FinancePage').then((module) => ({ default: module.GeneralOverseerFinancePage })));
 const BranchMediaAdminPage = lazy(() => import('./pages/Admin/branchMediaAdmin/BranchMediaAdminPage').then((module) => ({ default: module.BranchMediaAdminPage })));
 const AttendancePage = lazy(() => import('./pages/Admin/branchMediaAdmin/attendancePage').then((module) => ({ default: module.AttendancePage })));
 const BranchFinanceSecretaryPage = lazy(() => import('./pages/Admin/branchFinanceSecretary/BranchFinanceSecretaryPage').then((module) => ({ default: module.BranchFinanceSecretaryPage })));
@@ -31,6 +33,8 @@ function App() {
             <Route path="branches" element={<BranchesPage />} />
           </Route>
           <Route path="admin/general-overseer" element={<GeneralOverseerPage />} />
+          <Route path="admin/general-overseer/attendance" element={<GeneralOverseerAttendancePage />} />
+          <Route path="admin/general-overseer/finance" element={<GeneralOverseerFinancePage />} />
           <Route path="admin/branch-media-admin" element={<BranchMediaAdminPage />} />
           <Route path="admin/branch-media-admin/attendance" element={<AttendancePage user={{ name: 'Branch Media Admin', branch: 'Bauchi Branch' }} />} />
           <Route path="admin/branch-finance-secretary" element={<BranchFinanceSecretaryPage />} />

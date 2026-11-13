@@ -14,7 +14,7 @@ i want the following admins:
 - role: branch pastor
 - role:
 
-i want diffrent dashboard pages for diffrent admins the admins include:
+i want diffrent dashboard pages for diffrent admins the admins include:mo
 
 - general overseer
 - headquater church admin
@@ -30,3 +30,5 @@ switch to Bricolage Grotesque. make sure it supports increasing and redcing the 
 remove branch-admin-assigned and place branch-admin-contact on same row
 
 add a visitors sidebar item for visitors page:
+
+i want to be able to see those that havent sent theirs

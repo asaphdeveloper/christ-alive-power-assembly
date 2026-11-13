@@ -1,0 +1,590 @@
+.general-overseer-page {
+  display: grid;
+  gap: 12px;
+  min-height: calc(100svh - 92px);
+  margin-top: 18px;
+  padding-bottom: 32px;
+  color: #17231e;
+}
+
+.general-overseer-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 6px 0 2px;
+  margin-bottom: 20px;
+}
+.general-overseer-heading-copy {
+  min-width: 0;
+}
+.general-overseer-heading h1 {
+  font-size: 27px;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+.general-overseer-heading-copy > p {
+  margin-top: 6px;
+  color: #77837b;
+  font-size: 14px;
+}
+
+.go-attendance-controls {
+  display: grid;
+  grid-template-columns: repeat(3, max-content) max-content;
+  align-items: center;
+  justify-content: end;
+  width: auto;
+  max-width: 100%;
+  flex: 0 0 auto;
+  column-gap: 8px;
+}
+.go-filter-control {
+  position: relative;
+  width: max-content;
+}
+.admin-shell .go-filter-button {
+  display: inline-flex;
+  width: max-content;
+  min-height: 36px;
+  min-width: max-content;
+  align-items: center;
+  justify-content: space-between;
+  gap: 9px;
+  padding: 0 12px;
+  border: 1px solid #dfe3e7;
+  border-radius: 8px;
+  background: #fff;
+  color: #363d44;
+  font: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.admin-shell .go-filter-button span {
+  color: #65736a;
+}
+.admin-shell .go-filter-button[aria-expanded='true'] span {
+  color: #363d44;
+}
+.admin-shell .go-filter-button:not(:disabled):hover {
+  border-color: #cbd3d8;
+  background: #fff;
+  filter: none;
+}
+.admin-shell .go-filter-button:not(:disabled):active {
+  transform: none;
+}
+.go-filter-button svg {
+  flex: 0 0 auto;
+  color: #758078;
+}
+.go-filter-menu {
+  position: absolute;
+  z-index: 30;
+  top: calc(100% + 6px);
+  right: 0;
+  width: 220px;
+  max-height: 260px;
+  overflow-y: auto;
+  padding: 5px;
+  border: 1px solid #e0e5e2;
+  border-radius: 9px;
+  background: #fff;
+  box-shadow: 0 12px 28px rgba(25, 43, 33, 0.12);
+}
+.admin-shell .go-filter-option {
+  display: flex;
+  width: 100%;
+  min-height: 34px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 6px;
+  background: #fff;
+  color: #3f4943;
+  text-align: left;
+  font: inherit;
+  font-size: 14px;
+  cursor: pointer;
+}
+.admin-shell .go-filter-option:not(:disabled):hover {
+  background: #f4f7f5;
+  filter: none;
+}
+.admin-shell .go-filter-option.is-selected {
+  background: var(--admin-primary-soft);
+  color: var(--admin-primary);
+}
+.go-filter-option svg {
+  flex: 0 0 auto;
+}
+.admin-shell .go-filter-reset {
+  display: inline-flex;
+  min-height: 36px;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 0 8px;
+  border: 1px solid transparent;
+  border-radius: 8px;
+  background: transparent;
+  color: #65736a;
+  font: inherit;
+  font-size: 14px;
+  white-space: nowrap;
+  cursor: pointer;
+}
+.admin-shell .go-filter-reset:not(:disabled):hover {
+  border-color: #dfe7e2;
+  background: #f4f7f5;
+  color: #087f5b;
+  filter: none;
+}
+.admin-shell .go-filter-reset:not(:disabled):active {
+  transform: none;
+}
+.go-select-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+.go-select-wrap select {
+  width: 100%;
+  height: 40px;
+  appearance: none;
+  padding: 0 34px 0 11px;
+  border: 1px solid #dce4df;
+  border-radius: 8px;
+  background: #fff;
+  color: #26352d;
+  font: inherit;
+  font-size: 14px;
+}
+.go-select-wrap svg {
+  position: absolute;
+  right: 10px;
+  color: #7b8981;
+  pointer-events: none;
+}
+
+.go-attendance-kpis {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 10px;
+}
+.go-attendance-kpi {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 9px minmax(0, 1fr);
+  align-content: start;
+  column-gap: 8px;
+  row-gap: 10px;
+  padding: 14px;
+  border: 1px solid #e3e9e5;
+  border-radius: 11px;
+  background: #fff;
+}
+.go-kpi-dot {
+  width: 8px;
+  height: 8px;
+  margin-top: 3px;
+  border-radius: 50%;
+}
+.go-attendance-kpi > span:nth-child(2) {
+  overflow: hidden;
+  color: #647168;
+  font-size: 11px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-transform: uppercase;
+}
+.go-attendance-kpi strong {
+  grid-column: 2;
+  color: #203128;
+  font-size: 22px;
+  font-weight: 750;
+}
+.go-attendance-kpi small {
+  grid-column: 2;
+  overflow: hidden;
+  color: #647168;
+  font-size: 12px;
+  text-transform: uppercase;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.go-attendance-chart-card {
+  min-width: 0;
+  padding: 20px 10px 5px;
+  border: 1px solid #e3e9e5;
+  border-radius: 12px;
+  background: #fff;
+}
+.go-attendance-chart-card > header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+  padding: 0 8px;
+}
+.go-attendance-chart-card > header > div > span {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 7px;
+  color: #698174;
+  font-size: 12px;
+  font-weight: 600;
+}
+.go-attendance-chart-card > header > div > span svg {
+  color: #087f5b;
+}
+.go-trend-heading > div {
+  display: grid;
+  width: 100%;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+}
+.go-trend-heading > div > span,
+.go-trend-heading > div > h2 {
+  grid-column: 1;
+}
+.go-trend-heading > div > span {
+  grid-row: 1;
+}
+.go-trend-heading > div > h2 {
+  grid-row: 2;
+}
+.go-trend-heading > div > p {
+  grid-column: 2;
+  grid-row: 1;
+  align-self: start;
+  margin: 0;
+  text-align: right;
+}
+.go-attendance-chart-card h2 {
+  color: #26352d;
+  font-size: 16px;
+  font-weight: 700;
+}
+.go-attendance-chart-card > header p {
+  margin-top: 4px;
+  color: #7c8981;
+  font-size: 14px;
+}
+.go-chart-record-count {
+  color: #839087;
+  font-size: 14px;
+  white-space: nowrap;
+}
+.go-line-chart-wrap {
+  position: relative;
+  width: 100%;
+  height: 280px;
+}
+.go-expression-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.go-report-comparison-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  align-items: stretch;
+  gap: 12px;
+}
+.go-report-comparison-row > .go-attendance-chart-card {
+  min-width: 0;
+}
+.go-expression-card {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+  padding: 13px 14px;
+  border: 1px solid #e6ebe8;
+  border-radius: 9px;
+  background: #fbfcfb;
+}
+.go-expression-card-name {
+  overflow: hidden;
+  color: #5d6c63;
+  font-size: 14px;
+  font-weight: 650;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.go-expression-card strong {
+  color: #203128;
+  font-size: 22px;
+  font-weight: 750;
+}
+.go-expression-card small {
+  color: #89948d;
+  font-size: 14px;
+}
+.go-received-reports {
+  min-width: 0;
+}
+.go-received-heading {
+  align-items: center !important;
+}
+.go-received-heading > div > span {
+  font-size: 12px;
+}
+.go-received-controls {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  gap: 12px;
+}
+.go-received-service-control {
+  width: max-content;
+}
+.go-received-service-control .go-filter-menu {
+  width: 250px;
+}
+.go-received-expression-cell {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: #46544b;
+}
+.go-received-expression-cell svg {
+  flex: 0 0 auto;
+  color: #43845a;
+}
+.go-received-expression-cell.is-awaiting svg {
+  color: #c4474e;
+}
+.go-received-table-wrap {
+  width: calc(100% + 20px);
+  margin-inline: -10px;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+}
+.go-received-table {
+  width: 100%;
+  min-width: 900px;
+  border-collapse: collapse;
+  color: #46544b;
+  font-size: 14px;
+  text-align: left;
+}
+.go-received-table th,
+.go-received-table td {
+  padding: 11px 10px;
+  border-bottom: 1px solid #edf1ee;
+  white-space: nowrap;
+}
+.go-received-table th {
+  background: #f8faf9;
+  color: #718078;
+  font-size: 14px;
+  font-weight: 750;
+}
+.go-received-table thead th {
+  border-bottom-color: #d9dfdb;
+  background: #e9edeb;
+  color: #536159;
+}
+.go-table-heading {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.go-table-heading svg {
+  flex: 0 0 auto;
+  color: #78877e;
+}
+.go-received-service-group + .go-received-service-group {
+  border-top: 1px solid #dfe7e2;
+}
+.go-received-table .go-received-service-title th {
+  padding: 13px 10px 8px;
+  border-bottom: 0;
+  background: #fff;
+  color: #26352d;
+  font-size: 14px;
+}
+.go-received-service-title th > span {
+  font-weight: 750;
+}
+.go-received-service-title small {
+  margin-left: 10px;
+  color: #7c8981;
+  font-size: 12px;
+  font-weight: 500;
+}
+.go-received-table .go-received-category-row th {
+  padding-block: 7px;
+  background: #f5f8f6;
+  color: #66766d;
+  font-size: 12px;
+  font-weight: 700;
+}
+.go-received-category-row th > svg {
+  margin-right: 5px;
+  vertical-align: -3px;
+}
+.go-received-category-row th span {
+  display: inline-grid;
+  min-width: 20px;
+  height: 20px;
+  place-items: center;
+  margin-left: 5px;
+  padding-inline: 5px;
+  border-radius: 999px;
+  background: #e7efe9;
+  color: #42634f;
+  font-size: 11px;
+}
+.go-received-category-row.is-awaiting th {
+  background: #fff4f4;
+  color: #a63840;
+}
+.go-received-category-row.is-awaiting th span {
+  background: #f9dfe1;
+  color: #a63840;
+}
+.go-received-pending-row td {
+  color: #7b817d;
+}
+.go-received-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+.go-received-total {
+  color: #203128;
+  font-weight: 750;
+}
+.go-report-status {
+  display: inline-flex;
+  min-height: 26px;
+  align-items: center;
+  gap: 5px;
+  padding: 0 9px;
+  border-radius: 20px;
+  background: #edf7f0;
+  color: #39764c;
+  font-size: 14px;
+  font-weight: 700;
+}
+.go-report-status.is-pending {
+  background: #fff0f0;
+  color: #b23b43;
+}
+.go-chart-empty {
+  display: grid;
+  min-height: 200px;
+  place-items: center;
+  color: #7c8981;
+  font-size: 14px;
+}
+
+@media (max-width: 1050px) {
+  .go-attendance-kpis {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+  .go-report-comparison-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+@media (max-width: 760px) {
+  .general-overseer-page {
+    gap: 12px;
+    margin-top: 12px;
+  }
+  .general-overseer-heading {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .general-overseer-heading h1 {
+    font-size: 24px;
+  }
+  .go-attendance-controls {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    width: 100%;
+    gap: 8px;
+  }
+  .admin-shell .go-filter-reset {
+    justify-content: flex-start;
+  }
+  .go-trend-heading {
+    flex-direction: column;
+  }
+  .go-trend-heading > div {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .go-trend-heading > div > p {
+    grid-column: 2;
+    grid-row: 1;
+    margin-top: 0;
+    text-align: right;
+  }
+  .go-attendance-kpis {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+  .go-attendance-kpi {
+    padding: 11px;
+  }
+  .go-attendance-kpi strong {
+    font-size: 20px;
+  }
+  .go-attendance-chart-card {
+    padding: 14px 12px 12px;
+  }
+  .go-received-table-wrap {
+    width: calc(100% + 24px);
+    margin-inline: -12px;
+  }
+  .go-line-chart-wrap {
+    height: 245px;
+  }
+  .go-received-heading {
+    align-items: flex-start !important;
+  }
+  .go-received-controls {
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 6px;
+  }
+  .go-received-service-control .go-filter-button {
+    max-width: min(250px, 48vw);
+  }
+  .go-expression-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 400px) {
+  .go-attendance-kpis {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .go-attendance-kpi {
+    grid-template-columns: 9px minmax(0, 1fr) auto;
+    align-items: center;
+  }
+  .go-attendance-kpi strong {
+    grid-column: 3;
+    grid-row: 1 / 3;
+  }
+  .go-attendance-kpi small {
+    grid-column: 2;
+  }
+  .go-chart-record-count {
+    max-width: 80px;
+    white-space: normal;
+    text-align: right;
+  }
+  .go-expression-cards {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}

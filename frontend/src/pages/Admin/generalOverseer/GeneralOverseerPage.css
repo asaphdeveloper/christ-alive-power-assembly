@@ -1,83 +1,143 @@
-.general-overseer-page {
+.go-overview-page {
   min-height: calc(100svh - 92px);
-  margin-top: 24px;
-  padding-bottom: 32px;
+  margin-top: 14px;
+  padding-bottom: 28px;
   color: #17231e;
 }
-
-.general-overseer-heading {
-  padding: 22px 0 28px;
+.go-overview-heading {
+  padding: 8px 0 4px;
+  margin-bottom: 20px;
 }
-.general-overseer-kicker {
-  margin-bottom: 9px;
-  color: #7c8981;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.11em;
+.go-overview-heading h1 {
+  color: #1d2b23;
+  font-size: 27px;
+  font-weight: 700;
+  letter-spacing: -0.035em;
 }
-.general-overseer-heading h1 {
-  font-size: 30px;
-  font-weight: 600;
-  letter-spacing: -0.03em;
-}
-.general-overseer-heading > p:last-child {
-  margin-top: 8px;
+.go-overview-heading p {
+  margin-top: 5px;
   color: #77837b;
-  font-size: 14px;
+  font-size: 13px;
 }
-
-.general-overseer-links {
+.go-overview-links {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
 }
-.general-overseer-card {
+.go-overview-card {
+  display: grid;
   min-width: 0;
+  min-height: 142px;
+  grid-template-columns: 46px minmax(0, 1fr) 36px;
+  align-items: start;
+  gap: 15px;
   padding: 20px;
-  border: 1px solid #e3e9e5;
-  border-radius: 12px;
-  background: #fff;
-  transition: border-color 150ms ease, background 150ms ease;
+  border: 1px solid #e5ebe7;
+  border-radius: 15px;
+  background: linear-gradient(145deg, #fff 0%, #fbfdfb 100%);
+  transition:
+    border-color 150ms ease,
+    box-shadow 150ms ease,
+    transform 150ms ease;
 }
-.general-overseer-card:hover {
-  border-color: #c2d8ca;
-  background: #fdfefd;
+.go-overview-card:hover {
+  transform: translateY(-2px);
+  border-color: #bfd3c6;
 }
-.general-overseer-icon {
+.go-overview-icon {
   display: grid;
-  width: 40px;
-  height: 40px;
+  width: 46px;
+  height: 46px;
   place-items: center;
-  border-radius: 9px;
-  background: var(--admin-primary-soft);
+  border: 1px solid #e2eee6;
+  border-radius: 13px;
+  background: linear-gradient(145deg, #f1f8f3, #e8f2eb);
   color: var(--admin-primary);
 }
-.general-overseer-card h2 {
-  margin-top: 18px;
+.go-overview-copy {
+  min-width: 0;
+  padding-top: 2px;
+}
+.go-overview-copy h2 {
   color: #253129;
-  font-size: 17px;
-  font-weight: 600;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: -0.015em;
 }
-.general-overseer-card p {
-  margin-top: 6px;
-  color: #77837b;
+.go-overview-copy p {
+  max-width: 38ch;
+  margin-top: 7px;
+  color: #6f7d74;
   font-size: 13px;
-  line-height: 1.5;
+  line-height: 1.55;
 }
-.general-overseer-card a {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  margin-top: 18px;
+.go-overview-card > a {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  place-items: center;
+  border: 1px solid #e5ebe7;
+  border-radius: 10px;
+  background: #fff;
   color: var(--admin-primary);
-  font-size: 13px;
-  font-weight: 600;
   text-decoration: none;
+  transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
 }
-.general-overseer-card a:hover { color: var(--admin-primary-hover); }
-
+.go-overview-card > a:hover {
+  transform: translateX(2px);
+  border-color: #c5d8cb;
+  background: #f1f8f3;
+}
+.go-overview-card > a:focus-visible {
+  outline: 3px solid rgba(42, 111, 68, 0.22);
+  outline-offset: 2px;
+}
 @media (max-width: 760px) {
-  .general-overseer-heading h1 { font-size: 26px; }
-  .general-overseer-links { grid-template-columns: minmax(0, 1fr); gap: 11px; }
-  .general-overseer-card { padding: 16px; }
+  .go-overview-page {
+    gap: 11px;
+    margin-top: 10px;
+  }
+  .go-overview-heading h1 {
+    font-size: 23px;
+  }
+  .go-overview-links {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 9px;
+  }
+  .go-overview-card {
+    min-height: 100px;
+    grid-template-columns: 42px minmax(0, 1fr) 32px;
+    gap: 12px;
+    padding: 14px;
+    border-radius: 13px;
+  }
+  .go-overview-icon {
+    width: 42px;
+    height: 42px;
+    border-radius: 11px;
+  }
+  .go-overview-copy h2 {
+    font-size: 15px;
+  }
+  .go-overview-copy p {
+    margin-top: 4px;
+    font-size: 12px;
+  }
+  .go-overview-card > a {
+    width: 32px;
+    height: 32px;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 1100px) {
+  .go-overview-links {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .go-overview-card,
+  .go-overview-card > a {
+    transition-duration: 0.01ms;
+  }
 }

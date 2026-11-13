@@ -65,13 +65,13 @@
     "adminEmail": "ruth@capa.org"
   },
   {
-    "name": "Yola Branch",
+    "name": "Headquarters Branch",
     "slogan": "Olive Camp",
-    "location": "Yola",
-    "state": "Adamawa State",
+    "location": "Bauchi",
+    "state": "Bauchi State",
     "country": "Nigeria",
-    "lga": "Yola North",
-    "address": "22 Atiku Abubakar Way, Jimeta",
+    "lga": "Bauchi",
+    "address": "Yelwa Rafin Zurfi, Bauchi",
     "leadPastor": "Pastor Peter Bako",
     "administrator": "Joseph Mark",
     "adminPhone": "+234 803 555 0106",

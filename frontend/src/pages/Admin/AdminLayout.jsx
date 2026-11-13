@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import {
   ClipboardCheck,
+  CircleDollarSign,
   ExternalLink,
   Landmark,
   LayoutDashboard,
@@ -42,6 +43,8 @@ const developerNavItems = [
 
 const generalOverseerNavItems = [
   { label: 'Overview', to: '/admin/general-overseer', icon: LayoutDashboard },
+  { label: 'Attendance', to: '/admin/general-overseer/attendance', icon: ClipboardCheck },
+  { label: 'Finance', to: '/admin/general-overseer/finance', icon: CircleDollarSign },
   { label: 'Developer workspace', to: '/admin/developer', icon: Wrench },
   { label: 'Public website', to: '/', icon: ExternalLink },
 ];

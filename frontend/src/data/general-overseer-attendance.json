@@ -1,0 +1,513 @@
+{
+  "branches": [
+    "Jos Branch",
+    "Wukari Branch",
+    "Sabon Zaura Branch",
+    "Wuntin Dada Branch",
+    "Zango Branch",
+    "Headquarters Branch"
+  ],
+  "serviceDays": [
+    "Sunday",
+    "Monday",
+    "Wednesday",
+    "Friday"
+  ],
+  "groups": [
+    {
+      "key": "total",
+      "label": "Total attendance",
+      "color": "#087f5b"
+    },
+    {
+      "key": "men",
+      "label": "Men",
+      "color": "#3978c5"
+    },
+    {
+      "key": "women",
+      "label": "Women",
+      "color": "#c05a91"
+    },
+    {
+      "key": "youth",
+      "label": "Youth",
+      "color": "#d28b2c"
+    },
+    {
+      "key": "children",
+      "label": "Children",
+      "color": "#8064c8"
+    }
+  ],
+  "records": [
+    {
+      "branch": "Headquarters Branch",
+      "date": "2026-10-18",
+      "service": "Sunday",
+      "men": 205,
+      "women": 238,
+      "youth": 131,
+      "children": 99
+    },
+    {
+      "branch": "Sabon Zaura Branch",
+      "date": "2026-10-18",
+      "service": "Sunday",
+      "men": 126,
+      "women": 158,
+      "youth": 84,
+      "children": 62
+    },
+    {
+      "branch": "Wuntin Dada Branch",
+      "date": "2026-10-18",
+      "service": "Sunday",
+      "men": 154,
+      "women": 189,
+      "youth": 105,
+      "children": 80
+    },
+    {
+      "branch": "Zango Branch",
+      "date": "2026-10-18",
+      "service": "Sunday",
+      "men": 104,
+      "women": 132,
+      "youth": 73,
+      "children": 55
+    },
+    {
+      "branch": "Headquarters Branch",
+      "date": "2026-10-21",
+      "service": "Wednesday",
+      "men": 98,
+      "women": 117,
+      "youth": 65,
+      "children": 50
+    },
+    {
+      "branch": "Sabon Zaura Branch",
+      "date": "2026-10-21",
+      "service": "Wednesday",
+      "men": 58,
+      "women": 73,
+      "youth": 39,
+      "children": 29
+    },
+    {
+      "branch": "Wuntin Dada Branch",
+      "date": "2026-10-21",
+      "service": "Wednesday",
+      "men": 73,
+      "women": 92,
+      "youth": 51,
+      "children": 39
+    },
+    {
+      "branch": "Zango Branch",
+      "date": "2026-10-21",
+      "service": "Wednesday",
+      "men": 49,
+      "women": 63,
+      "youth": 34,
+      "children": 26
+    },
+    {
+      "branch": "Headquarters Branch",
+      "date": "2026-10-23",
+      "service": "Friday",
+      "men": 112,
+      "women": 134,
+      "youth": 73,
+      "children": 56
+    },
+    {
+      "branch": "Sabon Zaura Branch",
+      "date": "2026-10-23",
+      "service": "Friday",
+      "men": 71,
+      "women": 89,
+      "youth": 46,
+      "children": 35
+    },
+    {
+      "branch": "Wuntin Dada Branch",
+      "date": "2026-10-23",
+      "service": "Friday",
+      "men": 86,
+      "women": 108,
+      "youth": 58,
+      "children": 44
+    },
+    {
+      "branch": "Zango Branch",
+      "date": "2026-10-23",
+      "service": "Friday",
+      "men": 61,
+      "women": 78,
+      "youth": 41,
+      "children": 31
+    },
+    {
+      "branch": "Headquarters Branch",
+      "date": "2026-10-25",
+      "service": "Sunday",
+      "men": 214,
+      "women": 248,
+      "youth": 137,
+      "children": 104
+    },
+    {
+      "branch": "Sabon Zaura Branch",
+      "date": "2026-10-25",
+      "service": "Sunday",
+      "men": 132,
+      "women": 166,
+      "youth": 90,
+      "children": 67
+    },
+    {
+      "branch": "Wuntin Dada Branch",
+      "date": "2026-10-25",
+      "service": "Sunday",
+      "men": 161,
+      "women": 198,
+      "youth": 111,
+      "children": 84
+    },
+    {
+      "branch": "Zango Branch",
+      "date": "2026-10-25",
+      "service": "Sunday",
+      "men": 111,
+      "women": 140,
+      "youth": 77,
+      "children": 59
+    },
+    {
+      "branch": "Headquarters Branch",
+      "date": "2026-10-28",
+      "service": "Wednesday",
+      "men": 103,
+      "women": 123,
+      "youth": 68,
+      "children": 52
+    },
+    {
+      "branch": "Sabon Zaura Branch",
+      "date": "2026-10-28",
+      "service": "Wednesday",
+      "men": 62,
+      "women": 78,
+      "youth": 42,
+      "children": 31
+    },
+    {
+      "branch": "Wuntin Dada Branch",
+      "date": "2026-10-28",
+      "service": "Wednesday",
+      "men": 78,
+      "women": 97,
+      "youth": 54,
+      "children": 41
+    },
+    {
+      "branch": "Zango Branch",
+      "date": "2026-10-28",
+      "service": "Wednesday",
+      "men": 53,
+      "women": 68,
+      "youth": 37,
+      "children": 28
+    },
+    {
+      "branch": "Headquarters Branch",
+      "date": "2026-10-30",
+      "service": "Friday",
+      "men": 119,
+      "women": 142,
+      "youth": 78,
+      "children": 60
+    },
+    {
+      "branch": "Sabon Zaura Branch",
+      "date": "2026-10-30",
+      "service": "Friday",
+      "men": 75,
+      "women": 94,
+      "youth": 49,
+      "children": 37
+    },
+    {
+      "branch": "Wuntin Dada Branch",
+      "date": "2026-10-30",
+      "service": "Friday",
+      "men": 91,
+      "women": 114,
+      "youth": 61,
+      "children": 46
+    },
+    {
+      "branch": "Zango Branch",
+      "date": "2026-10-30",
+      "service": "Friday",
+      "men": 66,
+      "women": 84,
+      "youth": 44,
+      "children": 34
+    },
+    {
+      "branch": "Headquarters Branch",
+      "date": "2026-11-01",
+      "service": "Sunday",
+      "men": 222,
+      "women": 258,
+      "youth": 143,
+      "children": 109
+    },
+    {
+      "branch": "Sabon Zaura Branch",
+      "date": "2026-11-01",
+      "service": "Sunday",
+      "men": 139,
+      "women": 172,
+      "youth": 93,
+      "children": 70
+    },
+    {
+      "branch": "Wuntin Dada Branch",
+      "date": "2026-11-01",
+      "service": "Sunday",
+      "men": 168,
+      "women": 207,
+      "youth": 116,
+      "children": 88
+    },
+    {
+      "branch": "Zango Branch",
+      "date": "2026-11-01",
+      "service": "Sunday",
+      "men": 118,
+      "women": 148,
+      "youth": 82,
+      "children": 62
+    },
+    {
+      "branch": "Headquarters Branch",
+      "date": "2026-11-02",
+      "service": "Monday",
+      "men": 50,
+      "women": 72,
+      "youth": 33,
+      "children": 25
+    },
+    {
+      "branch": "Jos Branch",
+      "date": "2026-11-02",
+      "service": "Monday",
+      "men": 18,
+      "women": 26,
+      "youth": 12,
+      "children": 9
+    },
+    {
+      "branch": "Sabon Zaura Branch",
+      "date": "2026-11-02",
+      "service": "Monday",
+      "men": 31,
+      "women": 44,
+      "youth": 20,
+      "children": 15
+    },
+    {
+      "branch": "Wukari Branch",
+      "date": "2026-11-02",
+      "service": "Monday",
+      "men": 24,
+      "women": 35,
+      "youth": 16,
+      "children": 12
+    },
+    {
+      "branch": "Wuntin Dada Branch",
+      "date": "2026-11-02",
+      "service": "Monday",
+      "men": 37,
+      "women": 53,
+      "youth": 25,
+      "children": 18
+    },
+    {
+      "branch": "Zango Branch",
+      "date": "2026-11-02",
+      "service": "Monday",
+      "men": 43,
+      "women": 62,
+      "youth": 29,
+      "children": 22
+    },
+    {
+      "branch": "Headquarters Branch",
+      "date": "2026-11-04",
+      "service": "Wednesday",
+      "men": 108,
+      "women": 129,
+      "youth": 71,
+      "children": 55
+    },
+    {
+      "branch": "Jos Branch",
+      "date": "2026-11-04",
+      "service": "Wednesday",
+      "men": 24,
+      "women": 33,
+      "youth": 17,
+      "children": 13
+    },
+    {
+      "branch": "Sabon Zaura Branch",
+      "date": "2026-11-04",
+      "service": "Wednesday",
+      "men": 65,
+      "women": 81,
+      "youth": 44,
+      "children": 33
+    },
+    {
+      "branch": "Wukari Branch",
+      "date": "2026-11-04",
+      "service": "Wednesday",
+      "men": 32,
+      "women": 45,
+      "youth": 23,
+      "children": 18
+    },
+    {
+      "branch": "Wuntin Dada Branch",
+      "date": "2026-11-04",
+      "service": "Wednesday",
+      "men": 82,
+      "women": 102,
+      "youth": 57,
+      "children": 43
+    },
+    {
+      "branch": "Zango Branch",
+      "date": "2026-11-04",
+      "service": "Wednesday",
+      "men": 57,
+      "women": 73,
+      "youth": 40,
+      "children": 30
+    },
+    {
+      "branch": "Headquarters Branch",
+      "date": "2026-11-06",
+      "service": "Friday",
+      "men": 125,
+      "women": 150,
+      "youth": 82,
+      "children": 63
+    },
+    {
+      "branch": "Jos Branch",
+      "date": "2026-11-06",
+      "service": "Friday",
+      "men": 21,
+      "women": 29,
+      "youth": 15,
+      "children": 11
+    },
+    {
+      "branch": "Sabon Zaura Branch",
+      "date": "2026-11-06",
+      "service": "Friday",
+      "men": 79,
+      "women": 98,
+      "youth": 51,
+      "children": 39
+    },
+    {
+      "branch": "Wukari Branch",
+      "date": "2026-11-06",
+      "service": "Friday",
+      "men": 28,
+      "women": 39,
+      "youth": 20,
+      "children": 15
+    },
+    {
+      "branch": "Wuntin Dada Branch",
+      "date": "2026-11-06",
+      "service": "Friday",
+      "men": 96,
+      "women": 120,
+      "youth": 64,
+      "children": 49
+    },
+    {
+      "branch": "Zango Branch",
+      "date": "2026-11-06",
+      "service": "Friday",
+      "men": 70,
+      "women": 89,
+      "youth": 47,
+      "children": 36
+    },
+    {
+      "branch": "Headquarters Branch",
+      "date": "2026-11-08",
+      "service": "Sunday",
+      "men": 231,
+      "women": 268,
+      "youth": 148,
+      "children": 113
+    },
+    {
+      "branch": "Jos Branch",
+      "date": "2026-11-08",
+      "service": "Sunday",
+      "men": 42,
+      "women": 58,
+      "youth": 31,
+      "children": 24
+    },
+    {
+      "branch": "Sabon Zaura Branch",
+      "date": "2026-11-08",
+      "service": "Sunday",
+      "men": 145,
+      "women": 180,
+      "youth": 98,
+      "children": 74
+    },
+    {
+      "branch": "Wukari Branch",
+      "date": "2026-11-08",
+      "service": "Sunday",
+      "men": 57,
+      "women": 78,
+      "youth": 42,
+      "children": 32
+    },
+    {
+      "branch": "Wuntin Dada Branch",
+      "date": "2026-11-08",
+      "service": "Sunday",
+      "men": 176,
+      "women": 216,
+      "youth": 121,
+      "children": 92
+    },
+    {
+      "branch": "Zango Branch",
+      "date": "2026-11-08",
+      "service": "Sunday",
+      "men": 125,
+      "women": 157,
+      "youth": 87,
+      "children": 66
+    }
+  ]
+}

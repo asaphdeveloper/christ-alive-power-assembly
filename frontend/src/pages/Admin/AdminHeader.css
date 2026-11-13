@@ -106,6 +106,82 @@
   font-weight: 650;
   line-height: 1;
 }
+.admin-header-account {
+  position: relative;
+  flex: 0 0 auto;
+}
+.admin-header-account-button {
+  display: flex;
+  min-width: 0;
+  height: 36px;
+  align-items: center;
+  gap: 8px;
+  padding: 0 9px 0 5px;
+  border: 1px solid #e5ebe7;
+  border-radius: 9px;
+  background: #fff;
+  color: #34433a;
+  font: inherit;
+  cursor: pointer;
+}
+.admin-header-account-button:hover,
+.admin-header-account-button[aria-expanded='true'] {
+  border-color: #cbd8d0;
+  background: #f5f7f6;
+}
+.admin-header-account-avatar {
+  display: grid;
+  width: 25px;
+  height: 25px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 50%;
+  background: #edf4ef;
+  color: var(--admin-primary);
+}
+.admin-header-account-name {
+  max-width: 150px;
+  overflow: hidden;
+  font-size: 12px;
+  font-weight: 550;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.admin-header-account-chevron {
+  flex: 0 0 auto;
+  color: #78857d;
+  transition: transform 150ms ease;
+}
+.admin-header-account-button[aria-expanded='true'] .admin-header-account-chevron { transform: rotate(180deg); }
+.admin-header-account-menu {
+  position: absolute;
+  z-index: 50;
+  top: calc(100% + 8px);
+  right: 0;
+  width: 170px;
+  padding: 5px;
+  border: 1px solid #e2e8e4;
+  border-radius: 10px;
+  background: #fff;
+  box-shadow: 0 10px 28px rgba(25, 43, 33, .12);
+}
+.admin-shell .admin-header-account-menu-item {
+  display: flex;
+  width: 100%;
+  min-height: 38px;
+  align-items: center;
+  gap: 9px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 7px;
+  background: #fff;
+  color: #9c3b42;
+  font: inherit;
+  font-size: 13px;
+  text-align: left;
+  cursor: pointer;
+}
+.admin-shell .admin-header-account-menu-item:hover { background: #fff5f5; }
 
 @media (max-width: 760px) {
   .admin-collapse-toggle,
@@ -122,6 +198,9 @@
     width: min(220px, 54%);
     height: 32px;
   }
+  .admin-header-account-name { display: none; }
+  .admin-header-account-button { height: 32px; padding-right: 6px; gap: 5px; }
+  .admin-header-account-avatar { width: 23px; height: 23px; }
 }
 
 @media (max-width: 440px) {
@@ -138,10 +217,13 @@
   .admin-header-search {
     width: 42%;
   }
+  .admin-topbar { gap: 6px; }
+  .admin-header-account-button { padding: 0 4px; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .admin-collapse-toggle {
     transition-duration: 0.01ms;
   }
+  .admin-header-account-chevron { transition-duration: 0.01ms; }
 }
