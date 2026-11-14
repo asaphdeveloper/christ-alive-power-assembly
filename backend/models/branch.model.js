@@ -37,11 +37,12 @@ const branchSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    email: {
+    username: {
       type: String,
+      required: [true, 'Please provide your username'],
+      unique: [true, 'Username already exists'],
       lowercase: true,
       trim: true,
-      validate: [validator.isEmail, 'Please provide a valid email'],
     },
     slogan: {
       type: String,

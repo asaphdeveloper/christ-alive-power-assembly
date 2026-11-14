@@ -1,5 +1,4 @@
 import mongoose from 'mongoose';
-import validator from 'validator';
 import bcrypt from 'bcrypt';
 import crypto from 'crypto';
 
@@ -19,12 +18,12 @@ const adminSchema = new mongoose.Schema(
       minlength: 3,
       maxlength: 50,
     },
-    email: {
+    username: {
       type: String,
-      required: [true, 'Please provide your email'],
-      unique: [true, 'Email already exists'],
+      required: [true, 'Please provide your username'],
+      unique: [true, 'Username already exists'],
       lowercase: true,
-      validate: [validator.isEmail, 'Please provide a valid email'],
+      trim: true,
     },
     role: {
       type: String,

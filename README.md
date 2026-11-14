@@ -32,3 +32,9 @@ remove branch-admin-assigned and place branch-admin-contact on same row
 add a visitors sidebar item for visitors page:
 
 i want to be able to see those that havent sent theirs
+
+change "Incorrect username or password" to be more specific
+
+I want the relationship such that a branch must have at least 1 admin, and an admin also must belong to atleast 1 branch except for developer. So how can I represent the relationship so that when creating an admin, there should be a branch that that admin will be assigned to, or when creating a branch, an admin also should be attached to that branch.
+
+I want it such that multiple admins can be attached to a single branch. Meaning I should be able to create an admin and then select an existing branch and link that branch to the newly created admin or to the admin that I'm trying to create. Also, when creating a branch, I should be able to select an existing admin or to create a new admin for that branch.

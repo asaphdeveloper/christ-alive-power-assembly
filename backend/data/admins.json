@@ -1,1 +1,74 @@
-[]
+[
+  {
+    "id": "sample-1",
+    "name": "Grace James",
+    "username": "jos@admin@media",
+    "phone": "+234 803 555 0101",
+    "alternatePhone": "+234 803 555 0201",
+    "role": "Jos Branch Administrator",
+    "branch": "Jos Branch",
+    "initials": "GJ",
+    "color": "sage",
+    "pinned": false
+  },
+  {
+    "id": "sample-2",
+    "name": "Peter Daniel",
+    "username": "wukari@admin@media",
+    "phone": "+234 803 555 0102",
+    "alternatePhone": "+234 803 555 0202",
+    "role": "Wukari Branch Administrator",
+    "branch": "Wukari Branch",
+    "initials": "PD",
+    "color": "blue",
+    "pinned": false
+  },
+  {
+    "id": "sample-3",
+    "name": "Esther Musa",
+    "username": "headquater@admin@media",
+    "phone": "+234 803 555 0103",
+    "alternatePhone": "+234 803 555 0203",
+    "role": "Bauchi Branch Administrator",
+    "branch": "Bauchi Branch",
+    "initials": "EM",
+    "color": "lavender",
+    "pinned": false
+  },
+  {
+    "id": "sample-4",
+    "name": "Samuel John",
+    "username": "zango@admin@media",
+    "phone": "+234 803 555 0104",
+    "alternatePhone": "+234 803 555 0204",
+    "role": "Zango Branch Administrator",
+    "branch": "Zango Branch",
+    "initials": "SJ",
+    "color": "peach",
+    "pinned": false
+  },
+  {
+    "id": "sample-5",
+    "name": "Ruth David",
+    "username": "sabonkaura@admin@media",
+    "phone": "+234 803 555 0105",
+    "alternatePhone": "+234 803 555 0205",
+    "role": "Sabon Kaura Branch Administrator",
+    "branch": "Sabon Kaura Branch",
+    "initials": "RD",
+    "color": "rose",
+    "pinned": false
+  },
+  {
+    "id": "sample-6",
+    "name": "Joseph Mark",
+    "username": "wuntindada@admin@media",
+    "phone": "+234 803 555 0106",
+    "alternatePhone": "+234 803 555 0206",
+    "role": "Wuntin Dada Administrator",
+    "branch": "Wuntin Dada",
+    "initials": "JM",
+    "color": "mint",
+    "pinned": false
+  }
+]

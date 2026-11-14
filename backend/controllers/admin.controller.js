@@ -36,10 +36,10 @@ export const getAdmin = async (req, res, next) => {
 
 export const createAdmin = async (req, res, next) => {
   try {
-    const { name, email, role, password, passwordConfirm } = req.body;
+    const { name, username, role, password, passwordConfirm } = req.body;
     const admin = await Admin.create({
       name,
-      email,
+      username,
       role,
       password,
       passwordConfirm,
@@ -57,7 +57,7 @@ export const createAdmin = async (req, res, next) => {
 export const updateAdmin = async (req, res, next) => {
   try {
     if (!validateAdminId(req.params.id, next)) return;
-    const allowedFields = ['name', 'email', 'role'];
+    const allowedFields = ['name', 'username', 'role'];
     const updates = Object.fromEntries(
       Object.entries(req.body).filter(([field]) => allowedFields.includes(field)),
     );
@@ -118,7 +118,7 @@ export const getAdminWorkspace = (role) => (req, res) => {
       admin: {
         id: req.admin._id,
         name: req.admin.name,
-        email: req.admin.email,
+        username: req.admin.username,
         role: req.admin.role,
       },
       workspace: role,

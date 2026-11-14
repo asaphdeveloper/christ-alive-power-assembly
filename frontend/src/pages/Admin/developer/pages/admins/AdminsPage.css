@@ -229,7 +229,7 @@
   gap: 11px;
   margin-top: 20px;
 }
-.admin-contact-email {
+.admin-contact-username {
   grid-column: 1 / -1;
 }
 .admin-record-details p {

@@ -10,7 +10,7 @@
     "leadPastor": "Pastor David Kanti",
     "administrator": "Grace James",
     "adminPhone": "+234 803 555 0101",
-    "adminEmail": "grace@capa.org"
+    "adminUsername": "grace"
   },
   {
     "name": "Wukari Branch",
@@ -23,7 +23,7 @@
     "leadPastor": "Pastor Ayuba Maijamaa",
     "administrator": "Peter Daniel",
     "adminPhone": "+234 803 555 0102",
-    "adminEmail": "peter@capa.org"
+    "adminUsername": "peter"
   },
   {
     "name": "Sabon Zaura Branch",
@@ -36,7 +36,7 @@
     "leadPastor": "Pastor Emmanuel Musa",
     "administrator": "Esther Musa",
     "adminPhone": "+234 803 555 0103",
-    "adminEmail": "esther@capa.org"
+    "adminUsername": "esther"
   },
   {
     "name": "Wuntin Dada Branch",
@@ -49,7 +49,7 @@
     "leadPastor": "Pastor David Okoro",
     "administrator": "Samuel John",
     "adminPhone": "+234 803 555 0104",
-    "adminEmail": "samuel@capa.org"
+    "adminUsername": "samuel"
   },
   {
     "name": "Zango Branch",
@@ -62,7 +62,7 @@
     "leadPastor": "Pastor Samuel Yakubu",
     "administrator": "Ruth David",
     "adminPhone": "+234 803 555 0105",
-    "adminEmail": "ruth@capa.org"
+    "adminUsername": "ruth"
   },
   {
     "name": "Headquarters Branch",
@@ -75,6 +75,6 @@
     "leadPastor": "Pastor Peter Bako",
     "administrator": "Joseph Mark",
     "adminPhone": "+234 803 555 0106",
-    "adminEmail": "joseph@capa.org"
+    "adminUsername": "joseph"
   }
 ]

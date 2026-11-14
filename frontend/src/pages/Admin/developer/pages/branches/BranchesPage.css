@@ -127,6 +127,140 @@
   text-align: center;
   font-size: 14px;
 }
+.branches-feedback {
+  margin: 0 0 12px;
+  color: var(--admin-primary);
+  font-size: 13px;
+}
+.branch-form-backdrop {
+  position: fixed;
+  z-index: 100;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  background: rgba(13, 24, 17, 0.42);
+}
+.branch-form-dialog {
+  width: min(100%, 600px);
+  max-height: min(90svh, 760px);
+  overflow-y: auto;
+  border: 1px solid #e3eae5;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 20px 70px rgba(18, 34, 24, 0.2);
+}
+.branch-form-heading {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 21px 24px;
+  border-bottom: 1px solid #edf1ee;
+}
+.branch-form-title-icon {
+  display: grid;
+  width: 40px;
+  height: 40px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 11px;
+  background: var(--admin-primary-soft);
+  color: var(--admin-primary);
+}
+.branch-form-heading h2 {
+  color: #202a24;
+  font-size: 18px;
+  font-weight: 600;
+}
+.branch-form-heading p {
+  margin-top: 4px;
+  color: #78847c;
+  font-size: 12px;
+}
+.branch-form-close {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  margin-left: auto;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: #78847c;
+  cursor: pointer;
+}
+.branch-form-close:hover {
+  background: #f2f5f3;
+  color: #29372f;
+}
+.branch-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+  padding: 22px 24px 24px;
+}
+.branch-form-field {
+  display: grid;
+  min-width: 0;
+  gap: 7px;
+  color: #56635b;
+  font-size: 12px;
+  font-weight: 600;
+}
+.branch-form-field-wide {
+  grid-column: 1 / -1;
+}
+.branch-form-field input {
+  width: 100%;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid #dfe7e1;
+  border-radius: 8px;
+  outline: none;
+  background: #fff;
+  color: #26352d;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 400;
+}
+.branch-form-field input:focus {
+  border-color: var(--admin-primary);
+  box-shadow: 0 0 0 3px var(--admin-primary-soft);
+}
+.branch-form-actions {
+  display: flex;
+  grid-column: 1 / -1;
+  justify-content: flex-end;
+  gap: 9px;
+  padding-top: 5px;
+}
+.branch-form-cancel,
+.branch-form-submit {
+  display: inline-flex;
+  min-height: 39px;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  padding: 0 14px;
+  border: 1px solid #dfe7e1;
+  border-radius: 8px;
+  background: #fff;
+  color: #56635b;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.branch-form-submit {
+  border-color: var(--admin-primary);
+  background: var(--admin-primary);
+  color: #fff;
+}
+.branch-form-submit:hover {
+  border-color: var(--admin-primary-hover);
+  background: var(--admin-primary-hover);
+}
 .admin-shell .branches-add-button {
   display: inline-flex;
   flex: 0 0 auto;
@@ -567,5 +701,19 @@
   .branches-description {
     max-width: 230px;
     line-height: 1.5;
+  }
+  .branch-form-backdrop {
+    align-items: end;
+    padding: 10px;
+  }
+  .branch-form-heading {
+    padding: 16px;
+  }
+  .branch-form {
+    padding: 18px 16px;
+    grid-template-columns: 1fr;
+  }
+  .branch-form-field-wide {
+    grid-column: auto;
   }
 }

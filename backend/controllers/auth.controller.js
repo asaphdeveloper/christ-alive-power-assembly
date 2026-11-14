@@ -9,14 +9,14 @@ const signToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET, {
 
 export const login = async (req, res, next) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return next(new AppError('Please provide email and password', 400));
+    const { username, password } = req.body;
+    if (!username || !password) {
+      return next(new AppError('Please provide username and password', 400));
     }
 
-    const admin = await Admin.findOne({ email }).select('+password');
+    const admin = await Admin.findOne({ username: username.trim().toLowerCase() }).select('+password');
     if (!admin || !(await admin.comparePasswords(password, admin.password))) {
-      return next(new AppError('Incorrect email or password', 401));
+      return next(new AppError('Incorrect username or password', 401));
     }
 
     const token = signToken(admin._id);
