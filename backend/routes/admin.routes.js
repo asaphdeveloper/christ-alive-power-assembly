@@ -6,6 +6,12 @@ export const router = express.Router();
 
 router.use(authController.authenticate);
 
+router.patch(
+  '/:id/password',
+  authController.restrictTo('developer'),
+  adminController.updateAdminPassword,
+);
+
 router.get(
   '/headquater-media-admin',
   authController.restrictTo('headquater-media-admin'),

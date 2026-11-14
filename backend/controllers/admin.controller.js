@@ -72,6 +72,31 @@ export const updateAdmin = async (req, res, next) => {
   }
 };
 
+export const updateAdminPassword = async (req, res, next) => {
+  try {
+    if (!validateAdminId(req.params.id, next)) return;
+    const { password, passwordConfirm } = req.body;
+    if (!password || !passwordConfirm) {
+      return next(new AppError('Please provide a new password and confirmation', 400));
+    }
+
+    const admin = await Admin.findById(req.params.id);
+    if (!admin) return next(new AppError('Admin not found', 404));
+
+    admin.password = password;
+    admin.passwordConfirm = passwordConfirm;
+    admin.passwordChangedAt = new Date(Date.now() - 1000);
+    await admin.save();
+
+    res.status(200).json({
+      status: 'success',
+      message: 'Admin password updated. Existing tokens for this admin are invalidated.',
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
 export const deleteAdmin = async (req, res, next) => {
   try {
     if (!validateAdminId(req.params.id, next)) return;
