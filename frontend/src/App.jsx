@@ -9,6 +9,11 @@ const HomePage = lazy(() =>
     default: module.HomePage,
   })),
 );
+const LoginPage = lazy(() =>
+  import('./pages/LoginPage').then((module) => ({
+    default: module.LoginPage,
+  })),
+);
 const AdminPortalPage = lazy(() =>
   import('./pages/Admin/AdminPortalPage').then((module) => ({
     default: module.AdminPortalPage,
@@ -107,6 +112,7 @@ function App() {
       >
         <Routes>
           <Route index element={<HomePage />} />
+          <Route path='login' element={<LoginPage />} />
           <Route path='admin/developer/overview' element={<AdminPortalPage />}>
             <Route index element={<DeveloperOverviewPage />} />
           </Route>

@@ -39,7 +39,7 @@ const emptyBranchForm = {
   lga: '',
   leadPastor: '',
   address: '',
-  adminPhone: '',
+  mapLocation: { longitude: null, latitude: null },
 };
 
 function BranchForm({ branch, admins, onSubmit, onCancel }) {
@@ -62,6 +62,18 @@ function BranchForm({ branch, admins, onSubmit, onCancel }) {
     }));
   }
 
+  function updateMapCoordinate(event) {
+    const { name, value } = event.target;
+    setForm((current) => ({
+      ...current,
+      mapLocation: {
+        ...emptyBranchForm.mapLocation,
+        ...current.mapLocation,
+        [name]: value === '' ? null : Number(value),
+      },
+    }));
+  }
+
   function handleSubmit(event) {
     event.preventDefault();
     if (!branch && step === 1) {
@@ -76,15 +88,26 @@ function BranchForm({ branch, admins, onSubmit, onCancel }) {
       setError('Assign at least one administrator to this branch.');
       return;
     }
+    const primaryAdmin = admins.find((admin) => admin.id === chosenAdmins[0]);
+    const longitude = form.mapLocation?.longitude ?? null;
+    const latitude = form.mapLocation?.latitude ?? null;
+    if ((longitude === null) !== (latitude === null)) {
+      setError('Enter both map coordinates, or leave both blank.');
+      return;
+    }
     onSubmit({
       ...form,
       name: form.name.trim(),
+      slogan: form.slogan.trim(),
       state: form.state.trim(),
       country: form.country.trim(),
       lga: form.lga.trim(),
       leadPastor: form.leadPastor.trim(),
       address: form.address.trim(),
-      adminPhone: form.adminPhone.trim(),
+      administrator: primaryAdmin?.name ?? '',
+      adminPhone: primaryAdmin?.phone ?? '',
+      adminUsername: primaryAdmin?.username ?? '',
+      mapLocation: { longitude, latitude },
       adminIds: chosenAdmins,
     });
   }
@@ -206,6 +229,32 @@ function BranchForm({ branch, admins, onSubmit, onCancel }) {
                   onChange={updateField}
                   placeholder='Enter the branch street address'
                   required
+                />
+              </label>
+              <label className='branch-form-field'>
+                Map longitude
+                <input
+                  name='longitude'
+                  type='number'
+                  min='-180'
+                  max='180'
+                  step='any'
+                  value={form.mapLocation?.longitude ?? ''}
+                  onChange={updateMapCoordinate}
+                  placeholder='e.g. 9.8965'
+                />
+              </label>
+              <label className='branch-form-field'>
+                Map latitude
+                <input
+                  name='latitude'
+                  type='number'
+                  min='-90'
+                  max='90'
+                  step='any'
+                  value={form.mapLocation?.latitude ?? ''}
+                  onChange={updateMapCoordinate}
+                  placeholder='e.g. 8.8921'
                 />
               </label>
             </>

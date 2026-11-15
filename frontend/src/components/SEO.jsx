@@ -5,6 +5,10 @@ const pages = {
     'Christ Alive Power Assembly | Worship, Grow, Serve',
     'Discover Christ Alive Power Assembly, our church branches, upcoming programs, and resources to grow in faith.',
   ],
+  '/login': [
+    'Sign in | Christ Alive Power Assembly',
+    'Sign in to your Christ Alive Power Assembly account.',
+  ],
   '/admin/developer/overview': [
     'Developer Admin | Christ Alive Power Assembly',
     'Developer workspace for the Christ Alive Power Assembly website.',

@@ -10,6 +10,10 @@
   margin: 0 auto;
 }
 
+#resources-title {
+  margin-bottom: 0;
+}
+
 .church-resources-intro {
   max-width: 580px;
   margin: 0 0 36px;
