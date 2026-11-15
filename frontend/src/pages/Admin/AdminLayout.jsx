@@ -59,7 +59,11 @@ const generalOverseerNavItems = [
     to: '/admin/general-overseer/finance',
     icon: CircleDollarSign,
   },
-  { label: 'Developer workspace', to: '/admin/developer/overview', icon: Wrench },
+  {
+    label: 'Developer workspace',
+    to: '/admin/developer/overview',
+    icon: Wrench,
+  },
   { label: 'Public website', to: '/', icon: ExternalLink },
 ];
 
@@ -71,7 +75,11 @@ const branchMediaAdminNavItems = [
     icon: ClipboardCheck,
   },
   { label: 'Visitors', to: '/admin/branch-media-admin/visitors', icon: Users },
-  { label: 'Developer workspace', to: '/admin/developer/overview', icon: Wrench },
+  {
+    label: 'Developer workspace',
+    to: '/admin/developer/overview',
+    icon: Wrench,
+  },
   { label: 'Public website', to: '/', icon: ExternalLink },
 ];
 
@@ -81,7 +89,11 @@ const branchFinanceSecretaryNavItems = [
     to: '/admin/branch-finance-secretary',
     icon: LayoutDashboard,
   },
-  { label: 'Developer workspace', to: '/admin/developer/overview', icon: Wrench },
+  {
+    label: 'Developer workspace',
+    to: '/admin/developer/overview',
+    icon: Wrench,
+  },
   { label: 'Public website', to: '/', icon: ExternalLink },
 ];
 
@@ -96,7 +108,11 @@ const headquaterMediaAdminNavItems = [
     to: '/admin/upload-resource',
     icon: Clapperboard,
   },
-  { label: 'Developer workspace', to: '/admin/developer/overview', icon: Wrench },
+  {
+    label: 'Developer workspace',
+    to: '/admin/developer/overview',
+    icon: Wrench,
+  },
   { label: 'Public website', to: '/', icon: ExternalLink },
 ];
 
@@ -162,11 +178,11 @@ const welcomeDetails = {
     icon: Landmark,
   },
   'headquater-media-admin': {
-    kicker: 'HEADQUARTERS MEDIA WORKSPACE',
-    title: 'Welcome to Headquarters Media',
+    kicker: 'HEADQUARTER MEDIA WORKSPACE',
+    title: 'Welcome to Headquarter Media',
     description:
       'Manage media and service resources for the wider church community.',
-    facts: ['Headquarters Branch', 'Church-wide resources'],
+    facts: ['Headquarter Branch', 'Church-wide resources'],
     icon: Clapperboard,
   },
 };

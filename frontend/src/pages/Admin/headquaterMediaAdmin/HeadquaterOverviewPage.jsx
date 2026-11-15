@@ -24,7 +24,7 @@ export function HeadquaterOverviewPage() {
         aria-labelledby='headquater-overview-title'
       >
         <header>
-          <p>HEADQUARTERS MEDIA</p>
+          <p>HEADQUARTER MEDIA</p>
           <h1 id='headquater-overview-title'>Workspace overview</h1>
           <span>Quick access to church-wide media resources.</span>
         </header>

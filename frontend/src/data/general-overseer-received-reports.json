@@ -1,7 +1,7 @@
 [
   {
     "id": "report-hq-mon",
-    "branch": "Headquarters Branch",
+    "branch": "Headquarter Branch",
     "date": "2026-11-02",
     "service": "Monday",
     "men": 50,
@@ -15,7 +15,7 @@
   },
   {
     "id": "report-hq-sun",
-    "branch": "Headquarters Branch",
+    "branch": "Headquarter Branch",
     "date": "2026-11-08",
     "service": "Sunday",
     "men": 231,
@@ -99,7 +99,7 @@
   },
   {
     "id": "report-hq-fri",
-    "branch": "Headquarters Branch",
+    "branch": "Headquarter Branch",
     "date": "2026-11-13",
     "service": "Friday",
     "men": 128,

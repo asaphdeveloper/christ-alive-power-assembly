@@ -5,14 +5,9 @@
     "Sabon Zaura Branch",
     "Wuntin Dada Branch",
     "Zango Branch",
-    "Headquarters Branch"
+    "Headquarter Branch"
   ],
-  "serviceDays": [
-    "Sunday",
-    "Monday",
-    "Wednesday",
-    "Friday"
-  ],
+  "serviceDays": ["Sunday", "Monday", "Wednesday", "Friday"],
   "groups": [
     {
       "key": "total",
@@ -42,7 +37,7 @@
   ],
   "records": [
     {
-      "branch": "Headquarters Branch",
+      "branch": "Headquarter Branch",
       "date": "2026-10-18",
       "service": "Sunday",
       "men": 205,
@@ -78,7 +73,7 @@
       "children": 55
     },
     {
-      "branch": "Headquarters Branch",
+      "branch": "Headquarter Branch",
       "date": "2026-10-21",
       "service": "Wednesday",
       "men": 98,
@@ -114,7 +109,7 @@
       "children": 26
     },
     {
-      "branch": "Headquarters Branch",
+      "branch": "Headquarter Branch",
       "date": "2026-10-23",
       "service": "Friday",
       "men": 112,
@@ -150,7 +145,7 @@
       "children": 31
     },
     {
-      "branch": "Headquarters Branch",
+      "branch": "Headquarter Branch",
       "date": "2026-10-25",
       "service": "Sunday",
       "men": 214,
@@ -186,7 +181,7 @@
       "children": 59
     },
     {
-      "branch": "Headquarters Branch",
+      "branch": "Headquarter Branch",
       "date": "2026-10-28",
       "service": "Wednesday",
       "men": 103,
@@ -222,7 +217,7 @@
       "children": 28
     },
     {
-      "branch": "Headquarters Branch",
+      "branch": "Headquarter Branch",
       "date": "2026-10-30",
       "service": "Friday",
       "men": 119,
@@ -258,7 +253,7 @@
       "children": 34
     },
     {
-      "branch": "Headquarters Branch",
+      "branch": "Headquarter Branch",
       "date": "2026-11-01",
       "service": "Sunday",
       "men": 222,
@@ -294,7 +289,7 @@
       "children": 62
     },
     {
-      "branch": "Headquarters Branch",
+      "branch": "Headquarter Branch",
       "date": "2026-11-02",
       "service": "Monday",
       "men": 50,
@@ -348,7 +343,7 @@
       "children": 22
     },
     {
-      "branch": "Headquarters Branch",
+      "branch": "Headquarter Branch",
       "date": "2026-11-04",
       "service": "Wednesday",
       "men": 108,
@@ -402,7 +397,7 @@
       "children": 30
     },
     {
-      "branch": "Headquarters Branch",
+      "branch": "Headquarter Branch",
       "date": "2026-11-06",
       "service": "Friday",
       "men": 125,
@@ -456,7 +451,7 @@
       "children": 36
     },
     {
-      "branch": "Headquarters Branch",
+      "branch": "Headquarter Branch",
       "date": "2026-11-08",
       "service": "Sunday",
       "men": 231,

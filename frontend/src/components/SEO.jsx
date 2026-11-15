@@ -51,7 +51,7 @@ const pages = {
   ],
   '/admin/upload-resource': [
     'Upload Resources | Christ Alive Power Assembly',
-    'Manage headquarters media documents and hymn resources for Christ Alive Power Assembly.',
+    'Manage headquarter media documents and hymn resources for Christ Alive Power Assembly.',
   ],
 };
 

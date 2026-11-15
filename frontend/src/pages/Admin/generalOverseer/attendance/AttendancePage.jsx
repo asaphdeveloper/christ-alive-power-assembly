@@ -22,12 +22,12 @@ const serviceDisplayNames = {
   Friday: 'Friday Prayer Meeting',
 };
 const orderedBranchData = [...branchData].sort((first, second) => {
-  const firstIsHeadquarters = /headquarters/i.test(first.name);
-  const secondIsHeadquarters = /headquarters/i.test(second.name);
-  return Number(secondIsHeadquarters) - Number(firstIsHeadquarters);
+  const firstIsHeadquarter = /headquarter/i.test(first.name);
+  const secondIsHeadquarter = /headquarter/i.test(second.name);
+  return Number(secondIsHeadquarter) - Number(firstIsHeadquarter);
 });
 const expressionOptions = orderedBranchData.map(({ name, location }) => {
-  const expressionName = /headquarters/i.test(name)
+  const expressionName = /headquarter/i.test(name)
     ? 'Headquater'
     : name.replace(/ branch$/i, '');
   return {
