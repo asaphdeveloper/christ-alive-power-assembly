@@ -24,9 +24,9 @@ const DeveloperOverviewPage = lazy(() =>
     default: module.DeveloperOverviewPage,
   })),
 );
-const GeneralOverseerPage = lazy(() =>
-  import('./pages/Admin/generalOverseer/GeneralOverseerPage').then(
-    (module) => ({ default: module.GeneralOverseerPage }),
+const GeneralOverseerOverviewPage = lazy(() =>
+  import('./pages/Admin/generalOverseer/GeneralOverseerOverviewPage').then(
+    (module) => ({ default: module.GeneralOverseerOverviewPage }),
   ),
 );
 const GeneralOverseerAttendancePage = lazy(() =>
@@ -39,9 +39,9 @@ const GeneralOverseerFinancePage = lazy(() =>
     (module) => ({ default: module.GeneralOverseerFinancePage }),
   ),
 );
-const BranchMediaAdminPage = lazy(() =>
-  import('./pages/Admin/branchMediaAdmin/BranchMediaAdminPage').then(
-    (module) => ({ default: module.BranchMediaAdminPage }),
+const BranchMediaOverviewPage = lazy(() =>
+  import('./pages/Admin/branchMediaAdmin/BranchMediaOverviewPage').then(
+    (module) => ({ default: module.BranchMediaOverviewPage }),
   ),
 );
 const AttendancePage = lazy(() =>
@@ -54,9 +54,9 @@ const VisitorsPage = lazy(() =>
     default: module.VisitorsPage,
   })),
 );
-const BranchFinanceSecretaryPage = lazy(() =>
-  import('./pages/Admin/branchFinanceSecretary/BranchFinanceSecretaryPage').then(
-    (module) => ({ default: module.BranchFinanceSecretaryPage }),
+const BranchFinanceSecretaryOverviewPage = lazy(() =>
+  import('./pages/Admin/branchFinanceSecretary/BranchFinanceSecretaryOverviewPage').then(
+    (module) => ({ default: module.BranchFinanceSecretaryOverviewPage }),
   ),
 );
 const HeadquaterMediaAdminPage = lazy(() =>
@@ -67,11 +67,6 @@ const HeadquaterMediaAdminPage = lazy(() =>
 const HeadquaterOverviewPage = lazy(() =>
   import('./pages/Admin/headquaterMediaAdmin/HeadquaterOverviewPage').then(
     (module) => ({ default: module.HeadquaterOverviewPage }),
-  ),
-);
-const DocumentUploadPage = lazy(() =>
-  import('./pages/Admin/headquaterMediaAdmin/documents/DocumentUploadPage').then(
-    (module) => ({ default: module.DocumentUploadPage }),
   ),
 );
 const AdminsPage = lazy(() =>
@@ -112,9 +107,8 @@ function App() {
       >
         <Routes>
           <Route index element={<HomePage />} />
-          <Route path='admin/developer' element={<AdminPortalPage />}>
+          <Route path='admin/developer/overview' element={<AdminPortalPage />}>
             <Route index element={<DeveloperOverviewPage />} />
-            <Route path='overview' element={<DeveloperOverviewPage />} />
           </Route>
           <Route
             path='admin/all-admins'
@@ -134,7 +128,7 @@ function App() {
           />
           <Route
             path='admin/general-overseer'
-            element={<GeneralOverseerPage />}
+            element={<GeneralOverseerOverviewPage />}
           />
           <Route
             path='admin/general-overseer/attendance'
@@ -146,7 +140,7 @@ function App() {
           />
           <Route
             path='admin/branch-media-admin'
-            element={<BranchMediaAdminPage />}
+            element={<BranchMediaOverviewPage />}
           />
           <Route
             path='admin/branch-media-admin/attendance'
@@ -162,7 +156,7 @@ function App() {
           />
           <Route
             path='admin/branch-finance-secretary'
-            element={<BranchFinanceSecretaryPage />}
+            element={<BranchFinanceSecretaryOverviewPage />}
           />
           <Route
             path='admin/upload-resource'
@@ -171,10 +165,6 @@ function App() {
           <Route
             path='admin/headquater-media-admin/overview'
             element={<HeadquaterOverviewPage />}
-          />
-          <Route
-            path='admin/headquater-media-admin/documents'
-            element={<DocumentUploadPage />}
           />
           <Route path='*' element={<PageNotFound />} />
         </Routes>

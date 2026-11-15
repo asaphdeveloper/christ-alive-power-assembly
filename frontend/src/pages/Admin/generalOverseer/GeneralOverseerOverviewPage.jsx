@@ -1,7 +1,7 @@
 import { ArrowRight, CircleDollarSign, ClipboardCheck, MapPinned, Users } from 'lucide-react';
 import { Link } from 'react-router';
 import { AdminLayout } from '../AdminLayout';
-import './GeneralOverseerPage.css';
+import './GeneralOverseerOverviewPage.css';
 
 const overviewLinks = [
   { title: 'Attendance', description: 'Review attendance totals and service trends across all branches.', to: '/admin/general-overseer/attendance', label: 'View attendance', icon: ClipboardCheck },
@@ -10,7 +10,7 @@ const overviewLinks = [
   { title: 'Branches', description: 'View branch locations and their assigned administrators.', to: '/admin/branches', label: 'View branches', icon: MapPinned },
 ];
 
-export function GeneralOverseerPage() {
+export function GeneralOverseerOverviewPage() {
   return (
     <AdminLayout
       workspace='general-overseer'

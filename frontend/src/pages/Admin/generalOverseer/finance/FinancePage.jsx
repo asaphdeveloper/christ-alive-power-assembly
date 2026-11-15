@@ -1,5 +1,5 @@
 import { AdminLayout } from '../../AdminLayout';
-import '../GeneralOverseerPage.css';
+import './FinancePage.css';
 
 export function GeneralOverseerFinancePage() {
   return (

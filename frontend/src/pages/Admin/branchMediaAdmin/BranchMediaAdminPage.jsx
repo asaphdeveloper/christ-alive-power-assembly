@@ -89,11 +89,7 @@ function getFileType(file) {
   return fileTypes[extension] ?? 'Document';
 }
 
-export function BranchMediaAdminPage({
-  workspace = 'branch-media-admin',
-  workspaceKicker = 'BRANCH MEDIA',
-  showResources = false,
-}) {
+export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
   const [resources, setResources] = useState(initialResources);
   const [uploadTarget, setUploadTarget] = useState(initialResources[0].id);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -258,34 +254,14 @@ export function BranchMediaAdminPage({
     setFeedback(`${document.name} is ready for download.`);
   }
 
-  if (!showResources) {
-    return (
-      <AdminLayout
-        workspace={workspace}
-        pageTitle='Overview'
-        showWelcomeBanner
-      >
-        <section
-          className='branch-media-admin-page'
-          aria-labelledby='branch-media-admin-title'
-        >
-          <header className='branch-media-admin-heading'>
-            <h1 id='branch-media-admin-title'>Overview</h1>
-            <span>Welcome to your branch media workspace.</span>
-          </header>
-        </section>
-      </AdminLayout>
-    );
-  }
-
   return (
-    <AdminLayout workspace={workspace} pageTitle='Overview'>
+    <AdminLayout workspace={workspace} pageTitle='Media resources'>
       <section
         className='branch-media-admin-page'
-        aria-labelledby='branch-media-admin-title'
+        aria-labelledby='headquater-media-admin-title'
       >
         <header className='branch-media-admin-heading'>
-          <h1 id='branch-media-admin-title'>Overview</h1>
+          <h1 id='headquater-media-admin-title'>Media resources</h1>
           <span>
             Manage documents for your assigned branch services and ministries.
           </span>

@@ -5,7 +5,7 @@ const pages = {
     'Christ Alive Power Assembly | Worship, Grow, Serve',
     'Discover Christ Alive Power Assembly, our church branches, upcoming programs, and resources to grow in faith.',
   ],
-  '/admin/developer': [
+  '/admin/developer/overview': [
     'Developer Admin | Christ Alive Power Assembly',
     'Developer workspace for the Christ Alive Power Assembly website.',
   ],
@@ -36,10 +36,6 @@ const pages = {
   '/admin/upload-resource': [
     'Upload Resources | Christ Alive Power Assembly',
     'Manage headquarters Upload Resources for Christ Alive Power Assembly.',
-  ],
-  '/admin/headquater-media-admin/documents': [
-    'Upload Documents | Christ Alive Power Assembly',
-    'Upload documents in the Headquater Media Admin workspace.',
   ],
 };
 

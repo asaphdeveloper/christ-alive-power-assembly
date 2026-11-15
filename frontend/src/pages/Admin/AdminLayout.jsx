@@ -21,7 +21,7 @@ import { AdminSidebar } from './AdminSidebar';
 import './AdminLayout.css';
 
 const developerNavItems = [
-  { label: 'Overview', to: '/admin/developer', icon: LayoutDashboard },
+  { label: 'Overview', to: '/admin/developer/overview', icon: LayoutDashboard },
   { label: 'Administrators', to: '/admin/all-admins', icon: Users },
   { label: 'Branches', to: '/admin/branches', icon: MapPinned },
   {
@@ -59,7 +59,7 @@ const generalOverseerNavItems = [
     to: '/admin/general-overseer/finance',
     icon: CircleDollarSign,
   },
-  { label: 'Developer workspace', to: '/admin/developer', icon: Wrench },
+  { label: 'Developer workspace', to: '/admin/developer/overview', icon: Wrench },
   { label: 'Public website', to: '/', icon: ExternalLink },
 ];
 
@@ -71,7 +71,7 @@ const branchMediaAdminNavItems = [
     icon: ClipboardCheck,
   },
   { label: 'Visitors', to: '/admin/branch-media-admin/visitors', icon: Users },
-  { label: 'Developer workspace', to: '/admin/developer', icon: Wrench },
+  { label: 'Developer workspace', to: '/admin/developer/overview', icon: Wrench },
   { label: 'Public website', to: '/', icon: ExternalLink },
 ];
 
@@ -81,7 +81,7 @@ const branchFinanceSecretaryNavItems = [
     to: '/admin/branch-finance-secretary',
     icon: LayoutDashboard,
   },
-  { label: 'Developer workspace', to: '/admin/developer', icon: Wrench },
+  { label: 'Developer workspace', to: '/admin/developer/overview', icon: Wrench },
   { label: 'Public website', to: '/', icon: ExternalLink },
 ];
 
@@ -96,14 +96,14 @@ const headquaterMediaAdminNavItems = [
     to: '/admin/upload-resource',
     icon: Clapperboard,
   },
-  { label: 'Developer workspace', to: '/admin/developer', icon: Wrench },
+  { label: 'Developer workspace', to: '/admin/developer/overview', icon: Wrench },
   { label: 'Public website', to: '/', icon: ExternalLink },
 ];
 
 const workspaces = {
   developer: {
     navItems: developerNavItems,
-    homeTo: '/admin/developer',
+    homeTo: '/admin/developer/overview',
     profileName: 'Developer',
   },
   'general-overseer': {

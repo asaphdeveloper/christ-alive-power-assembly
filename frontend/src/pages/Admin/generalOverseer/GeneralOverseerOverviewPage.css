@@ -35,10 +35,7 @@
   border: 1px solid #e5ebe7;
   border-radius: 15px;
   background: linear-gradient(145deg, #fff 0%, #fbfdfb 100%);
-  transition:
-    border-color 150ms ease,
-    box-shadow 150ms ease,
-    transform 150ms ease;
+  transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
 }
 .go-overview-card:hover {
   transform: translateY(-2px);
@@ -54,10 +51,7 @@
   background: linear-gradient(145deg, #f1f8f3, #e8f2eb);
   color: var(--admin-primary);
 }
-.go-overview-copy {
-  min-width: 0;
-  padding-top: 2px;
-}
+.go-overview-copy { min-width: 0; padding-top: 2px; }
 .go-overview-copy h2 {
   color: #253129;
   font-size: 16px;
@@ -81,10 +75,7 @@
   background: #fff;
   color: var(--admin-primary);
   text-decoration: none;
-  transition:
-    background 150ms ease,
-    border-color 150ms ease,
-    transform 150ms ease;
+  transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
 }
 .go-overview-card > a:hover {
   transform: translateX(2px);
@@ -95,52 +86,10 @@
   outline: 3px solid rgba(42, 111, 68, 0.22);
   outline-offset: 2px;
 }
-@media (max-width: 760px) {
-  .go-overview-page {
-    gap: 11px;
-    margin-top: 10px;
-  }
-  .go-overview-heading h1 {
-    font-size: 23px;
-  }
-  .go-overview-links {
-    grid-template-columns: minmax(0, 1fr);
-    gap: 9px;
-  }
-  .go-overview-card {
-    min-height: 100px;
-    grid-template-columns: 42px minmax(0, 1fr) 32px;
-    gap: 12px;
-    padding: 14px;
-    border-radius: 13px;
-  }
-  .go-overview-icon {
-    width: 42px;
-    height: 42px;
-    border-radius: 11px;
-  }
-  .go-overview-copy h2 {
-    font-size: 15px;
-  }
-  .go-overview-copy p {
-    margin-top: 4px;
-    font-size: 12px;
-  }
-  .go-overview-card > a {
-    width: 32px;
-    height: 32px;
-  }
+@media (max-width: 1000px) {
+  .go-overview-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
-
-@media (min-width: 761px) and (max-width: 1100px) {
-  .go-overview-links {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .go-overview-card,
-  .go-overview-card > a {
-    transition-duration: 0.01ms;
-  }
+@media (max-width: 620px) {
+  .go-overview-links { grid-template-columns: minmax(0, 1fr); }
+  .go-overview-card { min-height: 120px; gap: 11px; padding: 16px; }
 }

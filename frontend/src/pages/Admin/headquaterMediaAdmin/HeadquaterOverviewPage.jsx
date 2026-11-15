@@ -1,4 +1,4 @@
-import { ArrowRight, Clapperboard, FileUp } from 'lucide-react';
+import { ArrowRight, Clapperboard } from 'lucide-react';
 import { Link } from 'react-router';
 import { AdminLayout } from '../AdminLayout';
 import './HeadquaterOverviewPage.css';
@@ -9,12 +9,6 @@ const overviewLinks = [
     description: 'Manage church documents and Sunday hymn lyrics.',
     to: '/admin/upload-resource',
     icon: Clapperboard,
-  },
-  {
-    title: 'Upload documents',
-    description: 'Prepare a document for the headquarters resource library.',
-    to: '/admin/headquater-media-admin/documents',
-    icon: FileUp,
   },
 ];
 

@@ -3,9 +3,7 @@ import { Outlet, useLocation } from 'react-router';
 
 export function AdminPortalPage() {
   const { pathname } = useLocation();
-  const isOverview =
-    pathname === '/admin/developer' ||
-    pathname === '/admin/developer/overview';
+  const isOverview = pathname === '/admin/developer/overview';
 
   return (
     <AdminLayout showWelcomeBanner={isOverview}>

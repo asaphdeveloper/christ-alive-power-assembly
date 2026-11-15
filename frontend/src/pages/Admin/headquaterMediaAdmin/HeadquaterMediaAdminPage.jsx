@@ -4,8 +4,6 @@ export function HeadquaterMediaAdminPage() {
   return (
     <BranchMediaAdminPage
       workspace='headquater-media-admin'
-      workspaceKicker='HEADQUATER MEDIA'
-      showResources
     />
   );
 }
