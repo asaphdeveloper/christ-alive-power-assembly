@@ -7,6 +7,7 @@ import { router as authRouter } from './routes/auth.routes.js';
 import { router as adminRouter } from './routes/admin.routes.js';
 import { router as branchRouter } from './routes/branch.routes.js';
 import { globalErrorHandler } from './controllers/error.controller.js';
+import { apiLimiter } from './middleware/rateLimiters.js';
 
 export const app = express();
 
@@ -18,6 +19,7 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+app.use('/api', apiLimiter);
 app.use('/api/auth', authRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/branches', branchRouter);
