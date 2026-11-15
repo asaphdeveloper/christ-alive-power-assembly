@@ -21,9 +21,25 @@ const pages = {
     'General Overseer | Christ Alive Power Assembly',
     'General Overseer workspace for reviewing administrators and church branches.',
   ],
+  '/admin/general-overseer/attendance': [
+    'Church Attendance | Christ Alive Power Assembly',
+    'Review attendance totals, service trends, and branch comparisons for Christ Alive Power Assembly.',
+  ],
+  '/admin/general-overseer/finance': [
+    'Church Finance | Christ Alive Power Assembly',
+    'Review financial activity and reports across Christ Alive Power Assembly branches.',
+  ],
   '/admin/branch-media-admin': [
     'Branch Media Admin | Christ Alive Power Assembly',
     'Branch Media Admin workspace for Christ Alive Power Assembly.',
+  ],
+  '/admin/branch-media-admin/attendance': [
+    'Branch Attendance | Christ Alive Power Assembly',
+    'Record and review service attendance for your Christ Alive Power Assembly branch.',
+  ],
+  '/admin/branch-media-admin/visitors': [
+    'Branch Visitors | Christ Alive Power Assembly',
+    'Record and review visitors to your Christ Alive Power Assembly branch.',
   ],
   '/admin/branch-finance-secretary': [
     'Branch Finance Secretary | Christ Alive Power Assembly',
@@ -35,7 +51,7 @@ const pages = {
   ],
   '/admin/upload-resource': [
     'Upload Resources | Christ Alive Power Assembly',
-    'Manage headquarters Upload Resources for Christ Alive Power Assembly.',
+    'Manage headquarters media documents and hymn resources for Christ Alive Power Assembly.',
   ],
 };
 
