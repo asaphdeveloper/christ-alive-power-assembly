@@ -299,6 +299,77 @@
 .branch-card:hover {
   border-color: #c8ced5;
 }
+.branch-card.has-open-menu {
+  position: relative;
+  z-index: 5;
+}
+.branch-card-visual {
+  position: relative;
+}
+.branch-record-actions {
+  position: absolute;
+  z-index: 4;
+  top: 7px;
+  right: 7px;
+}
+.branch-record-more {
+  display: grid;
+  width: 32px;
+  height: 34px;
+  place-items: center;
+  border: 0;
+  border-radius: 7px;
+  background: rgba(255, 255, 255, 0.9);
+  color: #68746c;
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease;
+}
+.branch-record-more:hover,
+.branch-record-more:focus-visible,
+.branch-record-more[aria-expanded='true'] {
+  background: var(--admin-primary-soft);
+  color: var(--admin-primary);
+}
+.branch-record-menu {
+  position: absolute;
+  z-index: 10;
+  top: calc(100% + 5px);
+  right: 0;
+  width: 190px;
+  padding: 7px;
+  border: 1px solid #e4e8e5;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 12px 28px rgba(25, 35, 29, 0.14);
+}
+.branch-record-menu-item {
+  display: flex;
+  width: 100%;
+  min-height: 36px;
+  align-items: center;
+  gap: 9px;
+  padding: 0 9px;
+  border: 0;
+  border-radius: 8px;
+  background: #fff;
+  color: #333;
+  text-align: left;
+  font: inherit;
+  font-size: 13px;
+  cursor: pointer;
+}
+.branch-record-menu-item:hover {
+  background: #f4f6f4;
+}
+.branch-record-menu-item.is-danger {
+  color: #d72f3a;
+}
+.branch-record-menu-item.is-danger:hover {
+  background: #fff0f1;
+}
+.branch-record-menu-item svg {
+  flex: 0 0 auto;
+}
 .branch-artwork {
   position: relative;
   display: grid;
@@ -716,4 +787,60 @@
   .branch-form-field-wide {
     grid-column: auto;
   }
+}
+
+.branch-relationship-section {
+  display: grid;
+  grid-column: 1 / -1;
+  gap: 18px;
+  padding: 20px;
+  border: 1px solid #e6ebe7;
+  border-radius: 14px;
+  background: #f9fbf9;
+}
+.branch-relationship-heading { display: flex; align-items: center; gap: 11px; }
+.branch-relationship-heading h3 { margin: 0 0 4px; color: #26352d; font-size: 15px; font-weight: 650; }
+.branch-relationship-heading p { margin: 0; color: #78847c; font-size: 12px; }
+.branch-relationship-icon { display: grid; width: 36px; height: 36px; flex: 0 0 auto; place-items: center; border-radius: 10px; background: var(--admin-primary-soft); color: var(--admin-primary); }
+.branch-admin-count { margin-left: auto; padding: 6px 9px; border: 1px solid #e4eae5; border-radius: 999px; background: #fff; color: #66736a; font-size: 11px; font-weight: 600; white-space: nowrap; }
+.branch-admin-mode-switch { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; padding: 4px; border: 1px solid #e5eae6; border-radius: 10px; background: #eef2ef; }
+.branch-admin-mode-switch button { display: inline-flex; min-height: 38px; align-items: center; justify-content: center; gap: 7px; padding: 0 10px; border: 1px solid transparent; border-radius: 7px; background: transparent; color: #66736a; font: inherit; font-size: 12px; font-weight: 600; cursor: pointer; }
+.branch-admin-mode-switch button.is-active { border-color: #e1e8e2; background: #fff; color: var(--admin-primary); box-shadow: 0 1px 2px rgba(25, 35, 29, 0.06); }
+.branch-admin-picker, .branch-new-admin-area { display: grid; gap: 12px; }
+.branch-admin-search { display: grid; gap: 6px; color: #56635b; font-size: 11px; font-weight: 600; }
+.branch-admin-search input { min-height: 40px; padding: 8px 11px; border: 1px solid #dfe7e1; border-radius: 8px; background: #fff; color: #26352d; font: inherit; font-size: 12px; }
+.branch-admin-options { display: grid; max-height: 210px; gap: 7px; overflow: auto; padding: 1px; }
+.branch-admin-option { position: relative; display: flex; min-width: 0; align-items: center; gap: 10px; padding: 10px 11px; border: 1px solid #e3e9e4; border-radius: 9px; background: #fff; cursor: pointer; transition: border-color 140ms ease, background 140ms ease; }
+.branch-admin-option:hover:not(.is-assigned) { border-color: #a9c4b1; }
+.branch-admin-option.is-selected { border-color: #90b69d; background: #f2f8f3; }
+.branch-admin-option.is-assigned { background: #f7f8f7; cursor: not-allowed; }
+.branch-admin-option input { position: absolute; width: 1px; height: 1px; opacity: 0; }
+.branch-admin-option-check { display: grid; width: 18px; height: 18px; flex: 0 0 auto; place-items: center; border: 1px solid #cbd5ce; border-radius: 5px; background: #fff; color: #fff; }
+.branch-admin-option.is-selected .branch-admin-option-check { border-color: var(--admin-primary); background: var(--admin-primary); }
+.branch-admin-option-copy { display: grid; flex: 1; gap: 3px; min-width: 0; font-size: 11px; }
+.branch-admin-option-copy strong { overflow: hidden; color: #26352d; font-size: 12px; font-weight: 600; text-overflow: ellipsis; white-space: nowrap; }
+.branch-admin-option-copy span { overflow: hidden; color: #7c8780; text-overflow: ellipsis; white-space: nowrap; }
+.branch-admin-assignment-status { padding: 5px 7px; border-radius: 999px; background: #edf5ef; color: #3c7552; font-size: 10px; white-space: nowrap; }
+.branch-admin-assignment-status.is-assigned { background: #f2f3f2; color: #757e78; }
+.branch-admin-empty { padding: 18px 10px; border: 1px dashed #d9e1db; border-radius: 9px; color: #78847c; text-align: center; font-size: 12px; }
+.branch-admin-selection-summary { display: flex; align-items: center; gap: 6px; color: var(--admin-primary); font-size: 11px; font-weight: 600; }
+.branch-new-admin-intro { color: #78847c; font-size: 12px; line-height: 1.5; }
+.branch-new-admin-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; align-items: end; }
+.branch-new-admin-fields .branch-form-field { min-width: 0; }
+.branch-new-admin-fields select { width: 100%; height: 42px; padding: 0 10px; border: 1px solid #dfe7e1; border-radius: 8px; background: #fff; color: #26352d; font: inherit; font-size: 12px; }
+.branch-new-admin-add { display: inline-flex; min-height: 38px; align-items: center; justify-self: start; gap: 6px; padding: 0 11px; border: 1px solid #cddfd1; border-radius: 8px; background: #f2f8f3; color: var(--admin-primary); font: inherit; font-size: 11px; font-weight: 600; cursor: pointer; }
+.branch-admin-created-list { display: grid; gap: 7px; padding-top: 12px; border-top: 1px solid #e4eae5; color: #56635b; font-size: 11px; font-weight: 600; }
+.branch-admin-created-row { display: flex; align-items: center; gap: 9px; padding: 8px 10px; border: 1px solid #e3e9e4; border-radius: 9px; background: #fff; }
+.branch-admin-created-avatar { display: grid; width: 30px; height: 30px; flex: 0 0 auto; place-items: center; border-radius: 50%; background: #edf5ef; color: var(--admin-primary); font-size: 10px; font-weight: 700; }
+.branch-admin-created-copy { display: grid; flex: 1; gap: 3px; min-width: 0; }
+.branch-admin-created-copy strong { color: #26352d; font-size: 12px; }
+.branch-admin-created-copy small { overflow: hidden; color: #7c8780; font-size: 10px; text-overflow: ellipsis; white-space: nowrap; }
+.branch-admin-created-row button { display: grid; width: 28px; height: 28px; place-items: center; border: 0; border-radius: 6px; background: transparent; color: #78847c; cursor: pointer; }
+.branch-admin-created-row button:hover { background: #fef3f2; color: #b42318; }
+.branch-form-error { grid-column: 1 / -1; margin: 0; color: #b42318; font-size: 13px; }
+@media (max-width: 560px) {
+  .branch-new-admin-fields { grid-template-columns: 1fr; }
+  .branch-admin-mode-switch { grid-template-columns: 1fr; }
+  .branch-relationship-section { padding: 15px; }
+  .branch-admin-count { font-size: 10px; }
 }

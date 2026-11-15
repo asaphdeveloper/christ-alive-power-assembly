@@ -18,6 +18,8 @@ import branches from '../../../../../data/branches.json';
 import initialAdmins from '../../../../../data/admins.json';
 import './AdminsPage.css';
 
+const branchOptions = [...new Set(branches.map((branch) => branch.name))];
+
 const roleOptions = [
   'General Overseer',
   'Developer',
@@ -29,14 +31,6 @@ const roleOptions = [
 ];
 
 const avatarColors = ['sage', 'blue', 'lavender', 'peach', 'rose', 'mint'];
-const branchOptions = [
-  ...new Set([
-    ...branches.map((branch) => branch.name),
-    'Bauchi Branch',
-    'Abuja Branch',
-    'Kaduna Branch',
-  ]),
-];
 const emptyAdminForm = {
   name: '',
   username: '',
@@ -282,7 +276,7 @@ function AdminPasswordForm({ admin, onSubmit, onCancel }) {
 }
 
 function AdminForm({ admin, onSubmit, onCancel }) {
-  const [form, setForm] = useState(admin ?? emptyAdminForm);
+  const [form, setForm] = useState(() => admin ? { ...emptyAdminForm, ...admin } : emptyAdminForm);
   const [error, setError] = useState('');
 
   function updateField(event) {
@@ -299,11 +293,7 @@ function AdminForm({ admin, onSubmit, onCancel }) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    if (
-      form.role !== 'General Overseer' &&
-      form.role !== 'Developer' &&
-      !form.branch
-    ) {
+    if (form.role !== 'Developer' && !form.branch) {
       setError('Select a branch for this administrator.');
       return;
     }
@@ -348,6 +338,10 @@ function AdminForm({ admin, onSubmit, onCancel }) {
         </header>
         <form className='admin-form' onSubmit={handleSubmit}>
           <label className='admin-form-field admin-form-field-wide'>
+            Full name
+            <input name='name' value={form.name} onChange={updateField} autoComplete='name' placeholder='e.g. Grace James' required />
+          </label>
+          <label className='admin-form-field admin-form-field-wide'>
             Username
             <input
               name='username'
@@ -355,6 +349,7 @@ function AdminForm({ admin, onSubmit, onCancel }) {
               value={form.username}
               onChange={updateField}
               autoComplete='username'
+              placeholder='e.g. grace@media@admin'
               minLength={3}
               maxLength={32}
               pattern='[A-Za-z0-9._@-]+'
@@ -369,6 +364,7 @@ function AdminForm({ admin, onSubmit, onCancel }) {
               value={form.phone}
               onChange={updateField}
               autoComplete='tel'
+              placeholder='+234 800 000 0000'
             />
           </label>
           <label className='admin-form-field'>
@@ -378,6 +374,7 @@ function AdminForm({ admin, onSubmit, onCancel }) {
               type='tel'
               value={form.alternatePhone}
               onChange={updateField}
+              placeholder='+234 800 000 0000'
             />
           </label>
           <label className='admin-form-field'>
@@ -394,9 +391,9 @@ function AdminForm({ admin, onSubmit, onCancel }) {
             </span>
           </label>
           <label className='admin-form-field'>
-            Assigned branch
+            Assigned branch{form.role === 'Developer' ? ' (optional for developers)' : ''}
             <span className='admin-form-select-wrap'>
-              <select name='branch' value={form.branch} onChange={updateField}>
+              <select name='branch' value={form.branch} onChange={updateField} required={form.role !== 'Developer'}>
                 <option value=''>Select a branch</option>
                 {branchOptions.map((branch) => (
                   <option key={branch} value={branch}>
@@ -437,10 +434,26 @@ function AdminForm({ admin, onSubmit, onCancel }) {
 
 export function AdminsPage() {
   const [admins, setAdmins] = useState(initialAdmins);
+  const [branchRecords, setBranchRecords] = useState(branches);
   const [openAdminMenu, setOpenAdminMenu] = useState(null);
   const [formAdmin, setFormAdmin] = useState(undefined);
   const [passwordAdmin, setPasswordAdmin] = useState(null);
   const [feedback, setFeedback] = useState('');
+
+  function saveBranchAdmins(adminName, oldBranch, newBranch) {
+    setBranchRecords((current) => current.map((branch) => {
+      const currentNames = branch.adminNames ?? (branch.administrator ? [branch.administrator] : []);
+      if (branch.name === oldBranch && oldBranch !== newBranch) {
+        const names = currentNames.filter((name) => name !== adminName);
+        return { ...branch, adminNames: names, administrator: names[0] ?? '' };
+      }
+      if (branch.name === newBranch) {
+        const names = currentNames.includes(adminName) ? currentNames : [...currentNames, adminName];
+        return { ...branch, adminNames: names, administrator: names[0] ?? '' };
+      }
+      return branch;
+    }));
+  }
 
   function saveAdmin(form) {
     const name = form.name.trim();
@@ -452,6 +465,7 @@ export function AdminsPage() {
             : admin,
         ),
       );
+      saveBranchAdmins(name, formAdmin.branch, form.branch);
       setFeedback('Administrator details updated.');
     } else {
       const newAdmin = {
@@ -463,6 +477,7 @@ export function AdminsPage() {
         pinned: false,
       };
       setAdmins((current) => [newAdmin, ...current]);
+      saveBranchAdmins(name, '', newAdmin.branch);
       setFeedback('Administrator added to this dashboard.');
     }
     setFormAdmin(undefined);
@@ -470,6 +485,11 @@ export function AdminsPage() {
 
   function deleteAdmin(admin) {
     setAdmins((current) => current.filter((item) => item.id !== admin.id));
+    setBranchRecords((current) => current.map((branch) => {
+      const names = (branch.adminNames ?? (branch.administrator ? [branch.administrator] : []))
+        .filter((name) => name !== admin.name);
+      return { ...branch, adminNames: names, administrator: names[0] ?? '' };
+    }));
     setFeedback(`${admin.name} removed from this dashboard.`);
   }
 
@@ -563,6 +583,7 @@ export function AdminsPage() {
         <AdminForm
           key={formAdmin?.id ?? 'new-admin'}
           admin={formAdmin}
+          branches={branchRecords}
           onSubmit={saveAdmin}
           onCancel={() => setFormAdmin(undefined)}
         />

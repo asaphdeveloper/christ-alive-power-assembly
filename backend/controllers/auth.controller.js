@@ -21,6 +21,16 @@ export const login = async (req, res, next) => {
 
     const token = signToken(admin._id);
     admin.password = undefined;
+
+    const cookieOptions = {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    };
+
+    res.cookie('access_token', token, cookieOptions);
+
     res.status(200).json({ status: 'success', token, data: { admin } });
   } catch (err) {
     next(err);
