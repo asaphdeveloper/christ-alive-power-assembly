@@ -13,14 +13,6 @@
   gap: 20px;
 }
 
-.attendance-reports-eyebrow {
-  color: #087f5b;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-}
-
 .attendance-reports-heading h1 {
   margin-top: 5px;
   font-size: clamp(24px, 3vw, 30px);
@@ -48,48 +40,61 @@
 
 .attendance-report-summary {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 14px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
 }
 
 .attendance-report-summary-card {
-  display: flex;
-  min-height: 94px;
+  display: grid;
+  min-width: 0;
+  min-height: 100px;
+  grid-template-columns: 30px minmax(0, 1fr);
+  grid-template-rows: 30px 1fr auto;
   align-items: center;
-  gap: 13px;
-  padding: 17px 18px;
-  border: 1px solid #e6ebe8;
-  border-radius: 12px;
+  column-gap: 7px;
+  row-gap: 12px;
+  padding: 12px 13px;
+  border: 1px solid #e5e7e8;
+  border-radius: 9px;
   background: #fff;
 }
 
 .attendance-report-summary-icon {
-  display: grid;
-  width: 40px;
-  height: 40px;
-  flex: 0 0 40px;
-  place-items: center;
-  border-radius: 11px;
+  grid-column: 1;
+  grid-row: 1;
+  box-sizing: content-box;
+  padding: 7px;
+  border-radius: 9px;
 }
 
-.attendance-report-summary-icon.is-green { color: #087f5b; background: #eaf5ee; }
-.attendance-report-summary-icon.is-amber { color: #a56a12; background: #fff5e3; }
-.attendance-report-summary-icon.is-blue { color: #3e66bd; background: #edf3ff; }
-
-.attendance-report-summary-card div {
-  display: grid;
-  gap: 4px;
+.attendance-report-summary-icon.is-green {
+  color: #087f5b;
+  background: #eaf5ee;
+}
+.attendance-report-summary-icon.is-amber {
+  color: #c53535;
+  background: #fff0f0;
+}
+.attendance-report-summary-icon.is-blue {
+  color: #3e66bd;
+  background: #edf3ff;
 }
 
-.attendance-report-summary-card div span {
-  color: #758179;
+.attendance-report-summary-label {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  align-self: end;
+  color: #303a34;
   font-size: 12px;
+  line-height: 1.2;
 }
 
-.attendance-report-summary-card strong {
+.attendance-report-summary-card > strong {
+  grid-column: 1 / -1;
+  grid-row: 3;
   color: #1d2a23;
   font-size: 22px;
-  font-weight: 650;
+  font-weight: 600;
   line-height: 1;
 }
 
@@ -129,8 +134,7 @@
   gap: 8px;
 }
 
-.attendance-reports-search,
-.attendance-reports-filters select {
+.attendance-reports-search {
   height: 38px;
   border: 1px solid #e0e6e2;
   border-radius: 8px;
@@ -162,16 +166,10 @@
 .attendance-reports-search input:focus,
 .attendance-reports-search input:focus-visible {
   outline: none;
-  box-shadow: none;
 }
 
-.attendance-reports-search:focus-within,
-.attendance-reports-filters select:focus-visible {
+.attendance-reports-search:focus-within {
   border-color: #087f5b;
-}
-
-.attendance-reports-filters select {
-  padding: 0 28px 0 10px;
 }
 
 .attendance-reports-table-wrap {
@@ -201,6 +199,13 @@
   border-top: 1px solid #eff2f0;
   color: #4b5851;
   font-size: 12px;
+}
+
+.attendance-reports-table td.attendance-report-row-number {
+  width: 44px;
+  color: #89948d;
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
 }
 
 .attendance-reports-table tbody tr:hover {
@@ -247,7 +252,7 @@
   font-weight: 600;
 }
 
-.attendance-report-status.is-delivered {
+.attendance-report-status.is-received {
   color: #19744f;
   background: #eaf6ef;
 }
@@ -265,6 +270,10 @@
 }
 
 @media (max-width: 900px) {
+  .attendance-report-summary {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
   .attendance-reports-toolbar {
     align-items: flex-start;
     flex-direction: column;
@@ -290,22 +299,16 @@
   }
 
   .attendance-report-summary {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 9px;
   }
 
   .attendance-report-summary-card {
-    min-height: 72px;
-    padding: 12px 14px;
+    min-height: 96px;
+    padding: 11px;
   }
 
-  .attendance-report-summary-icon {
-    width: 36px;
-    height: 36px;
-    flex-basis: 36px;
-  }
-
-  .attendance-report-summary-card strong {
+  .attendance-report-summary-card > strong {
     font-size: 20px;
   }
 
@@ -323,9 +326,10 @@
     min-width: 0;
   }
 
-  .attendance-reports-filters select {
+  .attendance-reports-filters .admin-filter-button {
     width: 100%;
     min-width: 0;
+    justify-content: space-between;
   }
 
   .attendance-reports-table-wrap {
@@ -380,7 +384,12 @@
   }
 
   .attendance-reports-table td:first-child,
-  .attendance-reports-table td:nth-child(3) {
+  .attendance-reports-table td:nth-child(3),
+  .attendance-reports-table td:nth-child(4) {
     grid-column: 1 / -1;
+  }
+
+  .attendance-reports-table td.attendance-report-row-number {
+    width: auto;
   }
 }

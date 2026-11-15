@@ -4,7 +4,6 @@ import {
   Check,
   ChevronLeft,
   ChevronRight,
-  ChevronDown,
   Globe,
   MapPin,
   MapPinned,
@@ -18,6 +17,7 @@ import {
 } from 'lucide-react';
 import branches from '../../../../data/branches.json';
 import initialAdmins from '../../../../data/admins.json';
+import { AdminFilterDropdown as BranchFilterDropdown } from '../AdminFilterDropdown';
 import './BranchesPage.css';
 
 function getFilterOptions(records, field, allLabel) {
@@ -401,57 +401,6 @@ function BranchForm({ branch, admins, onSubmit, onCancel }) {
           </div>
         </form>
       </section>
-    </div>
-  );
-}
-
-function BranchFilterDropdown({
-  name,
-  label,
-  options,
-  value,
-  isOpen,
-  onToggle,
-  onSelect,
-}) {
-  const isFiltered = value !== 'all';
-
-  return (
-    <div className='branches-filter-control'>
-      <button
-        className='branches-filter-button'
-        type='button'
-        aria-haspopup='menu'
-        aria-expanded={isOpen}
-        aria-controls={isOpen ? `branch-filter-${name}` : undefined}
-        onClick={onToggle}
-      >
-        <span>{label}</span>
-        {isFiltered && <span className='branches-filter-count'>1</span>}
-        <ChevronDown size={15} aria-hidden='true' />
-      </button>
-      {isOpen && (
-        <div
-          className='branches-filter-menu'
-          id={`branch-filter-${name}`}
-          role='menu'
-          aria-label={`${label} options`}
-        >
-          {options.map((option) => (
-            <button
-              className={`branches-filter-option${value === option.value ? ' is-selected' : ''}`}
-              type='button'
-              role='menuitemradio'
-              aria-checked={value === option.value}
-              key={option.value}
-              onClick={() => onSelect(option.value)}
-            >
-              <span>{option.label}</span>
-              {value === option.value && <Check size={15} aria-hidden='true' />}
-            </button>
-          ))}
-        </div>
-      )}
     </div>
   );
 }

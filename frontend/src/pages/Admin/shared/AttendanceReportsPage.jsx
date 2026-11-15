@@ -4,10 +4,13 @@ import {
   CheckCircle2,
   ClipboardList,
   Clock3,
+  FileCheck2,
+  Files,
   Search,
   Users,
 } from 'lucide-react';
 import { AdminLayout } from '../AdminLayout';
+import { AdminFilterDropdown } from './AdminFilterDropdown';
 import reports from '../../../data/general-overseer-received-reports.json';
 import branches from '../../../data/branches.json';
 import './AttendanceReportsPage.css';
@@ -49,7 +52,10 @@ export function AttendanceReportsPage() {
       .sort((first, second) => second.date.localeCompare(first.date));
   }, [branchFilter, query, statusFilter]);
 
+  const receivedCount = reports.filter((report) => report.status === 'Delivered').length;
   const pendingCount = reports.filter((report) => report.status === 'Pending').length;
+  const expectedCount =
+    branches.length * new Set(reports.map((report) => report.service)).size;
   const totalAttendance = reports.reduce((sum, report) => sum + report.total, 0);
 
   return (
@@ -57,7 +63,6 @@ export function AttendanceReportsPage() {
       <section className='attendance-reports-page' aria-labelledby='attendance-reports-title'>
         <header className='attendance-reports-heading'>
           <div>
-            <span className='attendance-reports-eyebrow'>Branch submissions</span>
             <h1 id='attendance-reports-title'>Attendance reports</h1>
             <p>View attendance reports sent from your church branches.</p>
           </div>
@@ -68,16 +73,24 @@ export function AttendanceReportsPage() {
 
         <div className='attendance-report-summary' aria-label='Report summary'>
           <article className='attendance-report-summary-card'>
-            <span className='attendance-report-summary-icon is-green'><ClipboardList size={18} /></span>
-            <div><span>Total reports</span><strong>{reports.length}</strong></div>
+            <FileCheck2 className='attendance-report-summary-icon is-green' size={16} aria-hidden='true' />
+            <span className='attendance-report-summary-label'>Received reports</span>
+            <strong>{receivedCount}</strong>
           </article>
           <article className='attendance-report-summary-card'>
-            <span className='attendance-report-summary-icon is-amber'><Clock3 size={18} /></span>
-            <div><span>Awaiting review</span><strong>{pendingCount}</strong></div>
+            <Clock3 className='attendance-report-summary-icon is-amber' size={16} aria-hidden='true' />
+            <span className='attendance-report-summary-label'>Pending reports</span>
+            <strong>{pendingCount}</strong>
           </article>
           <article className='attendance-report-summary-card'>
-            <span className='attendance-report-summary-icon is-blue'><Users size={18} /></span>
-            <div><span>People recorded</span><strong>{totalAttendance.toLocaleString()}</strong></div>
+            <Files className='attendance-report-summary-icon is-blue' size={16} aria-hidden='true' />
+            <span className='attendance-report-summary-label'>Expected reports</span>
+            <strong>{expectedCount}</strong>
+          </article>
+          <article className='attendance-report-summary-card'>
+            <Users className='attendance-report-summary-icon is-blue' size={16} aria-hidden='true' />
+            <span className='attendance-report-summary-label'>People recorded</span>
+            <strong>{totalAttendance.toLocaleString()}</strong>
           </article>
         </div>
 
@@ -98,15 +111,30 @@ export function AttendanceReportsPage() {
                   aria-label='Search branch or submitter'
                 />
               </label>
-              <select value={branchFilter} onChange={(event) => setBranchFilter(event.target.value)} aria-label='Filter by branch'>
-                <option value='all'>All branches</option>
-                {branches.map((branch) => <option key={branch.name} value={branch.name}>{branch.name}</option>)}
-              </select>
-              <select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)} aria-label='Filter by status'>
-                <option value='all'>All statuses</option>
-                <option value='Delivered'>Delivered</option>
-                <option value='Pending'>Pending</option>
-              </select>
+              <AdminFilterDropdown
+                name='attendance-report-branch'
+                label={branchFilter === 'all' ? 'All branches' : branchFilter}
+                value={branchFilter}
+                options={[
+                  { label: 'All branches', value: 'all' },
+                  ...branches.map((branch) => ({
+                    label: branch.name,
+                    value: branch.name,
+                  })),
+                ]}
+                onSelect={setBranchFilter}
+              />
+              <AdminFilterDropdown
+                name='attendance-report-status'
+                label={statusFilter === 'all' ? 'All statuses' : statusFilter}
+                value={statusFilter}
+                options={[
+                  { label: 'All statuses', value: 'all' },
+                  { label: 'Received', value: 'Delivered' },
+                  { label: 'Pending', value: 'Pending' },
+                ]}
+                onSelect={setStatusFilter}
+              />
             </div>
           </div>
 
@@ -114,6 +142,7 @@ export function AttendanceReportsPage() {
             <table className='attendance-reports-table'>
               <thead>
                 <tr>
+                  <th scope='col'>#</th>
                   <th scope='col'>Branch / service</th>
                   <th scope='col'>Service date</th>
                   <th scope='col'>Attendance</th>
@@ -123,8 +152,9 @@ export function AttendanceReportsPage() {
                 </tr>
               </thead>
               <tbody>
-                {filteredReports.map((report) => (
+                {filteredReports.map((report, index) => (
                   <tr key={report.id}>
+                    <td data-label='#' className='attendance-report-row-number'>{index + 1}</td>
                     <td data-label='Branch / service'>
                       <strong>{report.branch}</strong>
                       <span className='attendance-report-service'>{report.service} service</span>
@@ -136,9 +166,9 @@ export function AttendanceReportsPage() {
                     </td>
                     <td data-label='Submitted by'>{report.submittedBy}</td>
                     <td data-label='Received'>{formatSubmittedAt(report.submittedAt)}</td>
-                    <td data-label='Status'><span className={`attendance-report-status ${report.status === 'Pending' ? 'is-pending' : 'is-delivered'}`}>
+                    <td data-label='Status'><span className={`attendance-report-status ${report.status === 'Pending' ? 'is-pending' : 'is-received'}`}>
                       {report.status === 'Pending' ? <Clock3 size={13} /> : <CheckCircle2 size={13} />}
-                      {report.status}
+                      {report.status === 'Delivered' ? 'Received' : report.status}
                     </span></td>
                   </tr>
                 ))}
