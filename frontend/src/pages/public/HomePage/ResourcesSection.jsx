@@ -3,7 +3,6 @@ import { SectionHeading } from './SectionHeading';
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
   CloudDownloadIcon,
-  ViewIcon,
   GridViewIcon,
   MusicNote01Icon,
 } from '@hugeicons/core-free-icons';
@@ -254,11 +253,6 @@ export const Resources = () => {
                     type='button'
                     title='Available when the PDF is published'
                   >
-                    <HugeiconsIcon
-                      icon={ViewIcon}
-                      size={18}
-                      aria-hidden='true'
-                    />{' '}
                     Open
                   </button>
                   <button
