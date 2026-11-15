@@ -1,5 +1,22 @@
 import mongoose from 'mongoose';
-import validator from 'validator';
+
+const mapLocationSchema = new mongoose.Schema(
+  {
+    longitude: {
+      type: Number,
+      min: [-180, 'Longitude must be between -180 and 180'],
+      max: [180, 'Longitude must be between -180 and 180'],
+      default: null,
+    },
+    latitude: {
+      type: Number,
+      min: [-90, 'Latitude must be between -90 and 90'],
+      max: [90, 'Latitude must be between -90 and 90'],
+      default: null,
+    },
+  },
+  { _id: false },
+);
 
 const branchSchema = new mongoose.Schema(
   {
@@ -54,29 +71,23 @@ const branchSchema = new mongoose.Schema(
       trim: true,
     },
     mapLocation: {
-      type: {
-        type: String,
-        enum: ['Point'],
-        default: 'Point',
-      },
-      coordinates: {
-        type: [Number],
-        validate: {
-          validator: (coordinates) =>
-            coordinates.length === 2 &&
-            coordinates[0] >= -180 &&
-            coordinates[0] <= 180 &&
-            coordinates[1] >= -90 &&
-            coordinates[1] <= 90,
-          message: 'Map location must be [longitude, latitude]',
+      type: mapLocationSchema,
+      default: () => ({}),
+      validate: {
+        validator: (location) => {
+          if (!location) return true;
+          const hasLongitude =
+            location.longitude !== null && location.longitude !== undefined;
+          const hasLatitude =
+            location.latitude !== null && location.latitude !== undefined;
+          return hasLongitude === hasLatitude;
         },
+        message: 'Provide both longitude and latitude',
       },
     },
   },
   { timestamps: true },
 );
-
-branchSchema.index({ mapLocation: '2dsphere' });
 
 const Branch = mongoose.model('Branch', branchSchema);
 
