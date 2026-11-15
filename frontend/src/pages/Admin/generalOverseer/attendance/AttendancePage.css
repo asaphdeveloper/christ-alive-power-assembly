@@ -220,30 +220,35 @@
 
 .go-attendance-chart-card {
   min-width: 0;
-  padding: 20px 10px 5px;
-  border: 1px solid #e3e9e5;
-  border-radius: 12px;
+  padding: 18px 18px 16px;
+  border: 1px solid #e8ebef;
+  border-radius: 16px;
   background: #fff;
+  box-shadow: 0 2px 8px rgba(28, 39, 53, 0.035);
 }
 .go-attendance-chart-card > header {
   display: flex;
   align-items: flex-start;
   justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 18px;
-  padding: 0 8px;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding: 0;
 }
 .go-attendance-chart-card > header > div > span {
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-bottom: 7px;
-  color: #698174;
-  font-size: 12px;
-  font-weight: 600;
+  gap: 8px;
+  margin-bottom: 10px;
+  color: #424953;
+  font-size: 13px;
+  font-weight: 500;
 }
 .go-attendance-chart-card > header > div > span svg {
-  color: #087f5b;
+  box-sizing: content-box;
+  padding: 6px;
+  border: 1px solid #e9edf1;
+  border-radius: 50%;
+  color: #5867df;
 }
 .go-trend-heading > div {
   display: grid;
@@ -269,14 +274,14 @@
   text-align: right;
 }
 .go-attendance-chart-card h2 {
-  color: #26352d;
-  font-size: 16px;
-  font-weight: 700;
+  color: #20242b;
+  font-size: 18px;
+  font-weight: 650;
 }
 .go-attendance-chart-card > header p {
-  margin-top: 4px;
-  color: #7c8981;
-  font-size: 14px;
+  margin-top: 5px;
+  color: #7a818a;
+  font-size: 12px;
 }
 .go-chart-record-count {
   color: #839087;
@@ -287,6 +292,73 @@
   position: relative;
   width: 100%;
   height: 280px;
+}
+.go-comparison-summary {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  margin: 5px 0 16px;
+}
+.go-comparison-summary strong {
+  color: #181c23;
+  font-size: 25px;
+  font-weight: 650;
+  letter-spacing: -0.04em;
+}
+.go-comparison-summary span {
+  color: #7b828b;
+  font-size: 12px;
+}
+.go-comparison-bar {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  margin-bottom: 13px;
+}
+.go-comparison-segment-wrap {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+.go-comparison-percent {
+  color: #59616b;
+  font-size: 11px;
+  font-weight: 500;
+}
+.go-comparison-segment {
+  display: block;
+  width: 100%;
+  height: 13px;
+  min-width: 5px;
+  border-radius: 999px;
+}
+.go-comparison-legend {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.go-comparison-legend li,
+.go-comparison-legend-name {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+}
+.go-comparison-legend li {
+  flex: 1 1 0;
+  justify-content: flex-start;
+  color: #545c66;
+  font-size: 12px;
+}
+.go-comparison-legend-name {
+  overflow: hidden;
+  white-space: nowrap;
+}
+.go-comparison-legend li > span:last-child {
+  color: #6f7780;
 }
 .go-expression-cards {
   display: grid;
@@ -327,156 +399,6 @@
 .go-expression-card small {
   color: #89948d;
   font-size: 14px;
-}
-.go-received-reports {
-  min-width: 0;
-}
-.go-received-heading {
-  align-items: center !important;
-}
-.go-received-heading > div > span {
-  font-size: 12px;
-}
-.go-received-controls {
-  display: flex;
-  flex: 0 0 auto;
-  align-items: center;
-  gap: 12px;
-}
-.go-received-service-control {
-  width: max-content;
-}
-.go-received-service-control .go-filter-menu {
-  width: 250px;
-}
-.go-received-expression-cell {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  color: #46544b;
-}
-.go-received-expression-cell svg {
-  flex: 0 0 auto;
-  color: #43845a;
-}
-.go-received-expression-cell.is-awaiting svg {
-  color: #c4474e;
-}
-.go-received-table-wrap {
-  width: calc(100% + 20px);
-  margin-inline: -10px;
-  overflow-x: auto;
-  overscroll-behavior-inline: contain;
-}
-.go-received-table {
-  width: 100%;
-  min-width: 900px;
-  border-collapse: collapse;
-  color: #46544b;
-  font-size: 14px;
-  text-align: left;
-}
-.go-received-table th,
-.go-received-table td {
-  padding: 11px 10px;
-  border-bottom: 1px solid #edf1ee;
-  white-space: nowrap;
-}
-.go-received-table th {
-  background: #f8faf9;
-  color: #718078;
-  font-size: 14px;
-  font-weight: 750;
-}
-.go-received-table thead th {
-  border-bottom-color: #d9dfdb;
-  background: #e9edeb;
-  color: #536159;
-}
-.go-table-heading {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-.go-table-heading svg {
-  flex: 0 0 auto;
-  color: #78877e;
-}
-.go-received-service-group + .go-received-service-group {
-  border-top: 1px solid #dfe7e2;
-}
-.go-received-table .go-received-service-title th {
-  padding: 13px 10px 8px;
-  border-bottom: 0;
-  background: #fff;
-  color: #26352d;
-  font-size: 14px;
-}
-.go-received-service-title th > span {
-  font-weight: 750;
-}
-.go-received-service-title small {
-  margin-left: 10px;
-  color: #7c8981;
-  font-size: 12px;
-  font-weight: 500;
-}
-.go-received-table .go-received-category-row th {
-  padding-block: 7px;
-  background: #f5f8f6;
-  color: #66766d;
-  font-size: 12px;
-  font-weight: 700;
-}
-.go-received-category-row th > svg {
-  margin-right: 5px;
-  vertical-align: -3px;
-}
-.go-received-category-row th span {
-  display: inline-grid;
-  min-width: 20px;
-  height: 20px;
-  place-items: center;
-  margin-left: 5px;
-  padding-inline: 5px;
-  border-radius: 999px;
-  background: #e7efe9;
-  color: #42634f;
-  font-size: 11px;
-}
-.go-received-category-row.is-awaiting th {
-  background: #fff4f4;
-  color: #a63840;
-}
-.go-received-category-row.is-awaiting th span {
-  background: #f9dfe1;
-  color: #a63840;
-}
-.go-received-pending-row td {
-  color: #7b817d;
-}
-.go-received-table tbody tr:last-child td {
-  border-bottom: 0;
-}
-.go-received-total {
-  color: #203128;
-  font-weight: 750;
-}
-.go-report-status {
-  display: inline-flex;
-  min-height: 26px;
-  align-items: center;
-  gap: 5px;
-  padding: 0 9px;
-  border-radius: 20px;
-  background: #edf7f0;
-  color: #39764c;
-  font-size: 14px;
-  font-weight: 700;
-}
-.go-report-status.is-pending {
-  background: #fff0f0;
-  color: #b23b43;
 }
 .go-chart-empty {
   display: grid;
@@ -539,25 +461,10 @@
     font-size: 20px;
   }
   .go-attendance-chart-card {
-    padding: 14px 12px 12px;
-  }
-  .go-received-table-wrap {
-    width: calc(100% + 24px);
-    margin-inline: -12px;
+    padding: 16px 14px 14px;
   }
   .go-line-chart-wrap {
     height: 245px;
-  }
-  .go-received-heading {
-    align-items: flex-start !important;
-  }
-  .go-received-controls {
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 6px;
-  }
-  .go-received-service-control .go-filter-button {
-    max-width: min(250px, 48vw);
   }
   .go-expression-cards {
     grid-template-columns: repeat(2, minmax(0, 1fr));

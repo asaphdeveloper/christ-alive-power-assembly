@@ -3,6 +3,8 @@ import {
   Check,
   ChevronDown,
   CircleUserRound,
+  Eye,
+  EyeOff,
   MapPin,
   MoreVertical,
   Pencil,
@@ -60,6 +62,7 @@ function AdminCard({
   onTogglePin,
 }) {
   const actionsRef = useRef(null);
+  const [passwordVisible, setPasswordVisible] = useState(false);
 
   useEffect(() => {
     if (!menuOpen) return undefined;
@@ -98,10 +101,10 @@ function AdminCard({
           {admin.initials}
         </span>
         <div className='admin-record-identity'>
-          <h2>{admin.name}</h2>
+          <h2>{admin.role}</h2>
           <p>
             <ShieldCheck size={15} aria-hidden='true' />
-            {admin.role}
+            {admin.name}
           </p>
         </div>
         <div className='admin-record-actions' ref={actionsRef}>
@@ -145,6 +148,24 @@ function AdminCard({
         <p className='admin-contact-username'>
           <CircleUserRound size={16} aria-hidden='true' />
           <span>{admin.username}</span>
+        </p>
+        <p className='admin-contact-password'>
+          <button
+            className='admin-password-visibility'
+            type='button'
+            aria-label={passwordVisible ? 'Hide password' : 'Show password'}
+            aria-pressed={passwordVisible}
+            onClick={() => setPasswordVisible((visible) => !visible)}
+          >
+            {passwordVisible ? (
+              <EyeOff size={15} aria-hidden='true' />
+            ) : (
+              <Eye size={15} aria-hidden='true' />
+            )}
+          </button>
+          <span>
+            {passwordVisible ? admin.password || 'Not available' : '••••••••'}
+          </span>
         </p>
         <p className='admin-contact-phone'>
           <Phone size={16} aria-hidden='true' />
@@ -276,7 +297,9 @@ function AdminPasswordForm({ admin, onSubmit, onCancel }) {
 }
 
 function AdminForm({ admin, onSubmit, onCancel }) {
-  const [form, setForm] = useState(() => admin ? { ...emptyAdminForm, ...admin } : emptyAdminForm);
+  const [form, setForm] = useState(() =>
+    admin ? { ...emptyAdminForm, ...admin } : emptyAdminForm,
+  );
   const [error, setError] = useState('');
 
   function updateField(event) {
@@ -339,7 +362,14 @@ function AdminForm({ admin, onSubmit, onCancel }) {
         <form className='admin-form' onSubmit={handleSubmit}>
           <label className='admin-form-field admin-form-field-wide'>
             Full name
-            <input name='name' value={form.name} onChange={updateField} autoComplete='name' placeholder='e.g. Grace James' required />
+            <input
+              name='name'
+              value={form.name}
+              onChange={updateField}
+              autoComplete='name'
+              placeholder='e.g. Grace James'
+              required
+            />
           </label>
           <label className='admin-form-field admin-form-field-wide'>
             Username
@@ -391,9 +421,15 @@ function AdminForm({ admin, onSubmit, onCancel }) {
             </span>
           </label>
           <label className='admin-form-field'>
-            Assigned branch{form.role === 'Developer' ? ' (optional for developers)' : ''}
+            Assigned branch
+            {form.role === 'Developer' ? ' (optional for developers)' : ''}
             <span className='admin-form-select-wrap'>
-              <select name='branch' value={form.branch} onChange={updateField} required={form.role !== 'Developer'}>
+              <select
+                name='branch'
+                value={form.branch}
+                onChange={updateField}
+                required={form.role !== 'Developer'}
+              >
                 <option value=''>Select a branch</option>
                 {branchOptions.map((branch) => (
                   <option key={branch} value={branch}>
@@ -441,18 +477,32 @@ export function AdminsPage() {
   const [feedback, setFeedback] = useState('');
 
   function saveBranchAdmins(adminName, oldBranch, newBranch) {
-    setBranchRecords((current) => current.map((branch) => {
-      const currentNames = branch.adminNames ?? (branch.administrator ? [branch.administrator] : []);
-      if (branch.name === oldBranch && oldBranch !== newBranch) {
-        const names = currentNames.filter((name) => name !== adminName);
-        return { ...branch, adminNames: names, administrator: names[0] ?? '' };
-      }
-      if (branch.name === newBranch) {
-        const names = currentNames.includes(adminName) ? currentNames : [...currentNames, adminName];
-        return { ...branch, adminNames: names, administrator: names[0] ?? '' };
-      }
-      return branch;
-    }));
+    setBranchRecords((current) =>
+      current.map((branch) => {
+        const currentNames =
+          branch.adminNames ??
+          (branch.administrator ? [branch.administrator] : []);
+        if (branch.name === oldBranch && oldBranch !== newBranch) {
+          const names = currentNames.filter((name) => name !== adminName);
+          return {
+            ...branch,
+            adminNames: names,
+            administrator: names[0] ?? '',
+          };
+        }
+        if (branch.name === newBranch) {
+          const names = currentNames.includes(adminName)
+            ? currentNames
+            : [...currentNames, adminName];
+          return {
+            ...branch,
+            adminNames: names,
+            administrator: names[0] ?? '',
+          };
+        }
+        return branch;
+      }),
+    );
   }
 
   function saveAdmin(form) {
@@ -485,11 +535,15 @@ export function AdminsPage() {
 
   function deleteAdmin(admin) {
     setAdmins((current) => current.filter((item) => item.id !== admin.id));
-    setBranchRecords((current) => current.map((branch) => {
-      const names = (branch.adminNames ?? (branch.administrator ? [branch.administrator] : []))
-        .filter((name) => name !== admin.name);
-      return { ...branch, adminNames: names, administrator: names[0] ?? '' };
-    }));
+    setBranchRecords((current) =>
+      current.map((branch) => {
+        const names = (
+          branch.adminNames ??
+          (branch.administrator ? [branch.administrator] : [])
+        ).filter((name) => name !== admin.name);
+        return { ...branch, adminNames: names, administrator: names[0] ?? '' };
+      }),
+    );
     setFeedback(`${admin.name} removed from this dashboard.`);
   }
 

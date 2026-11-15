@@ -4,9 +4,7 @@ import { AdminLayout } from '../../AdminLayout';
 import { AttendanceKpis } from './AttendanceKpis';
 import { AttendanceTrendCard } from './AttendanceTrendCard';
 import { BranchComparisonCard } from './BranchComparisonCard';
-import { ReceivedReportsCard } from './ReceivedReportsCard';
 import attendanceConfig from '../../../../data/general-overseer-attendance.json';
-import receivedReports from '../../../../data/general-overseer-received-reports.json';
 import branchData from '../../../../data/branches.json';
 import './AttendancePage.css';
 
@@ -48,12 +46,6 @@ const formatFullMonthDate = (value) =>
     day: 'numeric',
     month: 'long',
   });
-const formatSubmittedAt = (value) =>
-  new Date(value).toLocaleTimeString('en-NG', {
-    hour: 'numeric',
-    minute: '2-digit',
-    hour12: true,
-  });
 const getValue = (record, key) =>
   key === 'total'
     ? record.men + record.women + record.youth + record.children
@@ -62,9 +54,6 @@ const getValue = (record, key) =>
 export function GeneralOverseerAttendancePage() {
   const [branch, setBranch] = useState('All branches');
   const [service, setService] = useState(serviceDays[0]);
-  const [receivedServiceFilter, setReceivedServiceFilter] = useState(
-    serviceOrder[0],
-  );
   const [group, setGroup] = useState('total');
   const [openFilter, setOpenFilter] = useState('');
   const latestDate = attendanceData.reduce(
@@ -203,28 +192,6 @@ export function GeneralOverseerAttendancePage() {
       .filter((record) => record.branch === branchName)
       .reduce((sum, record) => sum + getValue(record, group), 0),
   }));
-  const receivedServiceGroups = serviceOrder
-    .map((serviceName) => {
-      const reports = receivedReports.filter(
-        (report) => report.service === serviceName,
-      );
-      const serviceDate = latestWeekRecords.find(
-        (record) => record.service === serviceName,
-      )?.date;
-      const submittedBranches = new Set(reports.map((report) => report.branch));
-      const pendingBranches =
-        serviceDate && serviceDate <= latestDate
-          ? orderedBranchData
-              .map(({ name }) => name)
-              .filter((name) => !submittedBranches.has(name))
-          : [];
-
-      return { service: serviceName, serviceDate, reports, pendingBranches };
-    })
-    .filter(
-      ({ reports, service }) =>
-        reports.length > 0 && service === receivedServiceFilter,
-    );
   function resetFilters() {
     setBranch('All branches');
     setService(serviceDays[0]);
@@ -395,6 +362,18 @@ export function GeneralOverseerAttendancePage() {
 
         <AttendanceKpis totals={totals} service={service} />
 
+        <section
+          className='go-report-comparison-row'
+          aria-label='Expression comparison'
+        >
+          <BranchComparisonCard
+            branchComparison={branchComparison}
+            getExpressionLabel={getExpressionLabel}
+            groupLabel={groupOptions.find((item) => item.key === group)?.label}
+            service={service}
+          />
+        </section>
+
         <AttendanceTrendCard
           filteredData={filteredData}
           trendData={trendData}
@@ -403,31 +382,6 @@ export function GeneralOverseerAttendancePage() {
           groupLabel={groupOptions.find((item) => item.key === group)?.label}
           service={service}
         />
-
-        <section
-          className='go-report-comparison-row'
-          aria-label='Expression comparison and received reports'
-        >
-          <BranchComparisonCard
-            branchComparison={branchComparison}
-            getExpressionLabel={getExpressionLabel}
-            groupLabel={groupOptions.find((item) => item.key === group)?.label}
-            service={service}
-          />
-          <ReceivedReportsCard
-            receivedServiceGroups={receivedServiceGroups}
-            receivedServiceFilter={receivedServiceFilter}
-            setReceivedServiceFilter={setReceivedServiceFilter}
-            openFilter={openFilter}
-            setOpenFilter={setOpenFilter}
-            orderedBranchData={orderedBranchData}
-            serviceOrder={serviceOrder}
-            serviceDisplayNames={serviceDisplayNames}
-            getExpressionLabel={getExpressionLabel}
-            formatFullMonthDate={formatFullMonthDate}
-            formatSubmittedAt={formatSubmittedAt}
-          />
-        </section>
       </section>
     </AdminLayout>
   );

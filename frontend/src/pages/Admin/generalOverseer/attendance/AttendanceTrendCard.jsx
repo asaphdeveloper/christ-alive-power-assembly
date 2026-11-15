@@ -34,9 +34,9 @@ export function AttendanceTrendCard({
     >
       <header className='go-trend-heading'>
         <div>
-          <span>
+          <span className='go-card-eyebrow'>
             <ChartNoAxesCombined size={16} aria-hidden='true' />
-            ATTENDANCE TREND
+            Attendance trend
           </span>
           <h2 id='go-trend-title'>{expressionLabel}</h2>
           <p>{groupLabel} · {service.toLowerCase()}</p>

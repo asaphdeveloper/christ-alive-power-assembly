@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from 'react';
 import {
   Building2,
   Check,
+  ChevronLeft,
+  ChevronRight,
   ChevronDown,
   Globe,
   MapPin,
@@ -17,16 +19,6 @@ import {
 import branches from '../../../../../data/branches.json';
 import initialAdmins from '../../../../../data/admins.json';
 import './BranchesPage.css';
-
-const roleOptions = [
-  'General Overseer',
-  'Developer',
-  'Headquater Media Admin',
-  'Branch Media Admin',
-  'Branch Pastor',
-  'Branch Finance Secretary',
-  'Branch Administrator',
-];
 
 function getFilterOptions(records, field, allLabel) {
   const values = [
@@ -53,11 +45,14 @@ const emptyBranchForm = {
 function BranchForm({ branch, admins, onSubmit, onCancel }) {
   const [form, setForm] = useState(() => ({ ...emptyBranchForm, ...branch }));
   const [step, setStep] = useState(1);
-  const [assignmentMode, setAssignmentMode] = useState('existing');
-  const [selectedAdminIds, setSelectedAdminIds] = useState(() => branch?.adminIds ?? admins.filter((admin) => admin.branch === branch?.name).map((admin) => admin.id));
+  const [selectedAdminIds, setSelectedAdminIds] = useState(
+    () =>
+      branch?.adminIds ??
+      admins
+        .filter((admin) => admin.branch === branch?.name)
+        .map((admin) => admin.id),
+  );
   const [adminSearch, setAdminSearch] = useState('');
-  const [newAdmins, setNewAdmins] = useState([]);
-  const [newAdmin, setNewAdmin] = useState({ name: '', username: '', phone: '', alternatePhone: '', role: roleOptions[3] });
   const [error, setError] = useState('');
 
   function updateField(event) {
@@ -76,8 +71,8 @@ function BranchForm({ branch, admins, onSubmit, onCancel }) {
       setError('');
       return;
     }
-    const chosenAdmins = branch || assignmentMode === 'existing' ? selectedAdminIds : [];
-    if (chosenAdmins.length + newAdmins.length < 1) {
+    const chosenAdmins = selectedAdminIds;
+    if (chosenAdmins.length < 1) {
       setError('Assign at least one administrator to this branch.');
       return;
     }
@@ -91,25 +86,14 @@ function BranchForm({ branch, admins, onSubmit, onCancel }) {
       address: form.address.trim(),
       adminPhone: form.adminPhone.trim(),
       adminIds: chosenAdmins,
-      newAdmins: branch ? [] : newAdmins,
     });
   }
 
-  function addAdminToBranch() {
-    if (!newAdmin.name.trim() || !newAdmin.username.trim()) {
-      setError('Enter the administrator name and username.');
-      return;
-    }
-    if (admins.some((admin) => admin.username.toLowerCase() === newAdmin.username.trim().toLowerCase()) || newAdmins.some((admin) => admin.username.toLowerCase() === newAdmin.username.trim().toLowerCase())) {
-      setError('That username is already in use.');
-      return;
-    }
-    setNewAdmins((current) => [...current, { ...newAdmin, name: newAdmin.name.trim(), username: newAdmin.username.trim().toLowerCase() }]);
-    setNewAdmin({ name: '', username: '', phone: '', alternatePhone: '', role: roleOptions[3] });
-    setError('');
-  }
-
-  const filteredAdmins = admins.filter((admin) => `${admin.name} ${admin.username}`.toLowerCase().includes(adminSearch.trim().toLowerCase()));
+  const filteredAdmins = admins.filter((admin) =>
+    `${admin.name} ${admin.username}`
+      .toLowerCase()
+      .includes(adminSearch.trim().toLowerCase()),
+  );
 
   return (
     <div
@@ -129,8 +113,16 @@ function BranchForm({ branch, admins, onSubmit, onCancel }) {
             <Building2 size={20} aria-hidden='true' />
           </div>
           <div>
-          <h2 id='branch-form-title'>{branch ? 'Update branch' : 'Add branch'}</h2>
-            <p>{branch ? 'Update branch details and administrators.' : `Step ${step} of 2 · ${step === 1 ? 'Branch details' : 'Branch administrators'}`}</p>
+            <h2 id='branch-form-title'>
+              {branch ? 'Update branch' : 'Add branch'}
+            </h2>
+            <p>
+              {branch
+                ? 'Update branch details and administrators.'
+                : step === 1
+                  ? 'Step 1 of 2 · Branch details'
+                  : 'Create or add administrators for this branch.'}
+            </p>
           </div>
           <button
             className='branch-form-close'
@@ -141,128 +133,222 @@ function BranchForm({ branch, admins, onSubmit, onCancel }) {
             <X size={19} aria-hidden='true' />
           </button>
         </header>
-        <form className={`branch-form${step === 2 && !branch ? ' is-relationship-step' : ''}`} onSubmit={handleSubmit}>
-          {step === 1 && <>
-          <label className='branch-form-field'>
-            Branch name
-            <input
-              name='name'
-              value={form.name}
-              onChange={updateField}
-              placeholder='e.g. Jos Branch'
-              required
-            />
-          </label>
-          <label className='branch-form-field'>
-            Slogan
-            <input name='slogan' value={form.slogan} onChange={updateField} placeholder='e.g. A place of hope' />
-          </label>
-          <label className='branch-form-field'>
-            State
-            <input
-              name='state'
-              value={form.state}
-              onChange={updateField}
-              placeholder='e.g. Plateau State'
-              required
-            />
-          </label>
-          <label className='branch-form-field'>
-            Country
-            <input
-              name='country'
-              value={form.country}
-              onChange={updateField}
-              placeholder='e.g. Nigeria'
-              required
-            />
-          </label>
-          <label className='branch-form-field'>
-            Local government area
-            <input
-              name='lga'
-              value={form.lga}
-              onChange={updateField}
-              placeholder='e.g. Jos North'
-              required
-            />
-          </label>
-          <label className='branch-form-field'>
-            Lead pastor
-            <input
-              name='leadPastor'
-              value={form.leadPastor}
-              onChange={updateField}
-              placeholder='e.g. Pastor David Kanti'
-              required
-            />
-          </label>
-          <label className='branch-form-field branch-form-field-wide'>
-            Address
-            <input
-              name='address'
-              value={form.address}
-              onChange={updateField}
-              placeholder='Enter the branch street address'
-              required
-            />
-          </label>
-          </>}
-          {(step === 2 || branch) && <>
-          <section className='branch-relationship-section' aria-labelledby='branch-relationship-title'>
-            <div className='branch-relationship-heading'>
-              <span className='branch-relationship-icon'><UserRound size={17} aria-hidden='true' /></span>
-              <div>
-                <h3 id='branch-relationship-title'>Branch administrators</h3>
-                <p>Assign one or more admins to manage this branch.</p>
-              </div>
-              <span className='branch-admin-count'>{(assignmentMode === 'existing' ? selectedAdminIds.length : newAdmins.length)} selected</span>
-            </div>
-            {!branch && <div className='branch-admin-mode-switch' role='tablist' aria-label='Administrator assignment method'>
-              <button type='button' role='tab' aria-selected={assignmentMode === 'existing'} className={assignmentMode === 'existing' ? 'is-active' : ''} onClick={() => { setAssignmentMode('existing'); setError(''); }}><UserRound size={15} aria-hidden='true' />Select existing</button>
-              <button type='button' role='tab' aria-selected={assignmentMode === 'new'} className={assignmentMode === 'new' ? 'is-active' : ''} onClick={() => { setAssignmentMode('new'); setError(''); }}><Plus size={15} aria-hidden='true' />Create new admin</button>
-            </div>}
-            {assignmentMode === 'existing' || branch ? <div className='branch-admin-picker'>
-              <label className='branch-admin-search'><span>Find administrators</span><input type='search' value={adminSearch} onChange={(event) => setAdminSearch(event.target.value)} placeholder='Search name or username' /></label>
-              {filteredAdmins.length ? <div className='branch-admin-options'>
-                {filteredAdmins.map((admin) => {
-                  const assignedElsewhere = admin.branch && admin.branch !== branch?.name;
-                  const checked = selectedAdminIds.includes(admin.id);
-                  return <label className={`branch-admin-option${checked ? ' is-selected' : ''}${assignedElsewhere ? ' is-assigned' : ''}`} key={admin.id}>
-                    <input type='checkbox' checked={checked} disabled={assignedElsewhere} onChange={(event) => setSelectedAdminIds((current) => event.target.checked ? [...current, admin.id] : current.filter((id) => id !== admin.id))} />
-                    <span className='branch-admin-option-check' aria-hidden='true'>{checked && <Check size={13} />}</span>
-                    <span className='branch-admin-option-copy'><strong>{admin.name}</strong><span>{admin.username}</span></span>
-                    <span className={`branch-admin-assignment-status${assignedElsewhere ? ' is-assigned' : ''}`}>{assignedElsewhere ? `Assigned to ${admin.branch}` : admin.branch ? `This branch` : 'Available'}</span>
-                  </label>;
-                })}
-              </div> : <p className='branch-admin-empty'>No administrators match your search.</p>}
-              {selectedAdminIds.length > 0 && <p className='branch-admin-selection-summary'><Check size={14} aria-hidden='true' />{selectedAdminIds.length} administrator{selectedAdminIds.length === 1 ? '' : 's'} selected</p>}
-            </div> : <div className='branch-new-admin-area'>
-              <p className='branch-new-admin-intro'>Add administrator details below. You can add multiple administrators before creating the branch.</p>
-              <div className='branch-new-admin-fields'>
-                <label className='branch-form-field'>Full name<input value={newAdmin.name} onChange={(event) => setNewAdmin((current) => ({ ...current, name: event.target.value }))} placeholder='e.g. Grace James' required /></label>
-                <label className='branch-form-field'>Username<input value={newAdmin.username} onChange={(event) => setNewAdmin((current) => ({ ...current, username: event.target.value }))} autoComplete='username' minLength={3} maxLength={32} pattern='[A-Za-z0-9._@-]+' placeholder='e.g. grace@media@admin' required /></label>
-                <label className='branch-form-field'>Phone<input type='tel' value={newAdmin.phone} onChange={(event) => setNewAdmin((current) => ({ ...current, phone: event.target.value }))} placeholder='+234 800 000 0000' /></label>
-                <label className='branch-form-field'>Role<select value={newAdmin.role} onChange={(event) => setNewAdmin((current) => ({ ...current, role: event.target.value }))}>{roleOptions.map((role) => <option key={role}>{role}</option>)}</select></label>
-                <button className='branch-new-admin-add' type='button' onClick={addAdminToBranch}><Plus size={15} aria-hidden='true' />Add administrator</button>
-              </div>
-              {newAdmins.length > 0 && <div className='branch-admin-created-list'><strong>Admins to add</strong>{newAdmins.map((admin, index) => <div className='branch-admin-created-row' key={`${admin.username}-${index}`}><span className='branch-admin-created-avatar'>{admin.name.split(/\s+/).map((part) => part[0]?.toUpperCase()).slice(0, 2).join('')}</span><span className='branch-admin-created-copy'><strong>{admin.name}</strong><small>{admin.username} · {admin.role}</small></span><button type='button' aria-label={`Remove ${admin.name}`} onClick={() => setNewAdmins((current) => current.filter((_, currentIndex) => currentIndex !== index))}><X size={15} aria-hidden='true' /></button></div>)}</div>}
-            </div>}
-          </section>
-          {error && <p className='branch-form-error' role='alert'>{error}</p>}
-          </>}
+        <form
+          className={`branch-form${step === 2 && !branch ? ' is-relationship-step' : ''}`}
+          onSubmit={handleSubmit}
+        >
+          {step === 1 && (
+            <>
+              <label className='branch-form-field'>
+                Branch name
+                <input
+                  name='name'
+                  value={form.name}
+                  onChange={updateField}
+                  placeholder='e.g. Jos Branch'
+                  required
+                />
+              </label>
+              <label className='branch-form-field'>
+                Slogan
+                <input
+                  name='slogan'
+                  value={form.slogan}
+                  onChange={updateField}
+                  placeholder='e.g. A place of hope'
+                />
+              </label>
+              <label className='branch-form-field'>
+                State
+                <input
+                  name='state'
+                  value={form.state}
+                  onChange={updateField}
+                  placeholder='e.g. Plateau State'
+                  required
+                />
+              </label>
+              <label className='branch-form-field'>
+                Country
+                <input
+                  name='country'
+                  value={form.country}
+                  onChange={updateField}
+                  placeholder='e.g. Nigeria'
+                  required
+                />
+              </label>
+              <label className='branch-form-field'>
+                Local government area
+                <input
+                  name='lga'
+                  value={form.lga}
+                  onChange={updateField}
+                  placeholder='e.g. Jos North'
+                  required
+                />
+              </label>
+              <label className='branch-form-field'>
+                Lead pastor
+                <input
+                  name='leadPastor'
+                  value={form.leadPastor}
+                  onChange={updateField}
+                  placeholder='e.g. Pastor David Kanti'
+                  required
+                />
+              </label>
+              <label className='branch-form-field branch-form-field-wide'>
+                Address
+                <input
+                  name='address'
+                  value={form.address}
+                  onChange={updateField}
+                  placeholder='Enter the branch street address'
+                  required
+                />
+              </label>
+            </>
+          )}
+          {(step === 2 || branch) && (
+            <>
+              <section
+                className='branch-relationship-section'
+                aria-label='Branch administrators'
+              >
+                <div className='branch-admin-picker'>
+                    <label className='branch-admin-search'>
+                      <span>Find administrators</span>
+                      <span className='branch-admin-count'>
+                        {selectedAdminIds.length} selected
+                      </span>
+                      <input
+                        type='search'
+                        value={adminSearch}
+                        onChange={(event) => setAdminSearch(event.target.value)}
+                        placeholder='Search name or username'
+                      />
+                    </label>
+                    {filteredAdmins.length ? (
+                      <div className='branch-admin-options'>
+                        {filteredAdmins.map((admin) => {
+                          const assignedElsewhere =
+                            admin.branch && admin.branch !== branch?.name;
+                          const checked = selectedAdminIds.includes(admin.id);
+                          return (
+                            <label
+                              className={`branch-admin-option${checked ? ' is-selected' : ''}${assignedElsewhere ? ' is-assigned' : ''}`}
+                              key={admin.id}
+                            >
+                              <input
+                                type='checkbox'
+                                checked={checked}
+                                disabled={assignedElsewhere}
+                                onChange={(event) =>
+                                  setSelectedAdminIds((current) =>
+                                    event.target.checked
+                                      ? [...current, admin.id]
+                                      : current.filter((id) => id !== admin.id),
+                                  )
+                                }
+                              />
+                              <span
+                                className='branch-admin-option-check'
+                                aria-hidden='true'
+                              >
+                                {checked && <Check size={13} />}
+                              </span>
+                              <span className='branch-admin-option-copy'>
+                                <strong>{admin.name}</strong>
+                                <span>{admin.username}</span>
+                              </span>
+                              <span
+                                className={`branch-admin-assignment-status${assignedElsewhere ? ' is-assigned' : ''}`}
+                              >
+                                {assignedElsewhere
+                                  ? `Assigned to ${admin.branch}`
+                                  : admin.branch
+                                    ? `This branch`
+                                    : 'Available'}
+                              </span>
+                            </label>
+                          );
+                        })}
+                      </div>
+                    ) : (
+                      <p className='branch-admin-empty'>
+                        No administrators match your search.
+                      </p>
+                    )}
+                    {selectedAdminIds.length > 0 && (
+                      <p className='branch-admin-selection-summary'>
+                        <Check size={14} aria-hidden='true' />
+                        {selectedAdminIds.length} administrator
+                        {selectedAdminIds.length === 1 ? '' : 's'} selected
+                      </p>
+                    )}
+                  </div>
+
+
+              </section>
+              {error && (
+                <p className='branch-form-error' role='alert'>
+                  {error}
+                </p>
+              )}
+            </>
+          )}
           <div className='branch-form-actions'>
-            {step === 1 && !branch ? <>
-              <button className='branch-form-cancel' type='button' onClick={onCancel}>Cancel</button>
-              <button className='branch-form-submit' type='submit'>Next <ChevronDown className='branch-step-next-icon' size={16} aria-hidden='true' /></button>
-            </> : <>
-              {!branch && <button className='branch-form-cancel' type='button' onClick={() => { setStep(1); setError(''); }}><ChevronDown className='branch-step-back-icon' size={16} aria-hidden='true' />Back</button>}
-              <button className='branch-form-cancel' type='button' onClick={onCancel}>Cancel</button>
-              <button className='branch-form-submit' type='submit'>
-                <Plus size={16} aria-hidden='true' />
-                {branch ? 'Save changes' : 'Add branch'}
-              </button>
-            </>}
+            {step === 1 && !branch ? (
+              <>
+                <button
+                  className='branch-form-cancel'
+                  type='button'
+                  onClick={onCancel}
+                >
+                  Cancel
+                </button>
+                <button className='branch-form-submit' type='submit'>
+                  Next{' '}
+                  <ChevronRight
+                    className='branch-step-next-icon'
+                    size={16}
+                    aria-hidden='true'
+                  />
+                </button>
+              </>
+            ) : (
+              <>
+                {!branch && (
+                  <button
+                    className='branch-form-cancel'
+                    type='button'
+                    onClick={() => {
+                      setStep(1);
+                      setError('');
+                    }}
+                  >
+                    <ChevronLeft
+                      className='branch-step-back-icon'
+                      size={16}
+                      aria-hidden='true'
+                    />
+                    Back
+                  </button>
+                )}
+                <button
+                  className='branch-form-cancel'
+                  type='button'
+                  onClick={onCancel}
+                >
+                  Cancel
+                </button>
+                <button className='branch-form-submit' type='submit'>
+                  <Plus size={16} aria-hidden='true' />
+                  {branch ? 'Save changes' : 'Add branch'}
+                </button>
+              </>
+            )}
           </div>
         </form>
       </section>
@@ -332,7 +418,15 @@ function BranchArtwork({ name, slogan, variant }) {
   );
 }
 
-function BranchCard({ branch, variant, menuOpen, onToggleMenu, onCloseMenu, onEdit, onDelete }) {
+function BranchCard({
+  branch,
+  variant,
+  menuOpen,
+  onToggleMenu,
+  onCloseMenu,
+  onEdit,
+  onDelete,
+}) {
   const actionsRef = useRef(null);
   const menuId = `branch-actions-${String(branch._id ?? branch.id ?? branch.name).replace(/[^a-zA-Z0-9_-]/g, '-')}`;
 
@@ -358,16 +452,20 @@ function BranchCard({ branch, variant, menuOpen, onToggleMenu, onCloseMenu, onEd
     { label: 'Update', icon: Pencil, onClick: onEdit },
     { label: 'Delete', icon: Trash2, danger: true, onClick: onDelete },
   ];
-  const assignedAdmins = branch.adminNames?.length ? branch.adminNames : branch.administrator ? [branch.administrator] : [];
+  const assignedAdmins = branch.adminNames?.length
+    ? branch.adminNames
+    : branch.administrator
+      ? [branch.administrator]
+      : [];
 
   return (
     <article className={`branch-card${menuOpen ? ' has-open-menu' : ''}`}>
       <div className='branch-card-visual'>
-      <BranchArtwork
-        name={`${branch.name}`}
-        slogan={branch.slogan}
-        variant={variant}
-      />
+        <BranchArtwork
+          name={`${branch.name}`}
+          slogan={branch.slogan}
+          variant={variant}
+        />
         <div className='branch-record-actions' ref={actionsRef}>
           <button
             className='branch-record-more'
@@ -380,14 +478,22 @@ function BranchCard({ branch, variant, menuOpen, onToggleMenu, onCloseMenu, onEd
             <MoreVertical size={20} aria-hidden='true' />
           </button>
           {menuOpen && (
-            <div className='branch-record-menu' id={menuId} role='menu' aria-label={`${branch.name} actions`}>
+            <div
+              className='branch-record-menu'
+              id={menuId}
+              role='menu'
+              aria-label={`${branch.name} actions`}
+            >
               {actions.map(({ label, icon: Icon, danger, onClick }) => (
                 <button
                   className={`branch-record-menu-item${danger ? ' is-danger' : ''}`}
                   type='button'
                   role='menuitem'
                   key={label}
-                  onClick={() => { onClick(); onCloseMenu(); }}
+                  onClick={() => {
+                    onClick();
+                    onCloseMenu();
+                  }}
                 >
                   <Icon size={16} aria-hidden='true' />
                   <span>{label}</span>
@@ -434,7 +540,9 @@ function BranchCard({ branch, variant, menuOpen, onToggleMenu, onCloseMenu, onEd
         </p>
         <p>
           <UserRound size={14} aria-hidden='true' />
-          <span>{assignedAdmins.join(', ') || 'No administrators assigned'}</span>
+          <span>
+            {assignedAdmins.join(', ') || 'No administrators assigned'}
+          </span>
         </p>
       </div>
       <div className='branch-card-footer'>
@@ -558,14 +666,30 @@ export function BranchesPage() {
             branch={branch}
             variant={variant}
             key={branch._id ?? branch.id ?? branch.name}
-            menuOpen={openBranchMenu === (branch._id ?? branch.id ?? branch.name)}
-            onToggleMenu={() => setOpenBranchMenu((current) => current === (branch._id ?? branch.id ?? branch.name) ? null : (branch._id ?? branch.id ?? branch.name))}
+            menuOpen={
+              openBranchMenu === (branch._id ?? branch.id ?? branch.name)
+            }
+            onToggleMenu={() =>
+              setOpenBranchMenu((current) =>
+                current === (branch._id ?? branch.id ?? branch.name)
+                  ? null
+                  : (branch._id ?? branch.id ?? branch.name),
+              )
+            }
             onCloseMenu={() => setOpenBranchMenu(null)}
             onEdit={() => setFormBranch(branch)}
             onDelete={() => {
               if (!window.confirm(`Delete ${branch.name}?`)) return;
-              setBranchRecords((current) => current.filter((item) => item !== branch));
-        setAdminRecords((current) => current.map((admin) => admin.branch === branch.name ? { ...admin, branch: '' } : admin));
+              setBranchRecords((current) =>
+                current.filter((item) => item !== branch),
+              );
+              setAdminRecords((current) =>
+                current.map((admin) =>
+                  admin.branch === branch.name
+                    ? { ...admin, branch: '' }
+                    : admin,
+                ),
+              );
               setFeedback(`${branch.name} deleted from this dashboard.`);
             }}
           />
@@ -583,52 +707,60 @@ export function BranchesPage() {
       )}
       {formBranch !== undefined && (
         <BranchForm
-          key={formBranch?._id ?? formBranch?.id ?? formBranch?.name ?? 'new-branch'}
+          key={
+            formBranch?._id ??
+            formBranch?.id ??
+            formBranch?.name ??
+            'new-branch'
+          }
           branch={formBranch}
           admins={adminRecords}
           onCancel={() => setFormBranch(undefined)}
           onSubmit={(branch) => {
             if (formBranch) {
-              const assignedNames = branch.adminIds.map((id) => adminRecords.find((admin) => admin.id === id)?.name).filter(Boolean);
-            const updatedBranch = { ...formBranch, ...branch, adminNames: [...assignedNames, ...branch.newAdmins.map((admin) => admin.name)] };
-              setBranchRecords((current) => current.map((item) => item === formBranch ? updatedBranch : item));
-              const colors = ['sage', 'blue', 'lavender', 'peach', 'rose', 'mint'];
-              const createdAdmins = branch.newAdmins.map((admin, index) => ({
-                ...admin,
-                id: `admin-${Date.now()}-${index}`,
-                branch: updatedBranch.name,
-                initials: admin.name.trim().split(/\s+/).slice(0, 2).map((part) => part[0]?.toUpperCase() ?? '').join(''),
-                color: colors[(adminRecords.length + index) % colors.length],
-                pinned: false,
-              }));
+              const assignedNames = branch.adminIds
+                .map(
+                  (id) => adminRecords.find((admin) => admin.id === id)?.name,
+                )
+                .filter(Boolean);
+              const updatedBranch = {
+                ...formBranch,
+                ...branch,
+                adminNames: assignedNames,
+              };
+              setBranchRecords((current) =>
+                current.map((item) =>
+                  item === formBranch ? updatedBranch : item,
+                ),
+              );
               setAdminRecords((current) => [
-                ...current.map((admin) => branch.adminIds.includes(admin.id) ? { ...admin, branch: updatedBranch.name } : admin.branch === formBranch.name ? { ...admin, branch: '' } : admin),
-                ...createdAdmins,
+                ...current.map((admin) =>
+                  branch.adminIds.includes(admin.id)
+                    ? { ...admin, branch: updatedBranch.name }
+                    : admin.branch === formBranch.name
+                      ? { ...admin, branch: '' }
+                      : admin,
+                ),
               ]);
               setFeedback(`${branch.name} updated on this dashboard.`);
             } else {
-              const adminNames = [
-                ...adminRecords.filter((admin) => branch.adminIds.includes(admin.id)).map((admin) => admin.name),
-                ...branch.newAdmins.map((admin) => admin.name),
-              ];
+              const adminNames = adminRecords
+                .filter((admin) => branch.adminIds.includes(admin.id))
+                .map((admin) => admin.name);
               const newBranch = { ...branch, adminNames };
-              const colors = ['sage', 'blue', 'lavender', 'peach', 'rose', 'mint'];
-              const createdAdmins = branch.newAdmins.map((admin, index) => ({
-                ...admin,
-                id: `admin-${Date.now()}-${index}`,
-                branch: newBranch.name,
-                initials: admin.name.trim().split(/\s+/).slice(0, 2).map((part) => part[0]?.toUpperCase() ?? '').join(''),
-                color: colors[(adminRecords.length + index) % colors.length],
-                pinned: false,
-              }));
               setAdminRecords((current) => [
-                ...current.map((admin) => branch.adminIds.includes(admin.id) ? { ...admin, branch: newBranch.name } : admin),
-                ...createdAdmins,
+                ...current.map((admin) =>
+                  branch.adminIds.includes(admin.id)
+                    ? { ...admin, branch: newBranch.name }
+                    : admin,
+                ),
               ]);
               setBranchRecords((current) => [...current, newBranch]);
               setSelectedState('all');
               setSelectedCountry('all');
-              setFeedback(`${branch.name} added with ${adminNames.length} administrator${adminNames.length === 1 ? '' : 's'}.`);
+              setFeedback(
+                `${branch.name} added with ${adminNames.length} administrator${adminNames.length === 1 ? '' : 's'}.`,
+              );
             }
             setFormBranch(undefined);
           }}

@@ -10,7 +10,7 @@
   --admin-primary: #087f5b;
   --admin-primary-hover: #066b4c;
   --admin-primary-soft: #e9f5ef;
-  --admin-sidebar-width: 264px;
+  --admin-sidebar-width: 284px;
   min-height: 100svh;
   display: grid;
   grid-template-columns: var(--admin-sidebar-width) minmax(0, 1fr);
@@ -20,17 +20,27 @@
   font-weight: 500;
   transition: grid-template-columns 200ms ease;
 }
-.admin-shell.is-collapsed { --admin-sidebar-width: 84px; }
+.admin-shell.is-collapsed {
+  --admin-sidebar-width: 84px;
+}
 .admin-shell button,
 .admin-shell input,
 .admin-shell select,
-.admin-shell textarea { font: inherit; }
+.admin-shell textarea {
+  font: inherit;
+}
 .admin-shell button:not(:disabled) {
   cursor: pointer;
-  transition: transform 140ms ease, filter 140ms ease;
+  transition:
+    transform 140ms ease,
+    filter 140ms ease;
 }
-.admin-shell button:not(:disabled):hover { filter: brightness(0.94); }
-.admin-shell button:not(:disabled):active { transform: scale(0.97); }
+.admin-shell button:not(:disabled):hover {
+  filter: brightness(0.94);
+}
+.admin-shell button:not(:disabled):active {
+  transform: scale(0.97);
+}
 .admin-shell :where(button, a, input):focus-visible {
   outline: 2px solid var(--admin-primary);
   outline-offset: 3px;
@@ -43,7 +53,9 @@
 }
 
 @media (max-width: 760px) {
-  .admin-shell { display: block; }
+  .admin-shell {
+    display: block;
+  }
   .admin-main {
     min-height: 0;
     padding: 0 12px;
@@ -52,5 +64,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .admin-shell,
-  .admin-shell button { transition-duration: 0.01ms; }
+  .admin-shell button {
+    transition-duration: 0.01ms;
+  }
 }

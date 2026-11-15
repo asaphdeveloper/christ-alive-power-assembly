@@ -226,11 +226,25 @@
 .admin-record-details {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 11px;
+  row-gap: 12px;
   margin-top: 20px;
 }
-.admin-contact-username {
-  grid-column: 1 / -1;
+.admin-contact-password {
+  min-width: 0;
+}
+.admin-password-visibility {
+  display: grid;
+  flex: 0 0 auto;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 5px;
+  background: transparent;
+  color: #78847c;
+  cursor: pointer;
+}
+.admin-password-visibility:hover {
+  color: var(--admin-primary);
 }
 .admin-record-details p {
   display: flex;
@@ -296,7 +310,7 @@
 .admins-feedback {
   margin: 0 0 10px;
   color: var(--admin-primary);
-  font-size: 13px;
+  font-size: 14px;
 }
 .admins-empty-state {
   display: grid;
@@ -446,8 +460,8 @@
   gap: 9px;
   padding-top: 5px;
 }
-.admin-form-cancel,
-.admin-form-submit {
+.admin-shell button.admin-form-cancel,
+.admin-shell button.admin-form-submit {
   display: inline-flex;
   min-height: 39px;
   align-items: center;
@@ -458,19 +472,22 @@
   border-radius: 8px;
   background: #fff;
   color: #5f6c64;
-  font-size: 13px;
   font-weight: 500;
   cursor: pointer;
 }
-.admin-form-cancel:hover {
+.admin-shell button.admin-form-cancel,
+.admin-shell button.admin-form-submit {
+  font-size: 14px;
+}
+.admin-shell button.admin-form-cancel:hover {
   background: #f5f7f5;
 }
-.admin-form-submit {
+.admin-shell button.admin-form-submit {
   border-color: var(--admin-primary);
   background: var(--admin-primary);
   color: #fff;
 }
-.admin-form-submit:hover {
+.admin-shell button.admin-form-submit:hover {
   border-color: var(--admin-primary-hover);
   background: var(--admin-primary-hover);
 }
