@@ -14,6 +14,16 @@ const AdminPortalPage = lazy(() =>
     default: module.AdminPortalPage,
   })),
 );
+const DeveloperSubpageLayout = lazy(() =>
+  import('./pages/Admin/AdminPortalPage').then((module) => ({
+    default: module.DeveloperSubpageLayout,
+  })),
+);
+const DeveloperOverviewPage = lazy(() =>
+  import('./pages/Admin/developer/DeveloperOverviewPage').then((module) => ({
+    default: module.DeveloperOverviewPage,
+  })),
+);
 const GeneralOverseerPage = lazy(() =>
   import('./pages/Admin/generalOverseer/GeneralOverseerPage').then(
     (module) => ({ default: module.GeneralOverseerPage }),
@@ -52,6 +62,11 @@ const BranchFinanceSecretaryPage = lazy(() =>
 const HeadquaterMediaAdminPage = lazy(() =>
   import('./pages/Admin/headquaterMediaAdmin/HeadquaterMediaAdminPage').then(
     (module) => ({ default: module.HeadquaterMediaAdminPage }),
+  ),
+);
+const HeadquaterOverviewPage = lazy(() =>
+  import('./pages/Admin/headquaterMediaAdmin/HeadquaterOverviewPage').then(
+    (module) => ({ default: module.HeadquaterOverviewPage }),
   ),
 );
 const DocumentUploadPage = lazy(() =>
@@ -98,10 +113,25 @@ function App() {
         <Routes>
           <Route index element={<HomePage />} />
           <Route path='admin/developer' element={<AdminPortalPage />}>
-            <Route index element={<AdminsPage />} />
-            <Route path='admins' element={<AdminsPage />} />
-            <Route path='branches' element={<BranchesPage />} />
+            <Route index element={<DeveloperOverviewPage />} />
+            <Route path='overview' element={<DeveloperOverviewPage />} />
           </Route>
+          <Route
+            path='admin/all-admins'
+            element={
+              <DeveloperSubpageLayout pageTitle='Administrators'>
+                <AdminsPage />
+              </DeveloperSubpageLayout>
+            }
+          />
+          <Route
+            path='admin/branches'
+            element={
+              <DeveloperSubpageLayout pageTitle='Branches'>
+                <BranchesPage />
+              </DeveloperSubpageLayout>
+            }
+          />
           <Route
             path='admin/general-overseer'
             element={<GeneralOverseerPage />}
@@ -135,8 +165,12 @@ function App() {
             element={<BranchFinanceSecretaryPage />}
           />
           <Route
-            path='admin/headquater-media-admin'
+            path='admin/upload-resource'
             element={<HeadquaterMediaAdminPage />}
+          />
+          <Route
+            path='admin/headquater-media-admin/overview'
+            element={<HeadquaterOverviewPage />}
           />
           <Route
             path='admin/headquater-media-admin/documents'

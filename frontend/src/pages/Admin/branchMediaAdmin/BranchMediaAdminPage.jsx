@@ -260,13 +260,18 @@ export function BranchMediaAdminPage({
 
   if (!showResources) {
     return (
-      <AdminLayout workspace={workspace} pageTitle='Overview'>
+      <AdminLayout
+        workspace={workspace}
+        pageTitle='Overview'
+        showWelcomeBanner
+      >
         <section
           className='branch-media-admin-page'
           aria-labelledby='branch-media-admin-title'
         >
           <header className='branch-media-admin-heading'>
-            <h1 id='branch-media-admin-title'>Branch Media Admin</h1>
+            <h1 id='branch-media-admin-title'>Overview</h1>
+            <span>Welcome to your branch media workspace.</span>
           </header>
         </section>
       </AdminLayout>

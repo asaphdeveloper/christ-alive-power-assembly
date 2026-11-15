@@ -40,3 +40,5 @@ I want it such that multiple admins can be attached to a single branch. Meaning 
 i want to be able to control the services each branch holds. the headquater branch services are (Sunday, Monday, Wednesday and Friday) but other branches services are (Sunday, Wednesday and Friday) i want to be able to set service days.
 
 use the empty illustration when visitors log is empty
+
+model the branch to have it's location longitude and latitude saved
