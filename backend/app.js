@@ -1,5 +1,6 @@
 import express from 'express';
 import helmet from 'helmet';
+import hpp from 'hpp';
 import cors from 'cors';
 import morgan from 'morgan';
 import AppError from './utils/appError.js';
@@ -14,6 +15,17 @@ export const app = express();
 app.use(helmet());
 app.use(cors());
 app.use(express.json({ limit: '10kb' }));
+app.use(express.urlencoded({ extended: false, limit: '10kb' }));
+const hppMiddleware = hpp();
+app.use((req, res, next) => {
+  Object.defineProperty(req, 'query', {
+    configurable: true,
+    enumerable: true,
+    writable: true,
+    value: req.query,
+  });
+  hppMiddleware(req, res, next);
+});
 
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
