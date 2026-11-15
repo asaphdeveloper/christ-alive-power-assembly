@@ -120,7 +120,7 @@ export function AttendancePage({ user = { name: 'Branch Media Admin', branch: 'B
   }
 
   return (
-    <AdminLayout workspace='branch-attendance-admin' pageTitle='Attendance'>
+    <AdminLayout workspace='branch-media-admin' pageTitle='Attendance'>
       <section className='attendance-page' aria-label={`${user.branch} attendance`}>
         <header className='attendance-page-heading' aria-labelledby='attendance-page-title'>
           <h1 id='attendance-page-title'>Attendance</h1>

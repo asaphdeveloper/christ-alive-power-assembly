@@ -50,8 +50,9 @@ const generalOverseerNavItems = [
 ];
 
 const branchMediaAdminNavItems = [
-  { label: 'Media resources', to: '/admin/branch-media-admin', icon: LayoutDashboard },
+  { label: 'Overview', to: '/admin/branch-media-admin', icon: LayoutDashboard },
   { label: 'Attendance', to: '/admin/branch-media-admin/attendance', icon: ClipboardCheck },
+  { label: 'Visitors', to: '/admin/branch-media-admin/visitors', icon: Users },
   { label: 'Developer workspace', to: '/admin/developer', icon: Wrench },
   { label: 'Public website', to: '/', icon: ExternalLink },
 ];

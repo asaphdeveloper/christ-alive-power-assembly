@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { SectionHeading } from './SectionHeading';
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
@@ -50,6 +50,25 @@ const hymnVerses = [
   ],
 ];
 
+const publishedHymnStorageKey = 'cap-assembly-published-hymn';
+
+function readPublishedHymnVerses() {
+  try {
+    const savedHymn = JSON.parse(
+      window.localStorage.getItem(publishedHymnStorageKey) ?? 'null',
+    );
+    if (!savedHymn?.lyrics?.trim()) return hymnVerses;
+
+    return savedHymn.lyrics
+      .trim()
+      .split(/\n\s*\n/)
+      .map((verse) => verse.split('\n').map((line) => line.trim()).filter(Boolean))
+      .filter((verse) => verse.length);
+  } catch {
+    return hymnVerses;
+  }
+}
+
 const resourceTypes = [
   {
     id: 'bulletin',
@@ -86,7 +105,20 @@ const resourceTypes = [
 
 export const Resources = () => {
   const [category, setCategory] = useState('All materials');
+  const [publicHymnVerses, setPublicHymnVerses] = useState(
+    readPublishedHymnVerses,
+  );
   const categories = ['All materials', 'Hymn'];
+  useEffect(() => {
+    function handlePublishedHymnChange(event) {
+      if (event.key === publishedHymnStorageKey) {
+        setPublicHymnVerses(readPublishedHymnVerses());
+      }
+    }
+
+    window.addEventListener('storage', handlePublishedHymnChange);
+    return () => window.removeEventListener('storage', handlePublishedHymnChange);
+  }, []);
   const visible = resourceTypes.filter(
     (item) => category === 'All materials' || item.category === category,
   );
@@ -164,7 +196,7 @@ export const Resources = () => {
                     className='church-resource-hymn-verses'
                     aria-label={`${item.title} lyrics`}
                   >
-                    {hymnVerses.map((verse, index) => (
+                    {publicHymnVerses.map((verse, index) => (
                       <div className='church-resource-hymn-verse' key={index}>
                         <span>Verse {index + 1}</span>
                         <p>
