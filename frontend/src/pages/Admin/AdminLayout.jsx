@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import {
   ClipboardCheck,
+  ClipboardList,
   CircleDollarSign,
   Clapperboard,
   Church,
-  ClipboardList,
   ExternalLink,
   Landmark,
   LayoutDashboard,
@@ -51,8 +51,13 @@ const generalOverseerNavItems = [
   { label: 'Overview', to: '/admin/general-overseer', icon: LayoutDashboard },
   {
     label: 'Attendance',
-    to: '/admin/general-overseer/attendance',
+    to: '/admin/attendance',
     icon: ClipboardCheck,
+  },
+  {
+    label: 'Attendance reports',
+    to: '/admin/attendance-reports',
+    icon: ClipboardList,
   },
   {
     label: 'Finance',

@@ -42,7 +42,3 @@ i want to be able to control the services each branch holds. the headquater bran
 use the empty illustration when visitors log is empty
 
 implement request data sanitization in the backend
-
-model the branch to have it's location longitude and latitude saved
-
-also update create branch from and add an input for entering longitude and latitude

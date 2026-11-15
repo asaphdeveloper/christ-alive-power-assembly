@@ -35,9 +35,14 @@ const GeneralOverseerOverviewPage = lazy(() =>
   ),
 );
 const GeneralOverseerAttendancePage = lazy(() =>
-  import('./pages/Admin/generalOverseer/attendance/AttendancePage').then(
+  import('./pages/Admin/shared/attendanceOverview/AttendancePage').then(
     (module) => ({ default: module.GeneralOverseerAttendancePage }),
   ),
+);
+const AttendanceReportsPage = lazy(() =>
+  import('./pages/Admin/shared/AttendanceReportsPage').then((module) => ({
+    default: module.AttendanceReportsPage,
+  })),
 );
 const GeneralOverseerFinancePage = lazy(() =>
   import('./pages/Admin/generalOverseer/finance/FinancePage').then(
@@ -75,12 +80,12 @@ const HeadquaterOverviewPage = lazy(() =>
   ),
 );
 const AdminsPage = lazy(() =>
-  import('./pages/Admin/developer/pages/admins/AdminsPage').then((module) => ({
+  import('./pages/Admin/shared/admins/AdminsPage').then((module) => ({
     default: module.AdminsPage,
   })),
 );
 const BranchesPage = lazy(() =>
-  import('./pages/Admin/developer/pages/branches/BranchesPage').then(
+  import('./pages/Admin/shared/branches/BranchesPage').then(
     (module) => ({ default: module.BranchesPage }),
   ),
 );
@@ -137,8 +142,12 @@ function App() {
             element={<GeneralOverseerOverviewPage />}
           />
           <Route
-            path='admin/general-overseer/attendance'
+            path='admin/attendance'
             element={<GeneralOverseerAttendancePage />}
+          />
+          <Route
+            path='admin/attendance-reports'
+            element={<AttendanceReportsPage />}
           />
           <Route
             path='admin/general-overseer/finance'

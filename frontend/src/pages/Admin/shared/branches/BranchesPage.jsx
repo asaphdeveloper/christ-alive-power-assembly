@@ -16,8 +16,8 @@ import {
   UserRound,
   X,
 } from 'lucide-react';
-import branches from '../../../../../data/branches.json';
-import initialAdmins from '../../../../../data/admins.json';
+import branches from '../../../../data/branches.json';
+import initialAdmins from '../../../../data/admins.json';
 import './BranchesPage.css';
 
 function getFilterOptions(records, field, allLabel) {

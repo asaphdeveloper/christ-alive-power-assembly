@@ -25,9 +25,13 @@ const pages = {
     'General Overseer | Christ Alive Power Assembly',
     'General Overseer workspace for reviewing administrators and church branches.',
   ],
-  '/admin/general-overseer/attendance': [
+  '/admin/attendance': [
     'Church Attendance | Christ Alive Power Assembly',
     'Review attendance totals, service trends, and branch comparisons for Christ Alive Power Assembly.',
+  ],
+  '/admin/attendance-reports': [
+    'Branch Attendance Reports | Christ Alive Power Assembly',
+    'Review attendance reports submitted by Christ Alive Power Assembly branches.',
   ],
   '/admin/general-overseer/finance': [
     'Church Finance | Christ Alive Power Assembly',

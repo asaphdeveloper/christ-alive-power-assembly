@@ -16,8 +16,8 @@ import {
   Trash2,
   X,
 } from 'lucide-react';
-import branches from '../../../../../data/branches.json';
-import initialAdmins from '../../../../../data/admins.json';
+import branches from '../../../../data/branches.json';
+import initialAdmins from '../../../../data/admins.json';
 import './AdminsPage.css';
 
 const branchOptions = [...new Set(branches.map((branch) => branch.name))];
