@@ -2,7 +2,6 @@ import { useState } from 'react';
 import {
   ClipboardCheck,
   ClipboardList,
-  CircleDollarSign,
   Clapperboard,
   Church,
   ExternalLink,

@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   CalendarDays,
   Check,
@@ -16,8 +16,10 @@ import {
   X,
 } from 'lucide-react';
 import { AdminLayout } from '../AdminLayout';
+import { Toast } from '../../../components/Toast';
 import EmptyIllustration from '../../../assets/images/empty.svg';
 import UploadIllustration from '../../../assets/images/upload.svg';
+import { apiUrl } from '../../../utils/api';
 import './BranchMediaAdminPage.css';
 
 const initialResources = [
@@ -25,14 +27,7 @@ const initialResources = [
     id: 'sunday-bulletin',
     title: 'Sunday Bulletin',
     description: 'Sunday service bulletin documents.',
-    documents: [
-      {
-        id: 'sunday-1',
-        name: 'Sunday Bulletin - 9 November 2026.pdf',
-        type: 'PDF',
-        uploadedAt: '9 Nov 2026',
-      },
-    ],
+    documents: [],
   },
   {
     id: 'wednesday-bulletin',
@@ -44,14 +39,7 @@ const initialResources = [
     id: 'bible-study-guide',
     title: 'Bible Study Guide',
     description: 'Bible study guide documents.',
-    documents: [
-      {
-        id: 'bible-1',
-        name: 'Faith in Practice - Study Guide.pdf',
-        type: 'PDF',
-        uploadedAt: '5 Nov 2026',
-      },
-    ],
+    documents: [],
   },
   {
     id: 'friday-prayer-meeting',
@@ -63,31 +51,9 @@ const initialResources = [
     id: 'sunday-school-guide',
     title: 'Sunday School Guide',
     description: 'Sunday school guide documents.',
-    documents: [
-      {
-        id: 'school-1',
-        name: 'Sunday School Guide - Week 45.pdf',
-        type: 'PDF',
-        uploadedAt: '7 Nov 2026',
-      },
-    ],
+    documents: [],
   },
 ];
-
-function getFileType(file) {
-  const extension = file.name.split('.').pop()?.toLowerCase();
-  const fileTypes = {
-    doc: 'Word document',
-    docx: 'Word document',
-    pdf: 'PDF',
-    ppt: 'PowerPoint',
-    pptx: 'PowerPoint',
-    xls: 'Excel spreadsheet',
-    xlsx: 'Excel spreadsheet',
-  };
-
-  return fileTypes[extension] ?? 'Document';
-}
 
 export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
   const [resources, setResources] = useState(initialResources);
@@ -98,7 +64,9 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
   const [isEditingHymnLyrics, setIsEditingHymnLyrics] = useState(false);
   const [replacement, setReplacement] = useState(null);
   const [previewDocument, setPreviewDocument] = useState(null);
-  const [feedback, setFeedback] = useState('');
+  const [feedback, setFeedback] = useState(null);
+  const [usage, setUsage] = useState(null);
+  const [isUploading, setIsUploading] = useState(false);
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
   const [isUploadsMenuOpen, setIsUploadsMenuOpen] = useState(false);
   const documentInputRef = useRef(null);
@@ -112,6 +80,42 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
       resourceId: resource.id,
     })),
   );
+
+  const notify = useCallback((message, type = 'success') => {
+    setFeedback({ id: Date.now(), message, type });
+  }, []);
+
+  useEffect(() => {
+    const token = window.localStorage.getItem('access_token');
+    if (!token) {
+      notify('Please sign in to manage resources.', 'error');
+      return;
+    }
+    fetch(apiUrl('/api/resources/manage'), {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then(async (response) => {
+        const result = await response.json();
+        if (!response.ok) throw new Error(result.message || 'Unable to load documents.');
+        return result.data;
+      })
+      .then(({ documents, usage: currentUsage }) => {
+        setUsage(currentUsage);
+        setResources((current) => current.map((resource) => ({
+          ...resource,
+          documents: documents
+            .filter((document) => document.category === resource.id)
+            .map((document) => ({
+              ...document,
+              id: document._id,
+              size: document.size,
+              type: 'PDF',
+              uploadedAt: new Date(document.createdAt).toLocaleDateString(),
+            })),
+        })));
+      })
+      .catch((error) => notify(error.message, 'error'));
+  }, [notify]);
 
   useEffect(() => {
     if (!isUploadsMenuOpen) return undefined;
@@ -135,7 +139,20 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
   }, [isUploadsMenuOpen]);
 
   function handleFileChange(event) {
-    setSelectedFile(event.target.files?.[0] ?? null);
+    const file = event.target.files?.[0] ?? null;
+    if (file && (file.type !== 'application/pdf' || !file.name.toLowerCase().endsWith('.pdf'))) {
+      setSelectedFile(null);
+      event.target.value = '';
+      notify('Choose a PDF file.', 'error');
+      return;
+    }
+    if (file && file.size > 20 * 1024 * 1024) {
+      setSelectedFile(null);
+      event.target.value = '';
+      notify('PDF must be no larger than 20 MB.', 'error');
+      return;
+    }
+    setSelectedFile(file);
   }
 
   function handleCancelUpload() {
@@ -147,17 +164,17 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
   function handleSaveHymnLyrics(event) {
     event.preventDefault();
     if (!hymnLyrics.trim()) {
-      setFeedback('Paste hymn lyrics before saving.');
+      notify('Paste hymn lyrics before saving.', 'error');
       return;
     }
     setSavedHymnLyrics(hymnLyrics.trim());
     setIsEditingHymnLyrics(false);
-    setFeedback('Hymn lyrics saved on this page.');
+    notify('Hymn lyrics saved on this page.');
   }
 
   function handlePublishHymn() {
     if (!savedHymnLyrics.trim()) {
-      setFeedback('Save hymn lyrics before publishing them.');
+      notify('Save hymn lyrics before publishing them.', 'error');
       return;
     }
 
@@ -168,31 +185,51 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
         publishedAt: new Date().toISOString(),
       }),
     );
-    setFeedback('Hymn lyrics published to the public website.');
+    notify('Hymn lyrics published to the public website.');
   }
 
-  function handleUpload(event) {
+  async function handleUpload(event) {
     event.preventDefault();
 
     if (!selectedFile) {
-      setFeedback('Choose a document before uploading.');
+      notify('Choose a PDF before uploading.', 'error');
       return;
     }
 
-    const document = {
-      id: `document-${Date.now()}`,
-      name: selectedFile.name,
-      type: getFileType(selectedFile),
-      uploadedAt: 'Just now',
-    };
+    const token = window.localStorage.getItem('access_token');
+    if (!token) {
+      notify('Your session has expired. Sign in again to upload.', 'error');
+      return;
+    }
+    setIsUploading(true);
+    const formData = new FormData();
+    formData.append('file', selectedFile);
+    formData.append('category', uploadTarget);
+    if (replacement) formData.append('replaceId', replacement.documentId);
+    try {
+      const response = await fetch(apiUrl('/api/resources/manage'), {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${token}` },
+        body: formData,
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.message || 'Unable to upload this PDF.');
+      const saved = result.data.document;
+      const document = {
+        id: saved._id,
+        name: saved.name,
+        size: saved.size,
+        type: 'PDF',
+        uploadedAt: new Date(saved.createdAt).toLocaleDateString(),
+      };
 
-    setResources((currentResources) =>
-      currentResources.map((resource) => {
+      setResources((currentResources) =>
+        currentResources.map((resource) => {
         if (resource.id !== uploadTarget) {
           return resource;
         }
 
-        if (replacement?.resourceId === resource.id) {
+        if (replacement?.resourceId === resource.id && !result.message) {
           return {
             ...resource,
             documents: resource.documents.map((item) =>
@@ -202,27 +239,44 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
         }
 
         return { ...resource, documents: [...resource.documents, document] };
-      }),
-    );
+        }),
+      );
 
-    setFeedback(
-      replacement
-        ? 'Document replaced successfully.'
-        : 'Document added successfully.',
-    );
-    setSelectedFile(null);
-    setReplacement(null);
-    event.target.reset();
+      setUsage((current) => current ? {
+        ...current,
+        storageBytes: current.storageBytes + selectedFile.size - (replacement && !result.message ? (resources.find((resource) => resource.id === replacement.resourceId)?.documents.find((item) => item.id === replacement.documentId)?.size || 0) : 0),
+        writes: current.writes + (replacement && !result.message ? 2 : 1),
+      } : current);
+      notify(result.message || (replacement ? 'Document replaced successfully.' : 'Document added successfully.'), result.message ? 'warning' : 'success');
+      setSelectedFile(null);
+      setReplacement(null);
+      event.target.reset();
+    } catch (error) {
+      notify(error.message || 'Unable to upload this PDF.', 'error');
+    } finally {
+      setIsUploading(false);
+    }
   }
 
   function handleReplace(resourceId, documentId) {
     setUploadTarget(resourceId);
     setReplacement({ resourceId, documentId });
     setSelectedFile(null);
-    setFeedback('Choose a replacement document below.');
+    notify('Choose a replacement document below.', 'info');
   }
 
-  function handleDelete(resourceId, documentId) {
+  async function handleDelete(resourceId, documentId) {
+    if (!window.confirm('Delete this PDF? This cannot be undone.')) return;
+    const token = window.localStorage.getItem('access_token');
+    try {
+      const response = await fetch(apiUrl(`/api/resources/manage/${documentId}`), {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!response.ok) {
+        const result = await response.json();
+        throw new Error(result.message || 'Unable to delete this PDF.');
+      }
     setResources((currentResources) =>
       currentResources.map((resource) =>
         resource.id === resourceId
@@ -235,23 +289,41 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
           : resource,
       ),
     );
-    setFeedback('Document deleted.');
+      setUsage((current) => current ? {
+        ...current,
+        storageBytes: Math.max(0, current.storageBytes - (resources.find((resource) => resource.id === resourceId)?.documents.find((item) => item.id === documentId)?.size || 0)),
+        writes: current.writes + 1,
+      } : current);
+      notify('Document deleted.');
+    } catch (error) {
+      notify(error.message || 'Unable to delete this PDF.', 'error');
+    }
   }
 
-  function handleDeleteAll() {
-    setResources((currentResources) =>
-      currentResources.map((resource) => ({
-        ...resource,
-        documents: [],
-      })),
-    );
-    setPreviewDocument(null);
-    setIsUploadsMenuOpen(false);
-    setFeedback('All documents deleted.');
-  }
-
-  function handleDownload(document) {
-    setFeedback(`${document.name} is ready for download.`);
+  async function handleDeleteAll() {
+    if (!window.confirm('Delete every uploaded PDF? This cannot be undone.')) return;
+    const token = window.localStorage.getItem('access_token');
+    try {
+      const response = await fetch(apiUrl('/api/resources/manage/all'), {
+        method: 'DELETE',
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      if (!response.ok) {
+        const result = await response.json();
+        throw new Error(result.message || 'Unable to delete the documents.');
+      }
+      setResources((current) => current.map((resource) => ({ ...resource, documents: [] })));
+      setUsage((current) => current ? {
+        ...current,
+        storageBytes: 0,
+        writes: current.writes + uploadedDocuments.length,
+      } : current);
+      setPreviewDocument(null);
+      setIsUploadsMenuOpen(false);
+      notify('All documents deleted.');
+    } catch (error) {
+      notify(error.message || 'Unable to delete the documents.', 'error');
+    }
   }
 
   return (
@@ -266,6 +338,17 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
             Manage documents for your assigned branch services and ministries.
           </span>
         </header>
+        {usage && !usage.r2Configured && (
+          <div className='branch-media-usage' role='status'>Cloudflare R2 is not configured. Add the R2 credentials to the backend environment before uploading PDFs.</div>
+        )}
+        {usage?.r2Configured && (
+          <div className='branch-media-usage' role='status'>
+            <span>Storage safety limit: <strong>{(usage.storageBytes / 1024 ** 2).toFixed(1)} MB of {(usage.storageBudgetBytes / 1024 ** 3).toFixed(1)} GB</strong></span>
+            <span>R2 reads this month: <strong>{usage.reads.toLocaleString()} / {usage.monthlyReadBudget.toLocaleString()}</strong></span>
+            <span>R2 uploads this month: <strong>{usage.writes.toLocaleString()} / {usage.monthlyWriteBudget.toLocaleString()}</strong></span>
+            <small>These counters cover this app only; other R2 use in your Cloudflare account is not included.</small>
+          </div>
+        )}
         <div className='branch-media-admin-layout'>
           <form className='branch-media-upload-panel' onSubmit={handleUpload}>
             <div className='branch-media-upload-heading'>
@@ -330,7 +413,7 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
               <input
                 ref={documentInputRef}
                 type='file'
-                accept='.doc,.docx,.pdf,.ppt,.pptx,.xls,.xlsx'
+                accept='application/pdf,.pdf'
                 onChange={handleFileChange}
               />
               <img src={UploadIllustration} alt='' aria-hidden='true' />
@@ -346,9 +429,9 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
                   Cancel upload
                 </button>
               )}
-              <button type='submit'>
+              <button type='submit' disabled={isUploading}>
                 <Upload size={15} aria-hidden='true' />
-                {replacement ? 'Replace document' : 'Upload document'}
+                {isUploading ? 'Uploading…' : replacement ? 'Replace document' : 'Upload PDF'}
               </button>
             </div>
           </form>
@@ -487,14 +570,13 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
                         >
                           <Eye size={15} aria-hidden='true' />
                         </button>
-                        <button
-                          type='button'
-                          onClick={() => handleDownload(document)}
+                        <a
+                          href={apiUrl(`/api/resources/${document.id}/file?download=1`)}
                           aria-label={`Download ${document.name}`}
                           title='Download'
                         >
                           <Download size={15} aria-hidden='true' />
-                        </button>
+                        </a>
                         <button
                           type='button'
                           onClick={() =>
@@ -548,19 +630,15 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
               >
                 <X size={16} aria-hidden='true' />
               </button>
-              <p>
-                Document preview is available when files are connected to
-                storage.
-              </p>
+              <iframe
+                title={`Preview ${previewDocument.name}`}
+                src={apiUrl(`/api/resources/${previewDocument.id}/file`)}
+              />
             </aside>
           )}
         </div>
-        {feedback && (
-          <p className='branch-media-feedback' role='status'>
-            {feedback}
-          </p>
-        )}
       </section>
+      {feedback && <Toast key={feedback.id} message={feedback.message} type={feedback.type} />}
     </AdminLayout>
   );
 }

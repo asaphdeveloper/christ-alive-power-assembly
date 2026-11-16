@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Link, NavLink } from 'react-router';
+import { Link, NavLink, useNavigate } from 'react-router';
 import { ChevronDown, LogOut, UserRound } from 'lucide-react';
 import Logo from '../../assets/images/logo.webp';
 import './AdminSidebar.css';
@@ -16,6 +16,13 @@ export function AdminSidebar({
   collapsed,
 }) {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
+  function handleLogOut() {
+    window.localStorage.removeItem('access_token');
+    window.localStorage.removeItem('admin_workspace');
+    navigate('/login', { replace: true });
+  }
 
   return (
     <aside className='admin-sidebar' aria-label={navigationLabel}>
@@ -47,7 +54,7 @@ export function AdminSidebar({
         <div className='admin-profile-menu-wrap'>
           {isProfileMenuOpen && (
             <div className='admin-profile-menu' role='menu' aria-label={`${profileName} account menu`}>
-              <button type='button' className='admin-profile-menu-item' role='menuitem' onClick={() => setIsProfileMenuOpen(false)}>
+              <button type='button' className='admin-profile-menu-item' role='menuitem' onClick={handleLogOut}>
                 <LogOut size={16} aria-hidden='true' />
                 <span>Log out</span>
               </button>

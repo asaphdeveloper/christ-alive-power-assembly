@@ -20,3 +20,12 @@ export const loginLimiter = rateLimit({
   limit: 10,
   skipSuccessfulRequests: true,
 });
+
+export const uploadLimiter = rateLimit({
+  ...rateLimitOptions,
+  limit: 20,
+  message: {
+    status: 'fail',
+    message: 'Too many upload attempts. Please wait before trying again.',
+  },
+});

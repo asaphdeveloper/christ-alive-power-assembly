@@ -7,6 +7,7 @@ import AppError from './utils/appError.js';
 import { router as authRouter } from './routes/auth.routes.js';
 import { router as adminRouter } from './routes/admin.routes.js';
 import { router as branchRouter } from './routes/branch.routes.js';
+import { router as resourceRouter } from './routes/resource.routes.js';
 import { globalErrorHandler } from './controllers/error.controller.js';
 import { apiLimiter } from './middleware/rateLimiters.js';
 
@@ -35,6 +36,7 @@ app.use('/api', apiLimiter);
 app.use('/api/auth', authRouter);
 app.use('/api/admin', adminRouter);
 app.use('/api/branches', branchRouter);
+app.use('/api/resources', resourceRouter);
 
 app.all('*splat', (req, res, next) => {
   next(new AppError(`Page not found`, 404));

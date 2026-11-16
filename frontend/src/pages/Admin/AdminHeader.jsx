@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router';
 import {
   Bell,
   ChevronDown,
@@ -14,6 +15,13 @@ import './AdminHeader.css';
 
 export function AdminHeader({ workspaceName, currentPage, collapsed, onToggleSidebar }) {
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
+  const navigate = useNavigate();
+
+  function handleLogOut() {
+    window.localStorage.removeItem('access_token');
+    window.localStorage.removeItem('admin_workspace');
+    navigate('/login', { replace: true });
+  }
 
   return (
     <header className='admin-topbar'>
@@ -64,7 +72,7 @@ export function AdminHeader({ workspaceName, currentPage, collapsed, onToggleSid
               type='button'
               className='admin-header-account-menu-item'
               role='menuitem'
-              onClick={() => setIsAccountMenuOpen(false)}
+              onClick={handleLogOut}
             >
               <LogOut size={16} aria-hidden='true' />
               <span>Log out</span>

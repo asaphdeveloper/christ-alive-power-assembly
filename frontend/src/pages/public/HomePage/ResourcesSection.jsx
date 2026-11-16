@@ -7,6 +7,7 @@ import {
   MusicNote01Icon,
 } from '@hugeicons/core-free-icons';
 import './ResourcesSection.css';
+import { apiUrl } from '../../../utils/api';
 
 const categoryIcons = { 'All materials': GridViewIcon, Hymn: MusicNote01Icon };
 
@@ -73,48 +74,55 @@ function readPublishedHymnVerses() {
   }
 }
 
-const resourceTypes = [
-  {
-    id: 'bulletin',
+const hymnResource = {
+  id: 'amazing-grace',
+  title: 'Amazing Grace',
+  category: 'Hymn',
+  description: 'A classic hymn of grace and hope.',
+  type: 'hymn',
+};
+
+const documentCategories = {
+  'sunday-bulletin': {
     title: 'Sunday Bulletin',
     category: 'Bulletins',
-    description: 'Open or download Sunday bulletin for Sunday Service',
-    date: '25 August 2025',
     day: 'Sunday',
   },
-  {
-    id: 'study',
-    title: 'Bible Study Guide',
-    category: 'Bible study',
-    description:
-      'Open or download Bible study guide for Wednesday Bible study.',
-    date: '16 September 2025',
-    day: 'Monday',
-  },
-  {
-    id: 'prayer',
-    title: 'Prayer Guide',
-    category: 'Prayer',
-    description: 'Open or download Prayer guide for Friday prayer meeting.',
-    date: '29 September 2026',
+  'wednesday-bulletin': {
+    title: 'Wednesday Bulletin',
+    category: 'Bulletins',
     day: 'Wednesday',
   },
-  {
-    id: 'amazing-grace',
-    title: 'Amazing Grace',
-    category: 'Hymn',
-    description: 'A classic hymn of grace and hope.',
-    type: 'hymn',
+  'bible-study-guide': {
+    title: 'Bible Study Guide',
+    category: 'Bible study',
+    day: 'Wednesday',
   },
-];
+  'friday-prayer-meeting': {
+    title: 'Friday Prayer Meeting',
+    category: 'Prayer',
+    day: 'Friday',
+  },
+  'sunday-school-guide': {
+    title: 'Sunday School Guide',
+    category: 'Sunday school',
+    day: 'Sunday',
+  },
+};
 
 export const Resources = () => {
   const [category, setCategory] = useState('All materials');
   const [publicHymnVerses, setPublicHymnVerses] = useState(
     readPublishedHymnVerses,
   );
+  const [documents, setDocuments] = useState([]);
   const categories = ['All materials', 'Hymn'];
   useEffect(() => {
+    fetch(apiUrl('/api/resources'))
+      .then((response) => response.json())
+      .then((result) => setDocuments(result.data?.documents ?? []))
+      .catch(() => setDocuments([]));
+
     function handlePublishedHymnChange(event) {
       if (event.key === publishedHymnStorageKey) {
         setPublicHymnVerses(readPublishedHymnVerses());
@@ -125,6 +133,23 @@ export const Resources = () => {
     return () =>
       window.removeEventListener('storage', handlePublishedHymnChange);
   }, []);
+  const resourceTypes = [
+    ...documents
+      .map((document) => {
+        const details = documentCategories[document.category];
+        return details
+          ? {
+              ...details,
+              id: document.id,
+              fileName: document.name,
+              date: new Date(document.uploadedAt).toLocaleDateString(),
+              fileUrl: apiUrl(`/api/resources/${document.id}/file`),
+            }
+          : null;
+      })
+      .filter(Boolean),
+    hymnResource,
+  ];
   const visible = resourceTypes.filter(
     (item) => category === 'All materials' || item.category === category,
   );
@@ -244,36 +269,41 @@ export const Resources = () => {
                 </div>
                 <div className='church-resource-details'>
                   <h3>{item.title}</h3>
-                  <p className='church-resource-description'>
-                    {item.description}
-                  </p>
+                  <p className='church-resource-description'>{item.fileName}</p>
                   <div>
-                    <span className='church-resource-new-badge'>New</span>
+                    <span className='church-resource-new-badge'>PDF</span>
                     <span className='church-resource-date'>{item.date}</span>
                     <span className='church-resource-day'>{item.day}</span>
                   </div>
                 </div>
 
                 <div className='church-resource-actions'>
-                  <button
+                  <a
                     className='church-resource-open'
-                    type='button'
-                    title='Available when the PDF is published'
+                    href={item.fileUrl}
+                    target='_blank'
+                    rel='noreferrer'
+                    title={`Open ${item.fileName}`}
                   >
                     Open
-                  </button>
-                  <button
+                  </a>
+                  <a
                     className='church-resource-download'
-                    type='button'
-                    title='Available when the PDF is published'
+                    href={`${item.fileUrl}?download=1`}
+                    title={`Download ${item.fileName}`}
                   >
                     Download
-                  </button>
+                  </a>
                 </div>
               </li>
             ),
           )}
         </ul>
+        {category !== 'Hymn' && documents.length === 0 && (
+          <p className='church-resources-empty'>
+            No PDF resources have been uploaded yet.
+          </p>
+        )}
         {visible.length === 0 && (
           <p className='church-resources-empty'>
             No materials published yet. Check back soon for new resources.

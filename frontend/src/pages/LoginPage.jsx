@@ -1,11 +1,15 @@
 import { useState } from 'react';
 import { CircleAlert, Eye, EyeOff, LockKeyhole, UserRound } from 'lucide-react';
+import { useNavigate } from 'react-router';
+import { apiUrl } from '../utils/api';
 import logo from '../assets/images/logo.webp';
 import './LoginPage.css';
 
 export function LoginPage() {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [credentials, setCredentials] = useState({
     username: '',
     password: '',
@@ -17,7 +21,7 @@ export function LoginPage() {
     if (message) setMessage('');
   }
 
-  function handleSubmit(event) {
+  async function handleSubmit(event) {
     event.preventDefault();
     if (!credentials.username.trim() && !credentials.password) {
       setMessage('Enter your username and password.');
@@ -31,7 +35,31 @@ export function LoginPage() {
       setMessage('Enter your password.');
       return;
     }
-    setMessage('Login is not connected yet.');
+    setIsSubmitting(true);
+    try {
+      const response = await fetch(apiUrl('/api/auth/login'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(credentials),
+      });
+      const result = await response.json();
+      if (!response.ok) throw new Error(result.message || 'Unable to sign in.');
+      window.localStorage.setItem('access_token', result.token);
+      window.localStorage.setItem('admin_workspace', result.data.admin.role);
+      const roleRoutes = {
+        developer: '/admin/developer/overview',
+        'general-overseer': '/admin/general-overseer',
+        'headquater-media-admin': '/admin/headquater-media-admin/overview',
+        'jos-media-admin': '/admin/headquater-media-admin/overview',
+        'branch-media-admin': '/admin/branch-media-admin',
+        'branch-finance-secretary': '/admin/branch-finance-secretary',
+      };
+      navigate(roleRoutes[result.data.admin.role] || '/admin/developer/overview', { replace: true });
+    } catch (error) {
+      setMessage(error.message || 'Unable to sign in.');
+    } finally {
+      setIsSubmitting(false);
+    }
   }
 
   return (
@@ -96,8 +124,8 @@ export function LoginPage() {
               <span>{message}</span>
             </p>
           )}
-          <button className='login-submit' type='submit'>
-            Sign in
+          <button className='login-submit' type='submit' disabled={isSubmitting}>
+            {isSubmitting ? 'Signing in…' : 'Sign in'}
           </button>
         </form>
         <a className='login-home-link' href='/'>
