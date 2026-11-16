@@ -1,19 +1,30 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { CircleAlert, Eye, EyeOff, LockKeyhole, UserRound } from 'lucide-react';
-import { useNavigate } from 'react-router';
-import { apiUrl } from '../utils/api';
+import { useLocation, useNavigate } from 'react-router';
+import { adminLandingRoutes } from '../auth/authRoutes';
+import { useAuth } from '../auth/useAuth';
+import { LoadingSpinner } from '../components/LoadingSpinner';
 import logo from '../assets/images/logo.webp';
 import './LoginPage.css';
 
 export function LoginPage() {
   const navigate = useNavigate();
+  const location = useLocation();
+  const { admin, isLoading: isCheckingSession, signIn } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
-  const [message, setMessage] = useState('');
+  const [message, setMessage] = useState(location.state?.message || '');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const submittedLogin = useRef(false);
   const [credentials, setCredentials] = useState({
     username: '',
     password: '',
   });
+
+  useEffect(() => {
+    if (!submittedLogin.current && !isCheckingSession && admin) {
+      navigate(adminLandingRoutes[admin.role] || '/admin/developer/overview', { replace: true });
+    }
+  }, [admin, isCheckingSession, navigate]);
 
   function handleChange(event) {
     const { name, value } = event.target;
@@ -36,27 +47,17 @@ export function LoginPage() {
       return;
     }
     setIsSubmitting(true);
+    submittedLogin.current = true;
     try {
-      const response = await fetch(apiUrl('/api/auth/login'), {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(credentials),
-      });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.message || 'Unable to sign in.');
-      window.localStorage.setItem('access_token', result.token);
-      window.localStorage.setItem('admin_workspace', result.data.admin.role);
-      const roleRoutes = {
-        developer: '/admin/developer/overview',
-        'general-overseer': '/admin/general-overseer',
-        'headquater-media-admin': '/admin/headquater-media-admin/overview',
-        'jos-media-admin': '/admin/headquater-media-admin/overview',
-        'branch-media-admin': '/admin/branch-media-admin',
-        'branch-finance-secretary': '/admin/branch-finance-secretary',
-      };
-      navigate(roleRoutes[result.data.admin.role] || '/admin/developer/overview', { replace: true });
+      const signedInAdmin = await signIn(credentials);
+      navigate(
+        adminLandingRoutes[signedInAdmin.role] || '/admin/developer/overview',
+        { replace: true },
+      );
     } catch (error) {
-      setMessage(error.message || 'Unable to sign in.');
+      setMessage(error instanceof TypeError
+        ? 'Could not connect to the sign-in service. Check your connection and try again.'
+        : error.message || 'Unable to sign in.');
     } finally {
       setIsSubmitting(false);
     }
@@ -124,8 +125,8 @@ export function LoginPage() {
               <span>{message}</span>
             </p>
           )}
-          <button className='login-submit' type='submit' disabled={isSubmitting}>
-            {isSubmitting ? 'Signing in…' : 'Sign in'}
+          <button className='login-submit' type='submit' disabled={isSubmitting} aria-busy={isSubmitting}>
+            {isSubmitting ? <><LoadingSpinner /> Signing in…</> : 'Sign in'}
           </button>
         </form>
         <a className='login-home-link' href='/'>

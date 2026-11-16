@@ -17,9 +17,10 @@ import {
 } from 'lucide-react';
 import { AdminLayout } from '../AdminLayout';
 import { Toast } from '../../../components/Toast';
+import { LoadingSpinner } from '../../../components/LoadingSpinner';
 import EmptyIllustration from '../../../assets/images/empty.svg';
 import UploadIllustration from '../../../assets/images/upload.svg';
-import { apiUrl } from '../../../utils/api';
+import { apiFetch, apiUrl } from '../../../utils/api';
 import './BranchMediaAdminPage.css';
 
 const initialResources = [
@@ -65,7 +66,6 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
   const [replacement, setReplacement] = useState(null);
   const [previewDocument, setPreviewDocument] = useState(null);
   const [feedback, setFeedback] = useState(null);
-  const [usage, setUsage] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
   const [isUploadsMenuOpen, setIsUploadsMenuOpen] = useState(false);
@@ -91,16 +91,13 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
       notify('Please sign in to manage resources.', 'error');
       return;
     }
-    fetch(apiUrl('/api/resources/manage'), {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    apiFetch('/api/resources/manage')
       .then(async (response) => {
         const result = await response.json();
         if (!response.ok) throw new Error(result.message || 'Unable to load documents.');
         return result.data;
       })
-      .then(({ documents, usage: currentUsage }) => {
-        setUsage(currentUsage);
+      .then(({ documents }) => {
         setResources((current) => current.map((resource) => ({
           ...resource,
           documents: documents
@@ -207,9 +204,8 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
     formData.append('category', uploadTarget);
     if (replacement) formData.append('replaceId', replacement.documentId);
     try {
-      const response = await fetch(apiUrl('/api/resources/manage'), {
+      const response = await apiFetch('/api/resources/manage', {
         method: 'POST',
-        headers: { Authorization: `Bearer ${token}` },
         body: formData,
       });
       const result = await response.json();
@@ -242,11 +238,6 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
         }),
       );
 
-      setUsage((current) => current ? {
-        ...current,
-        storageBytes: current.storageBytes + selectedFile.size - (replacement && !result.message ? (resources.find((resource) => resource.id === replacement.resourceId)?.documents.find((item) => item.id === replacement.documentId)?.size || 0) : 0),
-        writes: current.writes + (replacement && !result.message ? 2 : 1),
-      } : current);
       notify(result.message || (replacement ? 'Document replaced successfully.' : 'Document added successfully.'), result.message ? 'warning' : 'success');
       setSelectedFile(null);
       setReplacement(null);
@@ -267,11 +258,9 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
 
   async function handleDelete(resourceId, documentId) {
     if (!window.confirm('Delete this PDF? This cannot be undone.')) return;
-    const token = window.localStorage.getItem('access_token');
     try {
-      const response = await fetch(apiUrl(`/api/resources/manage/${documentId}`), {
+      const response = await apiFetch(`/api/resources/manage/${documentId}`, {
         method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) {
         const result = await response.json();
@@ -289,11 +278,6 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
           : resource,
       ),
     );
-      setUsage((current) => current ? {
-        ...current,
-        storageBytes: Math.max(0, current.storageBytes - (resources.find((resource) => resource.id === resourceId)?.documents.find((item) => item.id === documentId)?.size || 0)),
-        writes: current.writes + 1,
-      } : current);
       notify('Document deleted.');
     } catch (error) {
       notify(error.message || 'Unable to delete this PDF.', 'error');
@@ -302,22 +286,15 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
 
   async function handleDeleteAll() {
     if (!window.confirm('Delete every uploaded PDF? This cannot be undone.')) return;
-    const token = window.localStorage.getItem('access_token');
     try {
-      const response = await fetch(apiUrl('/api/resources/manage/all'), {
+      const response = await apiFetch('/api/resources/manage/all', {
         method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` },
       });
       if (!response.ok) {
         const result = await response.json();
         throw new Error(result.message || 'Unable to delete the documents.');
       }
       setResources((current) => current.map((resource) => ({ ...resource, documents: [] })));
-      setUsage((current) => current ? {
-        ...current,
-        storageBytes: 0,
-        writes: current.writes + uploadedDocuments.length,
-      } : current);
       setPreviewDocument(null);
       setIsUploadsMenuOpen(false);
       notify('All documents deleted.');
@@ -338,17 +315,6 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
             Manage documents for your assigned branch services and ministries.
           </span>
         </header>
-        {usage && !usage.r2Configured && (
-          <div className='branch-media-usage' role='status'>Cloudflare R2 is not configured. Add the R2 credentials to the backend environment before uploading PDFs.</div>
-        )}
-        {usage?.r2Configured && (
-          <div className='branch-media-usage' role='status'>
-            <span>Storage safety limit: <strong>{(usage.storageBytes / 1024 ** 2).toFixed(1)} MB of {(usage.storageBudgetBytes / 1024 ** 3).toFixed(1)} GB</strong></span>
-            <span>R2 reads this month: <strong>{usage.reads.toLocaleString()} / {usage.monthlyReadBudget.toLocaleString()}</strong></span>
-            <span>R2 uploads this month: <strong>{usage.writes.toLocaleString()} / {usage.monthlyWriteBudget.toLocaleString()}</strong></span>
-            <small>These counters cover this app only; other R2 use in your Cloudflare account is not included.</small>
-          </div>
-        )}
         <div className='branch-media-admin-layout'>
           <form className='branch-media-upload-panel' onSubmit={handleUpload}>
             <div className='branch-media-upload-heading'>
@@ -429,8 +395,8 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
                   Cancel upload
                 </button>
               )}
-              <button type='submit' disabled={isUploading}>
-                <Upload size={15} aria-hidden='true' />
+              <button type='submit' disabled={isUploading} aria-busy={isUploading}>
+                {isUploading ? <LoadingSpinner /> : <Upload size={15} aria-hidden='true' />}
                 {isUploading ? 'Uploading…' : replacement ? 'Replace document' : 'Upload PDF'}
               </button>
             </div>

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router';
 import { ChevronDown, LogOut, UserRound } from 'lucide-react';
+import { useAuth } from '../../auth/useAuth';
 import Logo from '../../assets/images/logo.webp';
 import './AdminSidebar.css';
 
@@ -17,10 +18,10 @@ export function AdminSidebar({
 }) {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { signOut } = useAuth();
 
   function handleLogOut() {
-    window.localStorage.removeItem('access_token');
-    window.localStorage.removeItem('admin_workspace');
+    signOut();
     navigate('/login', { replace: true });
   }
 

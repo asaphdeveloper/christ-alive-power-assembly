@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useAuth } from '../../auth/useAuth';
 import {
   Bell,
   ChevronDown,
@@ -16,10 +17,10 @@ import './AdminHeader.css';
 export function AdminHeader({ workspaceName, currentPage, collapsed, onToggleSidebar }) {
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
   const navigate = useNavigate();
+  const { signOut } = useAuth();
 
   function handleLogOut() {
-    window.localStorage.removeItem('access_token');
-    window.localStorage.removeItem('admin_workspace');
+    signOut();
     navigate('/login', { replace: true });
   }
 

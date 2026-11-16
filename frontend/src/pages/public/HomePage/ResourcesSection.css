@@ -304,15 +304,6 @@
   outline-offset: 4px;
 }
 
-.church-resources-empty {
-  padding: 40px 20px;
-  font:
-    16px/1.7 Outfit,
-    sans-serif;
-  text-align: center;
-  color: #637067;
-}
-
 @media (max-width: 900px) {
   .church-resource {
     grid-template-columns: 64px minmax(0, 1fr);

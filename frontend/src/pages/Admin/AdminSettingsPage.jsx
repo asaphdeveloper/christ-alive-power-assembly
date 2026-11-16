@@ -1,14 +1,18 @@
 import { useEffect, useState } from 'react';
 import { KeyRound, LockKeyhole } from 'lucide-react';
 import { useLocation } from 'react-router';
-import { apiUrl } from '../../utils/api';
+import { apiFetch } from '../../utils/api';
+import { useAuth } from '../../auth/useAuth';
 import { AdminLayout } from './AdminLayout';
+import { useNavigate } from 'react-router';
 import './AdminSettingsPage.css';
 
 const initialValues = { currentPassword: '', password: '', passwordConfirm: '' };
 
 export function AdminSettingsPage() {
   const { state } = useLocation();
+  const navigate = useNavigate();
+  const { signOut } = useAuth();
   const storedWorkspace = typeof window === 'undefined'
     ? null
     : window.localStorage.getItem('admin_workspace');
@@ -24,7 +28,7 @@ export function AdminSettingsPage() {
     if (workspace !== 'developer') return;
     const token = window.localStorage.getItem('access_token');
     if (!token) return;
-    fetch(apiUrl('/api/resources/manage/usage'), {
+    apiFetch('/api/resources/manage/usage', {
       headers: { Authorization: `Bearer ${token}` },
     })
       .then(async (response) => {
@@ -58,7 +62,7 @@ export function AdminSettingsPage() {
     try {
       const token = window.localStorage.getItem('access_token');
       if (!token) throw new Error('Your session has expired. Please sign in again.');
-      const response = await fetch(apiUrl('/api/admin/me/password'), {
+      const response = await apiFetch('/api/admin/me/password', {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -68,10 +72,13 @@ export function AdminSettingsPage() {
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.message || 'Unable to update your password.');
-      window.localStorage.removeItem('access_token');
+      signOut();
       setValues(initialValues);
       setMessageType('success');
-      setMessage('Password updated. Please sign in again with your new password.');
+      navigate('/login', {
+        replace: true,
+        state: { message: 'Password updated. Sign in again with your new password.' },
+      });
     } catch (error) {
       setMessageType('error');
       setMessage(error.message || 'Unable to update your password.');
@@ -82,6 +89,7 @@ export function AdminSettingsPage() {
 
   return (
     <AdminLayout workspace={workspace} pageTitle='Settings'>
+      <div className={`admin-settings-layout${workspace === 'developer' ? ' has-usage' : ''}`}>
       <section className='admin-settings-page' aria-labelledby='admin-settings-title'>
         <header className='admin-settings-heading'>
           <span className='admin-settings-icon'><KeyRound size={20} aria-hidden='true' /></span>
@@ -106,6 +114,7 @@ export function AdminSettingsPage() {
           {message && <p className={`admin-settings-message is-${messageType}`} role='status'>{message}</p>}
           <button type='submit' disabled={isSaving}>{isSaving ? 'Updating…' : 'Update password'}</button>
         </form>
+      </section>
         {workspace === 'developer' && (
           <section className='admin-settings-usage' aria-labelledby='admin-settings-usage-title'>
             <header>
@@ -126,7 +135,7 @@ export function AdminSettingsPage() {
             <p className='admin-settings-usage-note'>Uploads, deletes, and reads pause at these app safety limits. This meter does not include other buckets or services in your Cloudflare account, so it cannot guarantee a $0 account-wide bill.</p>
           </section>
         )}
-      </section>
+      </div>
     </AdminLayout>
   );
 }

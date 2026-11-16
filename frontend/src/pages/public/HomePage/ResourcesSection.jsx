@@ -299,16 +299,6 @@ export const Resources = () => {
             ),
           )}
         </ul>
-        {category !== 'Hymn' && documents.length === 0 && (
-          <p className='church-resources-empty'>
-            No PDF resources have been uploaded yet.
-          </p>
-        )}
-        {visible.length === 0 && (
-          <p className='church-resources-empty'>
-            No materials published yet. Check back soon for new resources.
-          </p>
-        )}
       </div>
     </section>
   );

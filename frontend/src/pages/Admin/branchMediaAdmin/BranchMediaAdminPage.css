@@ -379,20 +379,6 @@
   border: 1px solid #e1e9e4;
   border-radius: 8px;
 }
-.branch-media-usage {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px 22px;
-  margin: 0 0 16px;
-  padding: 12px 15px;
-  border: 1px solid #dcece2;
-  border-radius: 10px;
-  background: #f4faf6;
-  color: #53675d;
-  font-size: 12px;
-}
-.branch-media-usage strong { color: #087f5b; }
-.branch-media-usage small { flex-basis: 100%; color: #78877e; }
 .branch-media-current-uploads {
   grid-column: 1;
   min-width: 0;

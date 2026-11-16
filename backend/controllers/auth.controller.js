@@ -16,22 +16,18 @@ export const login = async (req, res, next) => {
 
     const admin = await Admin.findOne({ username: username.trim().toLowerCase() }).select('+password');
     if (!admin || !(await admin.comparePasswords(password, admin.password))) {
-      return next(new AppError('Incorrect username or password', 401));
+      return next(new AppError('The login details do not match an admin account. Check your username and password, then try again.', 401));
     }
 
     const token = signToken(admin._id);
-    admin.password = undefined;
-
-    const cookieOptions = {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 24 * 60 * 60 * 1000, // 1 day
+    const safeAdmin = {
+      id: admin._id,
+      name: admin.name,
+      username: admin.username,
+      role: admin.role,
     };
 
-    res.cookie('access_token', token, cookieOptions);
-
-    res.status(200).json({ status: 'success', token, data: { admin } });
+    res.status(200).json({ status: 'success', token, data: { admin: safeAdmin } });
   } catch (err) {
     next(err);
   }
@@ -59,6 +55,14 @@ export const authenticate = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+};
+
+export const getCurrentAdmin = (req, res) => {
+  const { _id, name, username, role } = req.admin;
+  res.status(200).json({
+    status: 'success',
+    data: { admin: { id: _id, name, username, role } },
+  });
 };
 
 export const restrictTo = (...roles) => (req, res, next) => {

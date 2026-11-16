@@ -2,6 +2,8 @@ import { lazy, Suspense } from 'react';
 import { SEO } from './components/SEO';
 import { RouteFocus } from './components/RouteFocus';
 import { Routes, Route } from 'react-router';
+import { AuthProvider } from './auth/AuthContext';
+import { RequireAuth } from './auth/RequireAuth';
 import './App.css';
 
 const HomePage = lazy(() =>
@@ -97,27 +99,29 @@ const PageNotFound = lazy(() =>
 
 function App() {
   return (
-    <>
-      <SEO />
-      <RouteFocus />
-      <a className='skip-link' href='#main-content'>
-        Skip to main content
-      </a>
-      <Suspense
-        fallback={
-          <main
-            id='main-content'
-            tabIndex={-1}
-            aria-busy='true'
-            className='route-loading'
-          >
-            <span className='sr-only'>Loading page…</span>
-          </main>
-        }
-      >
-        <Routes>
-          <Route index element={<HomePage />} />
-          <Route path='login' element={<LoginPage />} />
+    <AuthProvider>
+      <>
+        <SEO />
+        <RouteFocus />
+        <a className='skip-link' href='#main-content'>
+          Skip to main content
+        </a>
+        <Suspense
+          fallback={
+            <main
+              id='main-content'
+              tabIndex={-1}
+              aria-busy='true'
+              className='route-loading'
+            >
+              <span className='sr-only'>Loading page…</span>
+            </main>
+          }
+        >
+          <Routes>
+            <Route index element={<HomePage />} />
+            <Route path='login' element={<LoginPage />} />
+            <Route element={<RequireAuth />}>
           <Route path='admin/developer/overview' element={<AdminPortalPage />}>
             <Route index element={<DeveloperOverviewPage />} />
           </Route>
@@ -178,10 +182,12 @@ function App() {
             path='admin/headquater-media-admin/overview'
             element={<HeadquaterOverviewPage />}
           />
-          <Route path='*' element={<PageNotFound />} />
-        </Routes>
-      </Suspense>
-    </>
+            </Route>
+            <Route path='*' element={<PageNotFound />} />
+          </Routes>
+        </Suspense>
+      </>
+    </AuthProvider>
   );
 }
 
