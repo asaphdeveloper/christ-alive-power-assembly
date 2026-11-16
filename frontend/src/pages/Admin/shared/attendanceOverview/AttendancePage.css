@@ -63,13 +63,13 @@
   cursor: pointer;
 }
 .admin-shell .go-filter-button span {
-  color: #65736a;
+  color: #555;
 }
 .admin-shell .go-filter-button[aria-expanded='true'] span {
-  color: #363d44;
+  color: #333;
 }
 .admin-shell .go-filter-button:not(:disabled):hover {
-  border-color: #cbd3d8;
+  border-color: #babfc3;
   background: #fff;
   filter: none;
 }
@@ -78,7 +78,7 @@
 }
 .go-filter-button svg {
   flex: 0 0 auto;
-  color: #758078;
+  color: #555;
 }
 .go-filter-menu {
   position: absolute;
@@ -132,7 +132,7 @@
   border: 1px solid transparent;
   border-radius: 8px;
   background: transparent;
-  color: #65736a;
+  color: #555;
   font: inherit;
   font-size: 14px;
   white-space: nowrap;
@@ -252,26 +252,21 @@
 }
 .go-trend-heading > div {
   display: grid;
-  width: 100%;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
+  min-width: 0;
 }
-.go-trend-heading > div > span,
-.go-trend-heading > div > h2 {
-  grid-column: 1;
+.go-trend-heading > .go-trend-heading-meta {
+  justify-items: end;
+  gap: 5px;
+  text-align: right;
 }
-.go-trend-heading > div > span {
-  grid-row: 1;
+.go-trend-heading-meta h2 {
+  text-align: right;
 }
-.go-trend-heading > div > h2 {
-  grid-row: 2;
-}
-.go-trend-heading > div > p {
-  grid-column: 2;
-  grid-row: 1;
+.go-trend-heading > .go-trend-heading-meta > .go-trend-summary {
   align-self: start;
   margin: 0;
   text-align: right;
+  white-space: nowrap;
 }
 .go-attendance-chart-card h2 {
   color: #20242b;
@@ -438,17 +433,8 @@
   .admin-shell .go-filter-reset {
     justify-content: flex-start;
   }
-  .go-trend-heading {
-    flex-direction: column;
-  }
-  .go-trend-heading > div {
-    grid-template-columns: minmax(0, 1fr);
-  }
-  .go-trend-heading > div > p {
-    grid-column: 2;
-    grid-row: 1;
-    margin-top: 0;
-    text-align: right;
+  .go-trend-heading > .go-trend-heading-meta {
+    margin-left: auto;
   }
   .go-attendance-kpis {
     grid-template-columns: repeat(2, minmax(0, 1fr));

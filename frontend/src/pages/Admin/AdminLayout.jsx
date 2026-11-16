@@ -24,6 +24,7 @@ const developerNavItems = [
   { label: 'Overview', to: '/admin/developer/overview', icon: LayoutDashboard },
   { label: 'Administrators', to: '/admin/all-admins', icon: Users },
   { label: 'Branches', to: '/admin/branches', icon: MapPinned },
+  { label: 'Settings', to: '/admin/settings', icon: Settings },
   {
     label: 'General overseer',
     to: '/admin/general-overseer',
@@ -50,8 +51,8 @@ const developerNavItems = [
 const generalOverseerNavItems = [
   { label: 'Overview', to: '/admin/general-overseer', icon: LayoutDashboard },
   {
-    label: 'Attendance',
-    to: '/admin/attendance',
+    label: 'Attendance overview',
+    to: '/admin/attendance-overview',
     icon: ClipboardCheck,
   },
   {
@@ -59,11 +60,7 @@ const generalOverseerNavItems = [
     to: '/admin/attendance-reports',
     icon: ClipboardList,
   },
-  {
-    label: 'Finance',
-    to: '/admin/general-overseer/finance',
-    icon: CircleDollarSign,
-  },
+  { label: 'Settings', to: '/admin/settings', icon: Settings },
   {
     label: 'Developer workspace',
     to: '/admin/developer/overview',
@@ -80,6 +77,7 @@ const branchMediaAdminNavItems = [
     icon: ClipboardCheck,
   },
   { label: 'Visitors', to: '/admin/branch-media-admin/visitors', icon: Users },
+  { label: 'Settings', to: '/admin/settings', icon: Settings },
   {
     label: 'Developer workspace',
     to: '/admin/developer/overview',
@@ -94,6 +92,7 @@ const branchFinanceSecretaryNavItems = [
     to: '/admin/branch-finance-secretary',
     icon: LayoutDashboard,
   },
+  { label: 'Settings', to: '/admin/settings', icon: Settings },
   {
     label: 'Developer workspace',
     to: '/admin/developer/overview',
@@ -113,6 +112,7 @@ const headquaterMediaAdminNavItems = [
     to: '/admin/upload-resource',
     icon: Clapperboard,
   },
+  { label: 'Settings', to: '/admin/settings', icon: Settings },
   {
     label: 'Developer workspace',
     to: '/admin/developer/overview',
@@ -250,6 +250,7 @@ export function AdminLayout({
         brandName={brandName}
         navigationLabel={`${profileName} workspace navigation`}
         profileName={profileName}
+        workspace={workspace}
         profileDescription='Workspace access'
         collapsed={collapsed}
       />

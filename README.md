@@ -42,3 +42,9 @@ i want to be able to control the services each branch holds. the headquater bran
 use the empty illustration when visitors log is empty
 
 implement request data sanitization in the backend
+
+i want to also have a stats cards that record the highest number of attendance recorded in each branch and also all branches combined.
+
+whenever a new attendance record is set or crossed send a notification.
+
+i do not want

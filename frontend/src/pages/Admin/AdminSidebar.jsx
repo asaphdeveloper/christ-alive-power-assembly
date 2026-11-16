@@ -12,6 +12,7 @@ export function AdminSidebar({
   navigationLabel,
   profileName,
   profileDescription,
+  workspace,
   collapsed,
 }) {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
@@ -31,6 +32,7 @@ export function AdminSidebar({
             key={to}
             to={to}
             end
+            state={to === '/admin/settings' ? { workspace } : undefined}
             className={({ isActive }) => `admin-nav-link${isActive ? ' is-active' : ''}`}
             title={collapsed ? label : undefined}
             aria-label={collapsed ? label : undefined}

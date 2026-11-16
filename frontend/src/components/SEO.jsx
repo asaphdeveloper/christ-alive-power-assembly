@@ -21,21 +21,21 @@ const pages = {
     'Branches | Christ Alive Power Assembly',
     'View and manage Christ Alive Power Assembly branches.',
   ],
+  '/admin/settings': [
+    'Account Settings | Christ Alive Power Assembly',
+    'Update your Christ Alive Power Assembly admin account password.',
+  ],
   '/admin/general-overseer': [
     'General Overseer | Christ Alive Power Assembly',
     'General Overseer workspace for reviewing administrators and church branches.',
   ],
-  '/admin/attendance': [
-    'Church Attendance | Christ Alive Power Assembly',
+  '/admin/attendance-overview': [
+    'Attendance Overview | Christ Alive Power Assembly',
     'Review attendance totals, service trends, and branch comparisons for Christ Alive Power Assembly.',
   ],
   '/admin/attendance-reports': [
     'Branch Attendance Reports | Christ Alive Power Assembly',
     'Review attendance reports submitted by Christ Alive Power Assembly branches.',
-  ],
-  '/admin/general-overseer/finance': [
-    'Church Finance | Christ Alive Power Assembly',
-    'Review financial activity and reports across Christ Alive Power Assembly branches.',
   ],
   '/admin/branch-media-admin': [
     'Branch Media Admin | Christ Alive Power Assembly',

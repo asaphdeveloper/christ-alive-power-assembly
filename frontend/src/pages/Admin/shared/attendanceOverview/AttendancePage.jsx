@@ -41,11 +41,6 @@ const getExpressionLabel = (name) =>
     ? 'All expressions'
     : (expressionOptions.find((option) => option.value === name)?.label ??
       name);
-const formatFullMonthDate = (value) =>
-  new Date(`${value}T12:00:00`).toLocaleDateString('en-NG', {
-    day: 'numeric',
-    month: 'long',
-  });
 const getValue = (record, key) =>
   key === 'total'
     ? record.men + record.women + record.youth + record.children
@@ -111,17 +106,15 @@ export function GeneralOverseerAttendancePage() {
       (record) => record.service === serviceName,
     );
     return {
-      date: serviceRecords[0]?.date ?? latestDate,
       service: serviceName,
       records: serviceRecords,
     };
   });
 
   const trendData = {
-    labels: trendPoints.map((point) => [
-      serviceDisplayNames[point.service] ?? point.service,
-      formatFullMonthDate(point.date),
-    ]),
+    labels: trendPoints.map(
+      (point) => serviceDisplayNames[point.service] ?? point.service,
+    ),
     datasets: [
       {
         label: groupOptions.find((item) => item.key === group)?.label,
@@ -200,7 +193,7 @@ export function GeneralOverseerAttendancePage() {
   }
 
   return (
-    <AdminLayout workspace='general-overseer' pageTitle='Attendance'>
+    <AdminLayout workspace='general-overseer' pageTitle='Attendance overview'>
       <section
         className='general-overseer-page'
         aria-labelledby='general-overseer-title'

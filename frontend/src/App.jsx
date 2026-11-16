@@ -44,11 +44,6 @@ const AttendanceReportsPage = lazy(() =>
     default: module.AttendanceReportsPage,
   })),
 );
-const GeneralOverseerFinancePage = lazy(() =>
-  import('./pages/Admin/generalOverseer/finance/FinancePage').then(
-    (module) => ({ default: module.GeneralOverseerFinancePage }),
-  ),
-);
 const BranchMediaOverviewPage = lazy(() =>
   import('./pages/Admin/branchMediaAdmin/BranchMediaOverviewPage').then(
     (module) => ({ default: module.BranchMediaOverviewPage }),
@@ -82,6 +77,11 @@ const HeadquaterOverviewPage = lazy(() =>
 const AdminsPage = lazy(() =>
   import('./pages/Admin/shared/admins/AdminsPage').then((module) => ({
     default: module.AdminsPage,
+  })),
+);
+const AdminSettingsPage = lazy(() =>
+  import('./pages/Admin/AdminSettingsPage').then((module) => ({
+    default: module.AdminSettingsPage,
   })),
 );
 const BranchesPage = lazy(() =>
@@ -137,21 +137,18 @@ function App() {
               </DeveloperSubpageLayout>
             }
           />
+          <Route path='admin/settings' element={<AdminSettingsPage />} />
           <Route
             path='admin/general-overseer'
             element={<GeneralOverseerOverviewPage />}
           />
           <Route
-            path='admin/attendance'
+            path='admin/attendance-overview'
             element={<GeneralOverseerAttendancePage />}
           />
           <Route
             path='admin/attendance-reports'
             element={<AttendanceReportsPage />}
-          />
-          <Route
-            path='admin/general-overseer/finance'
-            element={<GeneralOverseerFinancePage />}
           />
           <Route
             path='admin/branch-media-admin'

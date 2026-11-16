@@ -122,6 +122,11 @@
   font-weight: 600;
 }
 
+.login-field span:first-child {
+  position: relative;
+  /* left: 10px; */
+}
+
 .login-input-wrap {
   min-height: 53px;
   display: flex;
@@ -139,7 +144,10 @@
 
 .login-input-wrap:focus-within {
   border-color: #087f5b;
-  box-shadow: 0 0 0 3px rgba(8, 127, 91, 0.11);
+}
+
+.login-input-wrap:focus-within > svg {
+  color: #53675d;
 }
 
 .login-input-wrap input {
@@ -164,6 +172,10 @@
 
 .login-input-wrap input::placeholder {
   color: #9aa39e;
+}
+
+.login-input-wrap input:focus::placeholder {
+  color: #78827d;
 }
 
 .login-input-wrap input:-webkit-autofill,

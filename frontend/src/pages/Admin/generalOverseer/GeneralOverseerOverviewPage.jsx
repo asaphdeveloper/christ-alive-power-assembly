@@ -1,12 +1,11 @@
-import { ArrowRight, CircleDollarSign, ClipboardCheck, ClipboardList, MapPinned, Users } from 'lucide-react';
+import { ArrowRight, ClipboardCheck, ClipboardList, MapPinned, Users } from 'lucide-react';
 import { Link } from 'react-router';
 import { AdminLayout } from '../AdminLayout';
 import './GeneralOverseerOverviewPage.css';
 
 const overviewLinks = [
-  { title: 'Attendance', description: 'Review attendance totals and service trends across all branches.', to: '/admin/attendance', label: 'View attendance', icon: ClipboardCheck },
+  { title: 'Attendance overview', description: 'Review attendance totals and service trends across all branches.', to: '/admin/attendance-overview', label: 'View attendance overview', icon: ClipboardCheck },
   { title: 'Attendance reports', description: 'Review attendance reports submitted by each branch.', to: '/admin/attendance-reports', label: 'View attendance reports', icon: ClipboardList },
-  { title: 'Finance', description: 'Review financial reports and summaries across all branches.', to: '/admin/general-overseer/finance', label: 'View finance', icon: CircleDollarSign },
   { title: 'Administrators', description: 'Review the administrators assigned to each branch.', to: '/admin/all-admins', label: 'View administrators', icon: Users },
   { title: 'Branches', description: 'View branch locations and their assigned administrators.', to: '/admin/branches', label: 'View branches', icon: MapPinned },
 ];

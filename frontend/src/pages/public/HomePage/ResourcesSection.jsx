@@ -61,7 +61,12 @@ function readPublishedHymnVerses() {
     return savedHymn.lyrics
       .trim()
       .split(/\n\s*\n/)
-      .map((verse) => verse.split('\n').map((line) => line.trim()).filter(Boolean))
+      .map((verse) =>
+        verse
+          .split('\n')
+          .map((line) => line.trim())
+          .filter(Boolean),
+      )
       .filter((verse) => verse.length);
   } catch {
     return hymnVerses;
@@ -73,7 +78,7 @@ const resourceTypes = [
     id: 'bulletin',
     title: 'Sunday Bulletin',
     category: 'Bulletins',
-    description: 'Service notes, church announcements, and the week ahead.',
+    description: 'Open or download Sunday bulletin for Sunday Service',
     date: '25 August 2025',
     day: 'Sunday',
   },
@@ -81,7 +86,8 @@ const resourceTypes = [
     id: 'study',
     title: 'Bible Study Guide',
     category: 'Bible study',
-    description: 'Scripture, study notes, and questions to grow in your faith.',
+    description:
+      'Open or download Bible study guide for Wednesday Bible study.',
     date: '16 September 2025',
     day: 'Monday',
   },
@@ -89,7 +95,7 @@ const resourceTypes = [
     id: 'prayer',
     title: 'Prayer Guide',
     category: 'Prayer',
-    description: 'Prayer points and Scripture for your personal quiet time.',
+    description: 'Open or download Prayer guide for Friday prayer meeting.',
     date: '29 September 2026',
     day: 'Wednesday',
   },
@@ -116,7 +122,8 @@ export const Resources = () => {
     }
 
     window.addEventListener('storage', handlePublishedHymnChange);
-    return () => window.removeEventListener('storage', handlePublishedHymnChange);
+    return () =>
+      window.removeEventListener('storage', handlePublishedHymnChange);
   }, []);
   const visible = resourceTypes.filter(
     (item) => category === 'All materials' || item.category === category,
@@ -242,8 +249,8 @@ export const Resources = () => {
                   </p>
                   <div>
                     <span className='church-resource-new-badge'>New</span>
-                    <span className='church-resource-day'>{item.day}</span>
                     <span className='church-resource-date'>{item.date}</span>
+                    <span className='church-resource-day'>{item.day}</span>
                   </div>
                 </div>
 

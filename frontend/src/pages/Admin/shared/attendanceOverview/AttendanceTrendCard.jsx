@@ -36,10 +36,14 @@ export function AttendanceTrendCard({
         <div>
           <span className='go-card-eyebrow'>
             <ChartNoAxesCombined size={16} aria-hidden='true' />
-            Attendance trend
+            WEEKLY ATTENDANCE TREND
           </span>
+        </div>
+        <div className='go-trend-heading-meta'>
           <h2 id='go-trend-title'>{expressionLabel}</h2>
-          <p>{groupLabel} · {service.toLowerCase()}</p>
+          <p className='go-trend-summary'>
+            {groupLabel} · {service.toLowerCase()}
+          </p>
         </div>
       </header>
       {filteredData.length ? (

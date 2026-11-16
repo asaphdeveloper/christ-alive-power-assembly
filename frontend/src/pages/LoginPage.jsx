@@ -6,7 +6,10 @@ import './LoginPage.css';
 export function LoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [message, setMessage] = useState('');
-  const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const [credentials, setCredentials] = useState({
+    username: '',
+    password: '',
+  });
 
   function handleChange(event) {
     const { name, value } = event.target;
