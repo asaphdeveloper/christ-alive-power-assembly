@@ -37,6 +37,11 @@ const generalOverseerNavItems = [
     to: '/admin/attendance-reports',
     icon: ClipboardList,
   },
+  {
+    label: 'Upload resources',
+    to: '/admin/upload-resource',
+    icon: Clapperboard,
+  },
   { label: 'Public website', to: '/', icon: ExternalLink },
 ];
 

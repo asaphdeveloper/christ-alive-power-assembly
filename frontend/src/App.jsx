@@ -209,7 +209,7 @@ function App() {
           <Route
             path='admin/upload-resource'
             element={
-              <RequireRole roles={['headquater-media-admin']}>
+              <RequireRole roles={['headquater-media-admin', 'general-overseer']}>
                 <HeadquaterMediaAdminPage />
               </RequireRole>
             }

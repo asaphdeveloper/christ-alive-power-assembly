@@ -158,6 +158,10 @@
 .admin-shell .admin-profile-menu-item:not(:disabled):active {
   transform: none;
 }
+.admin-shell .admin-profile-menu-item:disabled {
+  opacity: 0.72;
+  cursor: wait;
+}
 .admin-avatar {
   display: grid;
   width: 32px;

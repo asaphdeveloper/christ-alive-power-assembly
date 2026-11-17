@@ -14,10 +14,10 @@ router.get('/:id/file', resourceController.downloadDocument);
 router.use(authController.authenticate);
 router.get(
   '/manage/usage',
-  authController.restrictTo('headquater-media-admin', 'developer'),
+  authController.restrictTo('headquater-media-admin', 'general-overseer', 'developer'),
   resourceController.getResourceUsage,
 );
-router.use(authController.restrictTo('headquater-media-admin'));
+router.use(authController.restrictTo('headquater-media-admin', 'general-overseer'));
 router.get('/manage/hymn', resourceController.getManageHymn);
 router.put('/manage/hymn', resourceController.saveHymn);
 router.get('/manage', resourceController.listAdminDocuments);

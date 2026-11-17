@@ -182,6 +182,7 @@
   cursor: pointer;
 }
 .admin-shell .admin-header-account-menu-item:hover { background: #fff5f5; }
+.admin-shell .admin-header-account-menu-item:disabled { opacity: .72; cursor: wait; }
 
 @media (max-width: 760px) {
   .admin-collapse-toggle,

@@ -53,10 +53,9 @@
   grid-row: 1 / span 2;
   align-self: stretch;
   min-width: 0;
-  grid-template-rows: auto minmax(0, 1fr) auto auto;
+  grid-template-rows: auto minmax(0, 1fr) auto;
   align-content: start;
   gap: 14px;
-  padding-bottom: 0;
 }
 .branch-media-hymn-heading {
   padding-bottom: 14px;
@@ -70,6 +69,19 @@
   margin-top: 4px;
   color: #7b8780;
   font-size: 12px;
+}
+.branch-media-hymn-status {
+  flex: 0 1 220px;
+  min-width: 0;
+  margin: 0 0 0 auto;
+  color: #9a5b13;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.45;
+  text-align: right;
+}
+.branch-media-hymn-status.is-published {
+  color: #27754e;
 }
 .branch-media-hymn-editor {
   display: grid;
@@ -91,7 +103,7 @@
   color: #26352d;
   font: inherit;
   font-size: 13px;
-  font-weight: 400;
+  font-weight: 600;
 }
 .branch-media-hymn-editor input:focus {
   border-color: var(--admin-primary);
@@ -105,10 +117,10 @@
 }
 .branch-media-hymn-editor textarea {
   width: 100%;
-  height: 100%;
-  min-height: 0;
+  /* height: 250px;  */
+  min-height: 250px;
   box-sizing: border-box;
-  resize: vertical;
+  resize: none;
   padding: 11px 12px;
   border: 1px solid #dfe7e1;
   border-radius: 8px;
@@ -138,6 +150,8 @@
 }
 .branch-media-hymn-actions {
   display: flex;
+  min-height: 0;
+  align-self: start;
   flex-wrap: wrap;
   align-items: center;
   gap: 10px;
@@ -168,6 +182,21 @@
   border-radius: 8px;
   background: var(--admin-primary);
   color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.admin-shell .branch-media-hymn-cancel {
+  display: inline-flex;
+  min-height: 38px;
+  align-items: center;
+  justify-self: start;
+  gap: 7px;
+  padding: 0 12px;
+  border: 1px solid #dfe7e1;
+  border-radius: 8px;
+  background: #f7f9f7;
+  color: #556159;
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
@@ -711,10 +740,10 @@
   .branch-media-hymn-panel {
     grid-column: 1;
     grid-row: auto;
-    grid-template-rows: auto auto auto auto;
+    grid-template-rows: auto auto auto;
   }
   .branch-media-hymn-editor textarea {
-    height: auto;
+    height: 220px;
     min-height: 220px;
   }
   .branch-media-upload-heading {

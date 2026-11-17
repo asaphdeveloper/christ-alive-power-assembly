@@ -4,6 +4,7 @@ import { ChevronDown, LogOut, UserRound } from 'lucide-react';
 import { useAuth } from '../../auth/useAuth';
 import Logo from '../../assets/images/logo.webp';
 import './AdminSidebar.css';
+import { LoadingSpinner } from '../../components/LoadingSpinner';
 
 export function AdminSidebar({
   navItems,
@@ -19,7 +20,7 @@ export function AdminSidebar({
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
   const profileMenuRef = useRef(null);
   const navigate = useNavigate();
-  const { signOut } = useAuth();
+  const { signOut, isSigningOut } = useAuth();
 
   useEffect(() => {
     if (!isProfileMenuOpen) return undefined;
@@ -37,8 +38,9 @@ export function AdminSidebar({
     };
   }, [isProfileMenuOpen]);
 
-  function handleLogOut() {
-    signOut();
+  async function handleLogOut() {
+    if (isSigningOut) return;
+    await signOut();
     navigate('/login', { replace: true });
   }
 
@@ -72,9 +74,9 @@ export function AdminSidebar({
         <div className='admin-profile-menu-wrap' ref={profileMenuRef}>
           {isProfileMenuOpen && (
             <div className='admin-profile-menu' role='menu' aria-label={`${profileName} account menu`}>
-              <button type='button' className='admin-profile-menu-item' role='menuitem' onClick={handleLogOut}>
-                <LogOut size={16} aria-hidden='true' />
-                <span>Log out</span>
+              <button type='button' className='admin-profile-menu-item' role='menuitem' disabled={isSigningOut} aria-busy={isSigningOut} onClick={handleLogOut}>
+                {isSigningOut ? <LoadingSpinner /> : <LogOut size={16} aria-hidden='true' />}
+                <span>{isSigningOut ? 'Logging out…' : 'Log out'}</span>
               </button>
             </div>
           )}

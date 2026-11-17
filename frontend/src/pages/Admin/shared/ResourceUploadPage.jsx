@@ -22,7 +22,7 @@ import EmptyIllustration from '../../../assets/images/empty.svg';
 import UploadIllustration from '../../../assets/images/upload.svg';
 import UploadReadyIllustration from '../../../assets/images/upload-ready.svg';
 import { apiFetch, apiUrl } from '../../../utils/api';
-import './BranchMediaAdminPage.css';
+import './ResourceUploadPage.css';
 
 const initialResources = [
   {
@@ -57,7 +57,9 @@ const initialResources = [
   },
 ];
 
-export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
+const hymnDraftStorageKey = 'sunday-hymn-draft';
+
+export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
   const [resources, setResources] = useState(initialResources);
   const [uploadTarget, setUploadTarget] = useState(initialResources[0].id);
   const [selectedFile, setSelectedFile] = useState(null);
@@ -70,6 +72,8 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
   const [isSavingHymn, setIsSavingHymn] = useState(false);
   const [isPublishingHymn, setIsPublishingHymn] = useState(false);
   const [isHymnPublished, setIsHymnPublished] = useState(false);
+  const [publishedHymnLyrics, setPublishedHymnLyrics] = useState('');
+  const [publishedHymnNumber, setPublishedHymnNumber] = useState('');
   const [replacement, setReplacement] = useState(null);
   const [previewDocument, setPreviewDocument] = useState(null);
   const [feedback, setFeedback] = useState(null);
@@ -139,12 +143,28 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
       })
       .then((hymn) => {
         if (!isActive) return;
-        setHymnLyrics(hymn.draftLyrics);
-        setSavedHymnLyrics(hymn.draftLyrics);
-        setHymnNumber(hymn.draftNumber ? String(hymn.draftNumber) : '');
-        setSavedHymnNumber(hymn.draftNumber ? String(hymn.draftNumber) : '');
-        setIsEditingHymnLyrics(!hymn.draftLyrics);
-        setIsHymnPublished(Boolean(hymn.publishedLyrics));
+        let localDraft = null;
+        try {
+          localDraft = JSON.parse(window.localStorage.getItem(hymnDraftStorageKey) || 'null');
+        } catch {
+          window.localStorage.removeItem(hymnDraftStorageKey);
+        }
+        const initialLyrics = typeof localDraft?.lyrics === 'string'
+          ? localDraft.lyrics
+          : hymn.publishedLyrics || '';
+        const initialNumber = localDraft?.hymnNumber
+          ? String(localDraft.hymnNumber)
+          : hymn.publishedNumber ? String(hymn.publishedNumber) : '';
+        setHymnLyrics(initialLyrics);
+        setSavedHymnLyrics(initialLyrics);
+        setHymnNumber(initialNumber);
+        setSavedHymnNumber(initialNumber);
+        setIsEditingHymnLyrics(!initialLyrics);
+        setPublishedHymnLyrics(hymn.publishedLyrics || '');
+        setPublishedHymnNumber(hymn.publishedNumber ? String(hymn.publishedNumber) : '');
+        setIsHymnPublished(Boolean(initialLyrics.trim())
+          && initialLyrics.trim() === (hymn.publishedLyrics || '').trim()
+          && initialNumber === String(hymn.publishedNumber || ''));
       })
       .catch((error) => {
         if (isActive) notify(error.message, 'error');
@@ -254,19 +274,16 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
     }
     setIsSavingHymn(true);
     try {
-      const response = await apiFetch('/api/resources/manage/hymn', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ lyrics: hymnLyrics.trim(), hymnNumber: Number(hymnNumber), publish: false }),
-      });
-      const result = await response.json();
-      if (!response.ok) throw new Error(result.message || 'Unable to save hymn lyrics.');
-      setHymnLyrics(result.data.hymn.draftLyrics);
-      setSavedHymnLyrics(result.data.hymn.draftLyrics);
-      setSavedHymnNumber(String(result.data.hymn.draftNumber));
+      const draft = { lyrics: hymnLyrics.trim(), hymnNumber: Number(hymnNumber) };
+      window.localStorage.setItem(hymnDraftStorageKey, JSON.stringify(draft));
+      setHymnLyrics(draft.lyrics);
+      setSavedHymnLyrics(draft.lyrics);
+      setSavedHymnNumber(String(draft.hymnNumber));
+      setIsHymnPublished(draft.lyrics === publishedHymnLyrics.trim()
+        && String(draft.hymnNumber) === publishedHymnNumber);
       setIsEditingHymnLyrics(false);
-      const verseCount = result.data.hymn.draftLyrics.split(/\n\s*\n/).length;
-      notify(`${verseCount} ${verseCount === 1 ? 'verse' : 'verses'} saved as a draft.`);
+      const verseCount = draft.lyrics.split(/\n\s*\n/).length;
+      notify(`${verseCount} ${verseCount === 1 ? 'verse' : 'verses'} saved as a draft in this browser.`);
     } catch (error) {
       notify(error.message || 'Unable to save hymn lyrics.', 'error');
     } finally {
@@ -289,8 +306,14 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
       });
       const result = await response.json();
       if (!response.ok) throw new Error(result.message || 'Unable to publish hymn lyrics.');
+      setPublishedHymnLyrics(result.data.hymn.publishedLyrics || savedHymnLyrics);
+      setPublishedHymnNumber(String(result.data.hymn.publishedNumber || savedHymnNumber));
       setIsHymnPublished(true);
-      notify(result.message || 'Hymn lyrics published to the public website.');
+      window.localStorage.removeItem(hymnDraftStorageKey);
+      setIsEditingHymnLyrics(false);
+      notify(result.data.alreadyPublished
+        ? 'This hymn is already published and matches the public website.'
+        : result.message || 'Hymn lyrics published to the public website.');
     } catch (error) {
       notify(error.message || 'Unable to publish hymn lyrics.', 'error');
     } finally {
@@ -544,19 +567,27 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
                   <h2>Sunday Hymn lyrics</h2>
                   <p>Paste the hymn lyrics below.</p>
                 </div>
+                <p className={`branch-media-hymn-status${isHymnPublished ? ' is-published' : ''}`} role='status' aria-live='polite'>
+                  {isLoadingHymn
+                    ? 'Checking published hymn…'
+                    : isHymnPublished
+                      ? 'Hymn up to date'
+                      : 'The saved hymn has not been published to the public website yet.'}
+                </p>
               </div>
             </header>
             <label className='branch-media-hymn-editor'>
-              <span>Hymn number</span>
+              <span id='branch-media-hymn-number-label'>Hymn number</span>
               <input
                 type='number'
                 min='1'
                 max='99999'
                 step='1'
+                placeholder='Enter hymn number'
                 value={hymnNumber}
                 onChange={(event) => setHymnNumber(event.target.value)}
                 readOnly={isLoadingHymn || (Boolean(savedHymnLyrics) && !isEditingHymnLyrics)}
-                aria-label='Hymn number'
+                aria-labelledby='branch-media-hymn-number-label'
                 required
               />
               <textarea
@@ -578,16 +609,36 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
                   className='branch-media-hymn-save'
                   type='button'
                   disabled={isSavingHymn || isPublishingHymn || isLoadingHymn}
-                  onClick={() => setIsEditingHymnLyrics(true)}
+                  onClick={(event) => {
+                    event.preventDefault();
+                    setIsEditingHymnLyrics(true);
+                  }}
                 >
                   <Pencil size={14} aria-hidden='true' />
                   Edit lyrics
                 </button>
               ) : (
-                <button className='branch-media-hymn-save' type='submit' disabled={isSavingHymn || isLoadingHymn} aria-busy={isSavingHymn}>
-                  {isSavingHymn ? <LoadingSpinner /> : null}
-                  {isSavingHymn ? 'Saving…' : 'Save lyrics'}
-                </button>
+                <>
+                  <button className='branch-media-hymn-save' type='submit' disabled={isSavingHymn || isLoadingHymn} aria-busy={isSavingHymn}>
+                    {isSavingHymn ? <LoadingSpinner /> : null}
+                    {isSavingHymn ? 'Saving…' : 'Save lyrics'}
+                  </button>
+                  {savedHymnLyrics && isEditingHymnLyrics && (
+                    <button
+                      className='branch-media-hymn-cancel'
+                      type='button'
+                      disabled={isSavingHymn || isPublishingHymn}
+                      onClick={() => {
+                        setHymnLyrics(savedHymnLyrics);
+                        setHymnNumber(savedHymnNumber);
+                        setIsEditingHymnLyrics(false);
+                      }}
+                    >
+                      <X size={14} aria-hidden='true' />
+                      Cancel
+                    </button>
+                  )}
+                </>
               )}
               <button
                 className='branch-media-hymn-publish'
@@ -597,7 +648,7 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
                 onClick={handlePublishHymn}
               >
                 {isPublishingHymn ? <LoadingSpinner /> : <Globe size={14} aria-hidden='true' />}
-                {isPublishingHymn ? 'Publishing…' : isHymnPublished ? 'Publish updates' : 'Publish hymn'}
+                {isPublishingHymn ? 'Publishing…' : 'Publish hymn'}
               </button>
             </div>
           </form>

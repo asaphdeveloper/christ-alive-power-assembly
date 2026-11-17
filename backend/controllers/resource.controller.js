@@ -35,6 +35,11 @@ const monthKey = () => new Date().toISOString().slice(0, 7);
 const readBudget = () => Number(process.env.R2_MONTHLY_READ_BUDGET || 9_000_000);
 const writeBudget = () => Number(process.env.R2_MONTHLY_WRITE_BUDGET || 900_000);
 const storageBudget = () => Number(process.env.R2_STORAGE_BUDGET_BYTES || 8 * 1024 ** 3);
+const normalizeHymnLyrics = (lyrics = '') => lyrics.replace(/\r\n?/g, '\n').trim();
+const hymnsMatch = (leftLyrics, leftNumber, rightLyrics, rightNumber) => (
+  normalizeHymnLyrics(leftLyrics) === normalizeHymnLyrics(rightLyrics)
+  && leftNumber === rightNumber
+);
 
 async function reserveOperation(type) {
   const month = monthKey();
@@ -145,8 +150,6 @@ export const getManageHymn = async (_req, res, next) => {
       status: 'success',
       data: {
         hymn: {
-          draftLyrics: hymn?.draftLyrics || '',
-          draftNumber: hymn?.draftNumber || null,
           publishedLyrics: hymn?.publishedLyrics || '',
           publishedNumber: hymn?.publishedNumber || null,
           publishedAt: hymn?.publishedAt || null,
@@ -169,14 +172,36 @@ export const saveHymn = async (req, res, next) => {
     }
     if (lyrics.length > 8000) return next(new AppError('Hymn lyrics must be 8,000 characters or fewer.', 413));
 
+    if (publish) {
+      const current = await Hymn.findOne({ key: 'sunday-hymn' }).lean();
+      if (hymnsMatch(lyrics, hymnNumber, current?.publishedLyrics, current?.publishedNumber)) {
+        return res.status(200).json({
+          status: 'success',
+          message: 'This hymn is already published and matches the public website.',
+          data: { alreadyPublished: true, hymn: {
+            publishedLyrics: current.publishedLyrics,
+            publishedNumber: current.publishedNumber,
+            publishedAt: current.publishedAt,
+          } },
+        });
+      }
+    }
+
     const update = {
-      $set: { draftLyrics: lyrics, draftNumber: hymnNumber, updatedBy: req.admin._id },
+      $set: { updatedBy: req.admin._id },
       $setOnInsert: { key: 'sunday-hymn' },
+      $unset: { draftLyrics: '', draftNumber: '' },
     };
     if (publish) {
       update.$set.publishedLyrics = lyrics;
       update.$set.publishedNumber = hymnNumber;
       update.$set.publishedAt = new Date();
+    } else {
+      return res.status(200).json({
+        status: 'success',
+        message: 'Drafts are saved in this browser. Publish the hymn to update the public website.',
+        data: { saved: false },
+      });
     }
 
     const hymn = await Hymn.findOneAndUpdate(
@@ -191,8 +216,6 @@ export const saveHymn = async (req, res, next) => {
       message: publish ? 'Hymn published to the public website.' : 'Hymn lyrics saved as a draft.',
       data: {
         hymn: {
-          draftLyrics: hymn.draftLyrics,
-          draftNumber: hymn.draftNumber,
           publishedLyrics: hymn.publishedLyrics,
           publishedNumber: hymn.publishedNumber,
           publishedAt: hymn.publishedAt,

@@ -5,6 +5,7 @@ import { AuthContext } from './authContext';
 export function AuthProvider({ children }) {
   const [admin, setAdmin] = useState(null);
   const [isCheckingSession, setIsCheckingSession] = useState(true);
+  const [isSigningOut, setIsSigningOut] = useState(false);
   const isLoading = isCheckingSession;
 
   useEffect(() => {
@@ -68,17 +69,24 @@ export function AuthProvider({ children }) {
   }, []);
 
   const signOut = useCallback(async () => {
+    setIsSigningOut(true);
     window.localStorage.removeItem('admin_workspace');
-    await fetch(apiUrl('/api/auth/logout'), {
-      method: 'POST',
-      credentials: 'include',
-    }).catch(() => {});
-    setAdmin(null);
+    try {
+      await fetch(apiUrl('/api/auth/logout'), {
+        method: 'POST',
+        credentials: 'include',
+      });
+    } catch {
+      // Clear the local session and leave the admin area even if the API is unreachable.
+    } finally {
+      setAdmin(null);
+      setIsSigningOut(false);
+    }
   }, []);
 
   const value = useMemo(
-    () => ({ admin, isLoading, isAuthenticated: Boolean(admin), signIn, signOut }),
-    [admin, isLoading, signIn, signOut],
+    () => ({ admin, isLoading, isAuthenticated: Boolean(admin), isSigningOut, signIn, signOut }),
+    [admin, isLoading, isSigningOut, signIn, signOut],
   );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

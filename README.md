@@ -50,5 +50,5 @@ whenever a new attendance record is set or crossed send a notification.
 i want to be able to create and delete new resource categories apart fron the default ones. i want to be able to do that in the developer settings page only. e.g i should be able to create a "Prayer & fasting guide" and i should be able to upload the pdf and perform all other usual operations. explain how that would be
 
 diffrentiate chorus for hymn
-textarea should not be adjustable
+
 save draft on keystrokes

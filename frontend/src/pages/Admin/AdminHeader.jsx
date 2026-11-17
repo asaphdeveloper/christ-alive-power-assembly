@@ -13,12 +13,13 @@ import {
   UserRound,
 } from 'lucide-react';
 import './AdminHeader.css';
+import { LoadingSpinner } from '../../components/LoadingSpinner';
 
 export function AdminHeader({ workspaceName, currentPage, collapsed, onToggleSidebar }) {
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
   const accountMenuRef = useRef(null);
   const navigate = useNavigate();
-  const { signOut } = useAuth();
+  const { signOut, isSigningOut } = useAuth();
 
   useEffect(() => {
     if (!isAccountMenuOpen) return undefined;
@@ -36,8 +37,9 @@ export function AdminHeader({ workspaceName, currentPage, collapsed, onToggleSid
     };
   }, [isAccountMenuOpen]);
 
-  function handleLogOut() {
-    signOut();
+  async function handleLogOut() {
+    if (isSigningOut) return;
+    await signOut();
     navigate('/login', { replace: true });
   }
 
@@ -90,10 +92,12 @@ export function AdminHeader({ workspaceName, currentPage, collapsed, onToggleSid
               type='button'
               className='admin-header-account-menu-item'
               role='menuitem'
+              disabled={isSigningOut}
+              aria-busy={isSigningOut}
               onClick={handleLogOut}
             >
-              <LogOut size={16} aria-hidden='true' />
-              <span>Log out</span>
+              {isSigningOut ? <LoadingSpinner /> : <LogOut size={16} aria-hidden='true' />}
+              <span>{isSigningOut ? 'Logging out…' : 'Log out'}</span>
             </button>
           </div>
         )}
