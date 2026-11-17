@@ -47,8 +47,8 @@ const branchSchema = new mongoose.Schema(
     },
     phoneNumber: {
       type: String,
-      required: [true, 'Please provide a phone number'],
       trim: true,
+      default: '',
     },
     alternativePhoneNumber: {
       type: String,
@@ -56,10 +56,10 @@ const branchSchema = new mongoose.Schema(
     },
     username: {
       type: String,
-      required: [true, 'Please provide your username'],
       unique: [true, 'Username already exists'],
       lowercase: true,
       trim: true,
+      sparse: true,
     },
     slogan: {
       type: String,

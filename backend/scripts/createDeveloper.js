@@ -38,7 +38,6 @@ const createDeveloper = async () => {
       username,
       role: 'developer',
       password: 'developer@capa',
-      passwordConfirm: 'developer@capa',
     });
 
     console.log('Developer account created successfully.');

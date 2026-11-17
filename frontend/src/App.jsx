@@ -5,6 +5,7 @@ import { Routes, Route } from 'react-router';
 import { AuthProvider } from './auth/AuthContext';
 import { RequireAuth } from './auth/RequireAuth';
 import { RequireRole } from './auth/RequireRole';
+import { useAuth } from './auth/useAuth';
 import './App.css';
 
 const HomePage = lazy(() =>
@@ -92,6 +93,11 @@ const PageNotFound = lazy(() =>
     default: module.PageNotFound,
   })),
 );
+
+function BranchMediaAttendanceRoute() {
+  const { admin } = useAuth();
+  return <AttendancePage user={{ name: admin?.name ?? 'Branch Media Admin', branch: admin?.branch?.name ?? '' }} />;
+}
 
 function App() {
   return (
@@ -192,9 +198,7 @@ function App() {
             path='admin/branch-media-admin/attendance'
             element={
               <RequireRole roles={['branch-media-admin']}>
-                <AttendancePage
-                  user={{ name: 'Branch Media Admin', branch: 'Bauchi Branch' }}
-                />
+                <BranchMediaAttendanceRoute />
               </RequireRole>
             }
           />

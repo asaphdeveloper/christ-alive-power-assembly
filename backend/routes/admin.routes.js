@@ -13,6 +13,12 @@ router.patch(
 );
 
 router.get(
+  '/branch-media-admin',
+  authController.restrictTo('branch-media-admin'),
+  adminController.getAdminWorkspace('branch-media-admin'),
+);
+
+router.get(
   '/headquater-media-admin',
   authController.restrictTo('headquater-media-admin'),
   adminController.getAdminWorkspace('headquater-media-admin'),

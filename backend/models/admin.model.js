@@ -25,6 +25,8 @@ const adminSchema = new mongoose.Schema(
       lowercase: true,
       trim: true,
     },
+    phone: { type: String, trim: true, default: '' },
+    alternatePhone: { type: String, trim: true, default: '' },
     role: {
       type: String,
       enum: {
@@ -33,21 +35,16 @@ const adminSchema = new mongoose.Schema(
       },
       required: [true, 'Please provide an admin role'],
     },
+    branch: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Branch',
+      default: null,
+    },
     password: {
       type: String,
       required: [true, 'Please provide a password'],
       minlength: 8,
       select: false,
-    },
-    passwordConfirm: {
-      type: String,
-      required: [true, 'Please confirm your password'],
-      validate: {
-        validator: function (value) {
-          return value === this.password;
-        },
-        message: 'Passwords are not the same',
-      },
     },
     passwordChangedAt: Date,
     passwordResetToken: String,
@@ -56,11 +53,18 @@ const adminSchema = new mongoose.Schema(
   { timestamps: true },
 );
 
+adminSchema.index(
+  { branch: 1 },
+  {
+    unique: true,
+    partialFilterExpression: { role: 'branch-media-admin', branch: { $type: 'objectId' } },
+  },
+);
+
 adminSchema.pre('save', async function () {
   if (this.isModified('password')) {
     this.password = await bcrypt.hash(this.password, 12);
   }
-  this.passwordConfirm = undefined;
 });
 
 adminSchema.pre('findOneAndUpdate', async function () {

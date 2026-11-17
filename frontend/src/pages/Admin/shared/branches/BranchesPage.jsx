@@ -1,4 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
+import { apiFetch } from '../../../../utils/api';
+import emptyIllustration from '../../../../assets/images/empty.svg';
+import { LoadingSpinner } from '../../../../components/LoadingSpinner';
 import {
   Building2,
   Check,
@@ -15,8 +18,6 @@ import {
   UserRound,
   X,
 } from 'lucide-react';
-import branches from '../../../../data/branches.json';
-import initialAdmins from '../../../../data/admins.json';
 import { AdminFilterDropdown as BranchFilterDropdown } from '../../../../components/Admin/shared/AdminFilterDropdown';
 import './BranchesPage.css';
 
@@ -39,6 +40,7 @@ const emptyBranchForm = {
   lga: '',
   leadPastor: '',
   address: '',
+  phoneNumber: '',
   mapLocation: { longitude: null, latitude: null },
 };
 
@@ -47,10 +49,7 @@ function BranchForm({ branch, admins, onSubmit, onCancel }) {
   const [step, setStep] = useState(1);
   const [selectedAdminIds, setSelectedAdminIds] = useState(
     () =>
-      branch?.adminIds ??
-      admins
-        .filter((admin) => admin.branch === branch?.name)
-        .map((admin) => admin.id),
+      branch?.admin?._id ? [String(branch.admin._id)] : [],
   );
   const [adminSearch, setAdminSearch] = useState('');
   const [error, setError] = useState('');
@@ -84,11 +83,6 @@ function BranchForm({ branch, admins, onSubmit, onCancel }) {
       return;
     }
     const chosenAdmins = selectedAdminIds;
-    if (chosenAdmins.length < 1) {
-      setError('Assign at least one administrator to this branch.');
-      return;
-    }
-    const primaryAdmin = admins.find((admin) => admin.id === chosenAdmins[0]);
     const longitude = form.mapLocation?.longitude ?? null;
     const latitude = form.mapLocation?.latitude ?? null;
     if ((longitude === null) !== (latitude === null)) {
@@ -104,16 +98,13 @@ function BranchForm({ branch, admins, onSubmit, onCancel }) {
       lga: form.lga.trim(),
       leadPastor: form.leadPastor.trim(),
       address: form.address.trim(),
-      administrator: primaryAdmin?.name ?? '',
-      adminPhone: primaryAdmin?.phone ?? '',
-      adminUsername: primaryAdmin?.username ?? '',
       mapLocation: { longitude, latitude },
-      adminIds: chosenAdmins,
+      adminId: chosenAdmins[0] ?? '',
     });
   }
 
   const filteredAdmins = admins.filter((admin) =>
-    `${admin.name} ${admin.username}`
+    admin.role === 'branch-media-admin' && `${admin.name} ${admin.username}`
       .toLowerCase()
       .includes(adminSearch.trim().toLowerCase()),
   );
@@ -232,6 +223,10 @@ function BranchForm({ branch, admins, onSubmit, onCancel }) {
                 />
               </label>
               <label className='branch-form-field'>
+                Branch phone number
+                <input name='phoneNumber' type='tel' value={form.phoneNumber ?? ''} onChange={updateField} placeholder='+234 800 000 0000' />
+              </label>
+              <label className='branch-form-field'>
                 Map longitude
                 <input
                   name='longitude'
@@ -267,7 +262,7 @@ function BranchForm({ branch, admins, onSubmit, onCancel }) {
               >
                 <div className='branch-admin-picker'>
                     <label className='branch-admin-search'>
-                      <span>Find administrators</span>
+                      <span>Link an existing Branch Media Admin (optional)</span>
                       <span className='branch-admin-count'>
                         {selectedAdminIds.length} selected
                       </span>
@@ -281,23 +276,22 @@ function BranchForm({ branch, admins, onSubmit, onCancel }) {
                     {filteredAdmins.length ? (
                       <div className='branch-admin-options'>
                         {filteredAdmins.map((admin) => {
-                          const assignedElsewhere =
-                            admin.branch && admin.branch !== branch?.name;
-                          const checked = selectedAdminIds.includes(admin.id);
+                          const assignedElsewhere = Boolean(admin.branch && String(admin.branch._id ?? admin.branch) !== String(branch?._id ?? ''));
+                          const checked = selectedAdminIds.includes(String(admin._id));
                           return (
                             <label
                               className={`branch-admin-option${checked ? ' is-selected' : ''}${assignedElsewhere ? ' is-assigned' : ''}`}
-                              key={admin.id}
+                              key={admin._id}
                             >
                               <input
                                 type='checkbox'
                                 checked={checked}
-                                disabled={assignedElsewhere}
+                                disabled={assignedElsewhere || Boolean(branch?.admin && !checked)}
                                 onChange={(event) =>
                                   setSelectedAdminIds((current) =>
                                     event.target.checked
-                                      ? [...current, admin.id]
-                                      : current.filter((id) => id !== admin.id),
+                                      ? [String(admin._id)]
+                                      : current.filter((id) => id !== String(admin._id)),
                                   )
                                 }
                               />
@@ -315,7 +309,7 @@ function BranchForm({ branch, admins, onSubmit, onCancel }) {
                                 className={`branch-admin-assignment-status${assignedElsewhere ? ' is-assigned' : ''}`}
                               >
                                 {assignedElsewhere
-                                  ? `Assigned to ${admin.branch}`
+                                  ? `Assigned to ${admin.branch.name ?? admin.branch}`
                                   : admin.branch
                                     ? `This branch`
                                     : 'Available'}
@@ -326,14 +320,13 @@ function BranchForm({ branch, admins, onSubmit, onCancel }) {
                       </div>
                     ) : (
                       <p className='branch-admin-empty'>
-                        No administrators match your search.
+                        No unassigned Branch Media Admin accounts match your search.
                       </p>
                     )}
                     {selectedAdminIds.length > 0 && (
                       <p className='branch-admin-selection-summary'>
                         <Check size={14} aria-hidden='true' />
-                        {selectedAdminIds.length} administrator
-                        {selectedAdminIds.length === 1 ? '' : 's'} selected
+                        Branch Media Admin selected
                       </p>
                     )}
                   </div>
@@ -450,11 +443,7 @@ function BranchCard({
     { label: 'Update', icon: Pencil, onClick: onEdit },
     { label: 'Delete', icon: Trash2, danger: true, onClick: onDelete },
   ];
-  const assignedAdmins = branch.adminNames?.length
-    ? branch.adminNames
-    : branch.administrator
-      ? [branch.administrator]
-      : [];
+  const assignedAdmins = branch.admin ? [branch.admin.name] : [];
 
   return (
     <article className={`branch-card${menuOpen ? ' has-open-menu' : ''}`}>
@@ -534,7 +523,7 @@ function BranchCard({
       <div className='branch-admin-contact'>
         <p>
           <Phone size={14} aria-hidden='true' />
-          <span>{branch.adminPhone || branch.phoneNumber}</span>
+            <span>{branch.admin?.phone || branch.phoneNumber || 'No phone number'}</span>
         </p>
         <p>
           <UserRound size={14} aria-hidden='true' />
@@ -543,6 +532,7 @@ function BranchCard({
           </span>
         </p>
       </div>
+      <p className={`branch-status${branch.status === 'active' ? ' is-active' : ' is-pending'}`}>{branch.status === 'active' ? 'Active' : 'Pending admin'}</p>
       <div className='branch-card-footer'>
         <p className='branch-location'>
           <MapPin size={13} aria-hidden='true' />
@@ -562,14 +552,15 @@ function BranchCard({
 }
 
 export function BranchesPage() {
-  const [branchRecords, setBranchRecords] = useState(branches);
-  const [adminRecords, setAdminRecords] = useState(initialAdmins);
+  const [branchRecords, setBranchRecords] = useState([]);
+  const [adminRecords, setAdminRecords] = useState([]);
   const [formBranch, setFormBranch] = useState(undefined);
   const [openBranchMenu, setOpenBranchMenu] = useState(null);
   const [feedback, setFeedback] = useState('');
   const [selectedState, setSelectedState] = useState('all');
   const [selectedCountry, setSelectedCountry] = useState('all');
   const [openFilter, setOpenFilter] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
   const filtersRef = useRef(null);
   const stateOptions = getFilterOptions(branchRecords, 'state', 'All states');
   const countryOptions = getFilterOptions(
@@ -577,6 +568,22 @@ export function BranchesPage() {
     'country',
     'All countries',
   );
+
+  useEffect(() => {
+    let active = true;
+    Promise.all([apiFetch('/api/branches'), apiFetch('/api/admin')])
+      .then(async ([branchResponse, adminResponse]) => {
+        const [branchResult, adminResult] = await Promise.all([branchResponse.json(), adminResponse.json()]);
+        if (!branchResponse.ok) throw new Error(branchResult.message || 'Could not load branches.');
+        if (!adminResponse.ok) throw new Error(adminResult.message || 'Could not load administrators.');
+        if (!active) return;
+        setBranchRecords(branchResult.data.branches);
+        setAdminRecords(adminResult.data.admins);
+      })
+      .catch((error) => active && setFeedback(error.message))
+      .finally(() => active && setIsLoading(false));
+    return () => { active = false; };
+  }, []);
 
   useEffect(() => {
     if (!openFilter) return undefined;
@@ -605,7 +612,7 @@ export function BranchesPage() {
     );
 
   return (
-    <section className='branches-page' aria-labelledby='branches-title'>
+    <section className={`branches-page${!isLoading && visibleBranches.length === 0 ? ' is-empty' : ''}`} aria-labelledby='branches-title' aria-busy={isLoading}>
       <div className='branches-page-heading'>
         <div>
           <h1 id='branches-title'>Branches</h1>
@@ -678,25 +685,37 @@ export function BranchesPage() {
             onEdit={() => setFormBranch(branch)}
             onDelete={() => {
               if (!window.confirm(`Delete ${branch.name}?`)) return;
-              setBranchRecords((current) =>
-                current.filter((item) => item !== branch),
-              );
-              setAdminRecords((current) =>
-                current.map((admin) =>
-                  admin.branch === branch.name
-                    ? { ...admin, branch: '' }
-                    : admin,
-                ),
-              );
-              setFeedback(`${branch.name} deleted from this dashboard.`);
+              apiFetch(`/api/branches/${branch._id}`, { method: 'DELETE' })
+                .then((response) => {
+                  if (!response.ok) throw new Error('Could not delete this branch.');
+                  setBranchRecords((current) => current.filter((item) => item._id !== branch._id));
+                  setAdminRecords((current) => current.map((admin) => String(admin.branch?._id ?? admin.branch) === String(branch._id) ? { ...admin, branch: null } : admin));
+                  setFeedback(`${branch.name} deleted.`);
+                }).catch((error) => setFeedback(error.message));
             }}
           />
         ))}
       </div>
-      {visibleBranches.length === 0 && (
-        <p className='branches-empty-state'>
-          No branches match the selected filters.
-        </p>
+      {isLoading && (
+        <div className='branches-loading-state' role='status'>
+          <LoadingSpinner />
+          <span>Loading branches…</span>
+        </div>
+      )}
+      {!isLoading && visibleBranches.length === 0 && (
+        <div className='branches-empty-state'>
+          <img src={emptyIllustration} alt='' aria-hidden='true' />
+          <h2>No branches yet</h2>
+          <p>Add a branch to get started.</p>
+          <button
+            className='branches-add-button'
+            type='button'
+            onClick={() => setFormBranch(null)}
+          >
+            <Plus size={16} aria-hidden='true' />
+            Add branch
+          </button>
+        </div>
       )}
       {feedback && (
         <p className='branches-feedback' role='status'>
@@ -715,52 +734,25 @@ export function BranchesPage() {
           admins={adminRecords}
           onCancel={() => setFormBranch(undefined)}
           onSubmit={(branch) => {
-            if (formBranch) {
-              const assignedNames = branch.adminIds
-                .map(
-                  (id) => adminRecords.find((admin) => admin.id === id)?.name,
-                )
-                .filter(Boolean);
-              const updatedBranch = {
-                ...formBranch,
-                ...branch,
-                adminNames: assignedNames,
-              };
-              setBranchRecords((current) =>
-                current.map((item) =>
-                  item === formBranch ? updatedBranch : item,
-                ),
-              );
-              setAdminRecords((current) => [
-                ...current.map((admin) =>
-                  branch.adminIds.includes(admin.id)
-                    ? { ...admin, branch: updatedBranch.name }
-                    : admin.branch === formBranch.name
-                      ? { ...admin, branch: '' }
-                      : admin,
-                ),
-              ]);
-              setFeedback(`${branch.name} updated on this dashboard.`);
-            } else {
-              const adminNames = adminRecords
-                .filter((admin) => branch.adminIds.includes(admin.id))
-                .map((admin) => admin.name);
-              const newBranch = { ...branch, adminNames };
-              setAdminRecords((current) => [
-                ...current.map((admin) =>
-                  branch.adminIds.includes(admin.id)
-                    ? { ...admin, branch: newBranch.name }
-                    : admin,
-                ),
-              ]);
-              setBranchRecords((current) => [...current, newBranch]);
-              setSelectedState('all');
-              setSelectedCountry('all');
-              setFeedback(
-                `${branch.name} added with ${adminNames.length} administrator${adminNames.length === 1 ? '' : 's'}.`,
-              );
-            }
-            setFormBranch(undefined);
+            const payload = { ...branch, localGovernmentArea: branch.lga };
+            delete payload.lga;
+            const method = formBranch ? 'PATCH' : 'POST';
+            const path = formBranch ? `/api/branches/${formBranch._id}` : '/api/branches';
+            apiFetch(path, { method, headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) })
+              .then(async (response) => {
+                const result = await response.json();
+                if (!response.ok) throw new Error(result.message || 'Could not save this branch.');
+                const saved = result.data.branch;
+                setBranchRecords((current) => formBranch ? current.map((item) => item._id === saved._id ? saved : item) : [...current, saved]);
+                const [adminsResponse, branchesResponse] = await Promise.all([apiFetch('/api/admin'), apiFetch('/api/branches')]);
+                const [adminsResult, branchesResult] = await Promise.all([adminsResponse.json(), branchesResponse.json()]);
+                if (adminsResponse.ok) setAdminRecords(adminsResult.data.admins);
+                if (branchesResponse.ok) setBranchRecords(branchesResult.data.branches);
+                setSelectedState('all');
+                setSelectedCountry('all');
+                setFeedback(`${saved.name} saved${saved.status === 'pending-admin' ? ' · Pending admin' : ''}.`);
+                setFormBranch(undefined);
+              }).catch((error) => setFeedback(error.message));
           }}
         />
       )}

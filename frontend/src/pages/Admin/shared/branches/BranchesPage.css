@@ -5,6 +5,10 @@
   padding-bottom: 28px;
   color: #202630;
 }
+.branches-page.is-empty {
+  display: flex;
+  flex-direction: column;
+}
 
 .branches-page-heading {
   display: flex;
@@ -38,10 +42,41 @@
   gap: 8px;
 }
 .branches-empty-state {
-  padding: 36px 12px;
+  display: grid;
+  flex: 1 0 320px;
+  min-height: 320px;
+  justify-items: center;
+  align-content: center;
+  gap: 10px;
+  padding: 24px;
+  border: 1px dashed #dce6df;
+  border-radius: 14px;
+  background: #fff;
   color: #7a867f;
   text-align: center;
   font-size: 14px;
+}
+.branches-loading-state {
+  display: flex;
+  min-height: 280px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #7a867f;
+  font-size: 14px;
+}
+.branches-empty-state img {
+  width: min(220px, 60%);
+  max-height: 150px;
+  object-fit: contain;
+}
+.branches-empty-state h2 {
+  color: #25332b;
+  font-size: 18px;
+}
+.branches-empty-state p {
+  margin-bottom: 6px;
+  font-size: 13px;
 }
 .branches-feedback {
   margin: 0 0 12px;
@@ -598,6 +633,20 @@
   margin-top: 12px;
   color: #68717a;
   font-size: 13px;
+}
+.branch-status {
+  display: inline-flex;
+  margin-top: 10px;
+  padding: 4px 9px;
+  border-radius: 999px;
+  background: #fff5dc;
+  color: #79570a;
+  font-size: 11px;
+  font-weight: 700;
+}
+.branch-status.is-active {
+  background: #e6f5ea;
+  color: #28653b;
 }
 .branch-admin-contact p {
   display: flex;

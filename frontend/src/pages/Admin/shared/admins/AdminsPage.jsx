@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Check,
   ChevronDown,
@@ -9,46 +9,53 @@ import {
   MoreVertical,
   Pencil,
   Phone,
-  Pin,
   Plus,
   KeyRound,
   ShieldCheck,
   Trash2,
   X,
 } from 'lucide-react';
-import branches from '../../../../data/branches.json';
-import initialAdmins from '../../../../data/admins.json';
+import { apiFetch } from '../../../../utils/api';
+import emptyIllustration from '../../../../assets/images/empty.svg';
+import { LoadingSpinner } from '../../../../components/LoadingSpinner';
+import { Toast } from '../../../../components/Toast';
 import './AdminsPage.css';
 
-const branchOptions = [...new Set(branches.map((branch) => branch.name))];
+const roleOptions = ['Branch Media Admin'];
+const protectedRoles = new Set(['developer', 'general-overseer', 'headquater-media-admin']);
 
-const roleOptions = [
-  'General Overseer',
-  'Developer',
-  'Headquater Media Admin',
-  'Branch Media Admin',
-  'Branch Pastor',
-  'Branch Administrator',
-];
+function formatAdminRole(role = '') {
+  return role
+    .split('-')
+    .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
+    .join(' ');
+}
 
-const avatarColors = ['sage', 'blue', 'lavender', 'peach', 'rose', 'mint'];
+function getAdminInitials(name = '') {
+  return name
+    .trim()
+    .split(/\s+/)
+    .filter(Boolean)
+    .slice(0, 2)
+    .map((part) => part[0].toUpperCase())
+    .join('');
+}
+
+function getAvatarColor(name = '') {
+  const colors = ['sage', 'blue', 'lavender', 'peach', 'rose', 'mint'];
+  const hash = [...name.toLowerCase()].reduce((value, character) => value + character.charCodeAt(0), 0);
+  return colors[hash % colors.length];
+}
+
 const emptyAdminForm = {
   name: '',
   username: '',
   phone: '',
   alternatePhone: '',
-  role: roleOptions[3],
-  branch: branches[0]?.name ?? '',
+  role: roleOptions[0],
+  branch: '',
+  password: '',
 };
-
-function getInitials(name) {
-  return name
-    .trim()
-    .split(/\s+/)
-    .slice(0, 2)
-    .map((part) => part[0]?.toUpperCase() ?? '')
-    .join('');
-}
 
 function AdminCard({
   admin,
@@ -58,10 +65,8 @@ function AdminCard({
   onEdit,
   onUpdatePassword,
   onDelete,
-  onTogglePin,
 }) {
   const actionsRef = useRef(null);
-  const [passwordVisible, setPasswordVisible] = useState(false);
 
   useEffect(() => {
     if (!menuOpen) return undefined;
@@ -82,28 +87,29 @@ function AdminCard({
   }, [menuOpen, onCloseMenu]);
 
   const actions = [
-    { label: admin.pinned ? 'Unpin' : 'Pin', icon: Pin, onClick: onTogglePin },
     { label: 'Update', icon: Pencil, onClick: onEdit },
-    { label: 'Update password', icon: KeyRound, onClick: onUpdatePassword },
-    { label: 'Delete', icon: Trash2, danger: true, onClick: onDelete },
+    { label: 'Reset password', icon: KeyRound, onClick: onUpdatePassword },
+    ...(!protectedRoles.has(admin.role)
+      ? [{ label: 'Delete', icon: Trash2, danger: true, onClick: onDelete }]
+      : []),
   ];
 
   return (
     <article
-      className={`admin-card${menuOpen ? ' has-open-menu' : ''}${admin.pinned ? ' is-pinned' : ''}`}
+      className={`admin-card${menuOpen ? ' has-open-menu' : ''}`}
     >
       <div className='admin-card-heading'>
         <span
-          className={`admin-record-avatar ${admin.color}`}
+          className={`admin-record-avatar ${getAvatarColor(admin.name)}`}
           aria-hidden='true'
         >
-          {admin.initials}
+          {getAdminInitials(admin.name)}
         </span>
         <div className='admin-record-identity'>
-          <h2>{admin.role}</h2>
+          <h2>{admin.name}</h2>
           <p>
             <ShieldCheck size={15} aria-hidden='true' />
-            {admin.name}
+            {formatAdminRole(admin.role)}
           </p>
         </div>
         <div className='admin-record-actions' ref={actionsRef}>
@@ -112,7 +118,7 @@ function AdminCard({
             type='button'
             aria-label={`More actions for ${admin.name}`}
             aria-expanded={menuOpen}
-            aria-controls={`admin-actions-${admin.id}`}
+            aria-controls={`admin-actions-${admin._id}`}
             onClick={onToggleMenu}
           >
             <MoreVertical size={20} aria-hidden='true' />
@@ -120,7 +126,7 @@ function AdminCard({
           {menuOpen && (
             <div
               className='admin-record-menu'
-              id={`admin-actions-${admin.id}`}
+              id={`admin-actions-${admin._id}`}
               role='menu'
               aria-label={`${admin.name} actions`}
             >
@@ -148,24 +154,6 @@ function AdminCard({
           <CircleUserRound size={16} aria-hidden='true' />
           <span>{admin.username}</span>
         </p>
-        <p className='admin-contact-password'>
-          <button
-            className='admin-password-visibility'
-            type='button'
-            aria-label={passwordVisible ? 'Hide password' : 'Show password'}
-            aria-pressed={passwordVisible}
-            onClick={() => setPasswordVisible((visible) => !visible)}
-          >
-            {passwordVisible ? (
-              <EyeOff size={15} aria-hidden='true' />
-            ) : (
-              <Eye size={15} aria-hidden='true' />
-            )}
-          </button>
-          <span>
-            {passwordVisible ? admin.password || 'Not available' : '••••••••'}
-          </span>
-        </p>
         <p className='admin-contact-phone'>
           <Phone size={16} aria-hidden='true' />
           <span className='admin-contact-value'>
@@ -183,7 +171,7 @@ function AdminCard({
         <span className='admin-assignment-label'>ASSIGNED BRANCH</span>
         <span className='admin-assignment-branch'>
           <MapPin size={16} aria-hidden='true' />
-          {admin.branch}
+          {admin.branch?.name || 'No branch assigned'}
         </span>
       </div>
     </article>
@@ -192,7 +180,7 @@ function AdminCard({
 
 function AdminPasswordForm({ admin, onSubmit, onCancel }) {
   const [password, setPassword] = useState('');
-  const [passwordConfirm, setPasswordConfirm] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
 
   function handleSubmit(event) {
@@ -201,11 +189,7 @@ function AdminPasswordForm({ admin, onSubmit, onCancel }) {
       setError('Password must be at least 8 characters.');
       return;
     }
-    if (password !== passwordConfirm) {
-      setError('Passwords do not match.');
-      return;
-    }
-    onSubmit();
+    onSubmit(password);
   }
 
   return (
@@ -226,8 +210,8 @@ function AdminPasswordForm({ admin, onSubmit, onCancel }) {
             <KeyRound size={20} aria-hidden='true' />
           </div>
           <div>
-            <h2 id='admin-password-title'>Update password</h2>
-            <p>Set a new password for {admin.name}.</p>
+            <h2 id='admin-password-title'>Reset password</h2>
+            <p>Set a new password for {admin.name}. It will be shown once after reset.</p>
           </div>
           <button
             className='admin-form-close'
@@ -244,33 +228,29 @@ function AdminPasswordForm({ admin, onSubmit, onCancel }) {
         >
           <label className='admin-form-field admin-form-field-wide'>
             New password
-            <input
-              name='password'
-              type='password'
-              value={password}
-              onChange={(event) => {
-                setPassword(event.target.value);
-                setError('');
-              }}
-              autoComplete='new-password'
-              minLength={8}
-              required
-            />
-          </label>
-          <label className='admin-form-field admin-form-field-wide'>
-            Confirm password
-            <input
-              name='passwordConfirm'
-              type='password'
-              value={passwordConfirm}
-              onChange={(event) => {
-                setPasswordConfirm(event.target.value);
-                setError('');
-              }}
-              autoComplete='new-password'
-              minLength={8}
-              required
-            />
+            <span className='admin-password-input-wrap'>
+              <input
+                name='password'
+                type={showPassword ? 'text' : 'password'}
+                value={password}
+                onChange={(event) => {
+                  setPassword(event.target.value);
+                  setError('');
+                }}
+                autoComplete='new-password'
+                minLength={8}
+                required
+              />
+              <button
+                className='admin-password-toggle'
+                type='button'
+                aria-label={showPassword ? 'Hide password' : 'Show password'}
+                aria-pressed={showPassword}
+                onClick={() => setShowPassword((shown) => !shown)}
+              >
+                {showPassword ? <EyeOff size={17} aria-hidden='true' /> : <Eye size={17} aria-hidden='true' />}
+              </button>
+            </span>
           </label>
           {error && (
             <p className='admin-form-error' role='alert'>
@@ -286,7 +266,7 @@ function AdminPasswordForm({ admin, onSubmit, onCancel }) {
               Cancel
             </button>
             <button className='admin-form-submit' type='submit'>
-              Update password
+              Reset password
             </button>
           </div>
         </form>
@@ -295,11 +275,12 @@ function AdminPasswordForm({ admin, onSubmit, onCancel }) {
   );
 }
 
-function AdminForm({ admin, onSubmit, onCancel }) {
+function AdminForm({ admin, branches, onSubmit, onCancel }) {
   const [form, setForm] = useState(() =>
-    admin ? { ...emptyAdminForm, ...admin } : emptyAdminForm,
+    admin ? { ...emptyAdminForm, ...admin, branch: admin.branch?._id ?? '' } : emptyAdminForm,
   );
   const [error, setError] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
 
   function updateField(event) {
     setForm((current) => ({
@@ -315,7 +296,7 @@ function AdminForm({ admin, onSubmit, onCancel }) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    if (form.role !== 'Developer' && !form.branch) {
+    if (!admin && !form.branch) {
       setError('Select a branch for this administrator.');
       return;
     }
@@ -409,7 +390,7 @@ function AdminForm({ admin, onSubmit, onCancel }) {
           <label className='admin-form-field'>
             Administrator role
             <span className='admin-form-select-wrap'>
-              <select name='role' value={form.role} onChange={updateField}>
+              <select name='role' value={form.role} disabled>
                 {roleOptions.map((role) => (
                   <option key={role} value={role}>
                     {role}
@@ -421,24 +402,41 @@ function AdminForm({ admin, onSubmit, onCancel }) {
           </label>
           <label className='admin-form-field'>
             Assigned branch
-            {form.role === 'Developer' ? ' (optional for developers)' : ''}
             <span className='admin-form-select-wrap'>
               <select
                 name='branch'
                 value={form.branch}
                 onChange={updateField}
-                required={form.role !== 'Developer'}
+                required={!admin}
+                disabled={Boolean(admin)}
               >
                 <option value=''>Select a branch</option>
-                {branchOptions.map((branch) => (
-                  <option key={branch} value={branch}>
-                    {branch}
+                {branches.filter((branch) => !branch.admin).map((branch) => (
+                  <option key={branch._id} value={branch._id}>
+                    {branch.name}
                   </option>
                 ))}
               </select>
               <ChevronDown size={16} aria-hidden='true' />
             </span>
           </label>
+          {!admin && (
+            <label className='admin-form-field admin-form-field-wide'>
+              Password
+              <span className='admin-password-input-wrap'>
+                <input name='password' type={showPassword ? 'text' : 'password'} value={form.password} onChange={updateField} autoComplete='new-password' minLength={8} required />
+                <button
+                  className='admin-password-toggle'
+                  type='button'
+                  aria-label={showPassword ? 'Hide password' : 'Show password'}
+                  aria-pressed={showPassword}
+                  onClick={() => setShowPassword((shown) => !shown)}
+                >
+                  {showPassword ? <EyeOff size={17} aria-hidden='true' /> : <Eye size={17} aria-hidden='true' />}
+                </button>
+              </span>
+            </label>
+          )}
           {error && (
             <p className='admin-form-error' role='alert'>
               {error}
@@ -468,114 +466,92 @@ function AdminForm({ admin, onSubmit, onCancel }) {
 }
 
 export function AdminsPage() {
-  const [admins, setAdmins] = useState(initialAdmins);
-  const [branchRecords, setBranchRecords] = useState(branches);
+  const [admins, setAdmins] = useState([]);
+  const [branchRecords, setBranchRecords] = useState([]);
   const [openAdminMenu, setOpenAdminMenu] = useState(null);
   const [formAdmin, setFormAdmin] = useState(undefined);
   const [passwordAdmin, setPasswordAdmin] = useState(null);
-  const [feedback, setFeedback] = useState('');
+  const [feedback, setFeedback] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const notify = useCallback((message, type = 'success') => {
+    setFeedback({ id: Date.now(), message, type });
+  }, []);
 
-  function saveBranchAdmins(adminName, oldBranch, newBranch) {
-    setBranchRecords((current) =>
-      current.map((branch) => {
-        const currentNames =
-          branch.adminNames ??
-          (branch.administrator ? [branch.administrator] : []);
-        if (branch.name === oldBranch && oldBranch !== newBranch) {
-          const names = currentNames.filter((name) => name !== adminName);
-          return {
-            ...branch,
-            adminNames: names,
-            administrator: names[0] ?? '',
-          };
-        }
-        if (branch.name === newBranch) {
-          const names = currentNames.includes(adminName)
-            ? currentNames
-            : [...currentNames, adminName];
-          return {
-            ...branch,
-            adminNames: names,
-            administrator: names[0] ?? '',
-          };
-        }
-        return branch;
-      }),
-    );
-  }
+  useEffect(() => {
+    let active = true;
+    Promise.all([apiFetch('/api/admin'), apiFetch('/api/branches')])
+      .then(async ([adminResponse, branchResponse]) => {
+        const [adminResult, branchResult] = await Promise.all([adminResponse.json(), branchResponse.json()]);
+        if (!adminResponse.ok) throw new Error(adminResult.message || 'Could not load administrators.');
+        if (!branchResponse.ok) throw new Error(branchResult.message || 'Could not load branches.');
+        if (!active) return;
+        setAdmins(adminResult.data.admins);
+        setBranchRecords(branchResult.data.branches);
+      })
+      .catch((error) => active && notify(error.message, 'error'))
+      .finally(() => active && setIsLoading(false));
+    return () => { active = false; };
+  }, [notify]);
 
   function saveAdmin(form) {
     const name = form.name.trim();
-    if (formAdmin?.id) {
-      setAdmins((current) =>
-        current.map((admin) =>
-          admin.id === formAdmin.id
-            ? { ...admin, ...form, name, initials: getInitials(name) }
-            : admin,
-        ),
-      );
-      saveBranchAdmins(name, formAdmin.branch, form.branch);
-      setFeedback('Administrator details updated.');
+    if (formAdmin?._id) {
+      apiFetch(`/api/admin/${formAdmin._id}`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, username: form.username, phone: form.phone, alternatePhone: form.alternatePhone }) })
+        .then(async (response) => {
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.message || 'Could not update this administrator.');
+          setAdmins((current) => current.map((admin) => admin._id === result.data.admin._id ? { ...admin, ...result.data.admin } : admin));
+          notify('Administrator details updated.');
+          setFormAdmin(undefined);
+        }).catch((error) => notify(error.message, 'error'));
+      return;
     } else {
-      const newAdmin = {
-        ...form,
-        name,
-        id: `admin-${Date.now()}`,
-        initials: getInitials(name),
-        color: avatarColors[admins.length % avatarColors.length],
-        pinned: false,
-      };
-      setAdmins((current) => [newAdmin, ...current]);
-      saveBranchAdmins(name, '', newAdmin.branch);
-      setFeedback('Administrator added to this dashboard.');
+      apiFetch('/api/admin', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, username: form.username, role: 'branch-media-admin', branch: form.branch, password: form.password, phone: form.phone, alternatePhone: form.alternatePhone }) })
+        .then(async (response) => {
+          const result = await response.json();
+          if (!response.ok) throw new Error(result.message || 'Could not create this administrator.');
+          setAdmins((current) => [result.data.admin, ...current]);
+          const branchResponse = await apiFetch('/api/branches');
+          const branchResult = await branchResponse.json();
+          if (branchResponse.ok) setBranchRecords(branchResult.data.branches);
+          notify(`Branch Media Admin account created. Save this password securely: ${form.password}`);
+          setFormAdmin(undefined);
+        }).catch((error) => notify(error.message, 'error'));
+      return;
     }
-    setFormAdmin(undefined);
   }
 
   function deleteAdmin(admin) {
-    setAdmins((current) => current.filter((item) => item.id !== admin.id));
-    setBranchRecords((current) =>
-      current.map((branch) => {
-        const names = (
-          branch.adminNames ??
-          (branch.administrator ? [branch.administrator] : [])
-        ).filter((name) => name !== admin.name);
-        return { ...branch, adminNames: names, administrator: names[0] ?? '' };
-      }),
-    );
-    setFeedback(`${admin.name} removed from this dashboard.`);
+    apiFetch(`/api/admin/${admin._id}`, { method: 'DELETE' })
+      .then((response) => {
+        if (!response.ok) throw new Error('Could not delete this administrator.');
+        setAdmins((current) => current.filter((item) => item._id !== admin._id));
+        setBranchRecords((current) => current.map((branch) => branch.admin?._id === admin._id ? { ...branch, admin: null, status: 'pending-admin' } : branch));
+        notify(`${admin.name} removed.`);
+      }).catch((error) => notify(error.message, 'error'));
   }
 
-  function togglePin(admin) {
-    setAdmins((current) =>
-      current.map((item) =>
-        item.id === admin.id ? { ...item, pinned: !item.pinned } : item,
-      ),
-    );
-  }
-
-  function submitPasswordUpdate() {
-    const adminName = passwordAdmin?.name;
-    setPasswordAdmin(null);
-    if (adminName) {
-      setFeedback(
-        `Password form completed for ${adminName}. Connect this temporary frontend list to the admin API to save it.`,
-      );
+  function submitPasswordUpdate(password) {
+    const targetAdmin = passwordAdmin;
+    if (targetAdmin) {
+      apiFetch(`/api/admin/${targetAdmin._id}/password`, { method: 'PATCH', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ password }) })
+        .then(async (response) => {
+          const result = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(result.message || 'Could not reset this password.');
+          setPasswordAdmin(null);
+          notify(`Password reset for ${targetAdmin.name}. New password: ${password}`);
+        }).catch((error) => notify(error.message, 'error'));
     }
   }
 
-  const orderedAdmins = [...admins].sort(
-    (first, second) => Number(second.pinned) - Number(first.pinned),
-  );
+  const orderedAdmins = admins;
 
   return (
-    <section className='admins-page' aria-labelledby='admins-title'>
+    <section className={`admins-page${!isLoading && orderedAdmins.length === 0 ? ' is-empty' : ''}`} aria-labelledby='admins-title' aria-busy={isLoading}>
       <header className='admins-page-heading'>
         <div>
           <h1 id='admins-title'>Admins</h1>
-          <p className='admins-description'>
-            Each administrator is assigned to a church branch.
-          </p>
+          <p className='admins-description'>Branch Media Admin accounts assigned to church branches.</p>
         </div>
         <div className='admins-heading-actions'>
           <span className='admins-count'>
@@ -592,34 +568,34 @@ export function AdminsPage() {
           </button>
         </div>
       </header>
-      {feedback && (
-        <p className='admins-feedback' role='status'>
-          {feedback}
-        </p>
-      )}
-      {orderedAdmins.length ? (
+      {feedback && <Toast key={feedback.id} message={feedback.message} type={feedback.type} />}
+      {isLoading ? (
+        <div className='admins-loading-state' role='status'>
+          <LoadingSpinner />
+          <span>Loading administrators…</span>
+        </div>
+      ) : orderedAdmins.length ? (
         <div className='admins-grid'>
           {orderedAdmins.map((admin) => (
             <AdminCard
-              key={admin.id}
+              key={admin._id}
               admin={admin}
-              menuOpen={openAdminMenu === admin.id}
+              menuOpen={openAdminMenu === admin._id}
               onToggleMenu={() =>
                 setOpenAdminMenu((openMenu) =>
-                  openMenu === admin.id ? null : admin.id,
+                  openMenu === admin._id ? null : admin._id,
                 )
               }
               onCloseMenu={() => setOpenAdminMenu(null)}
               onEdit={() => setFormAdmin(admin)}
               onUpdatePassword={() => setPasswordAdmin(admin)}
               onDelete={() => deleteAdmin(admin)}
-              onTogglePin={() => togglePin(admin)}
             />
           ))}
         </div>
       ) : (
         <div className='admins-empty-state'>
-          <CircleUserRound size={28} aria-hidden='true' />
+          <img src={emptyIllustration} alt='' aria-hidden='true' />
           <h2>No administrators yet</h2>
           <p>Add an administrator to get started.</p>
           <button

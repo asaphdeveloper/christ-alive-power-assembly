@@ -49,7 +49,6 @@ const createHeadquaterMediaAdmin = async () => {
       username,
       role: 'headquater-media-admin',
       password: INITIAL_HEADQUATER_ADMIN_PASSWORD,
-      passwordConfirm: INITIAL_HEADQUATER_ADMIN_PASSWORD,
     });
 
     console.log('Headquater Media Admin account created successfully.');

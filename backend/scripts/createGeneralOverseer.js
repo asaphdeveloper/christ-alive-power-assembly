@@ -51,7 +51,6 @@ const createGeneralOverseer = async () => {
       username: normalizedUsername,
       role: 'general-overseer',
       password,
-      passwordConfirm: password,
     });
 
     console.log('General Overseer account created successfully.');

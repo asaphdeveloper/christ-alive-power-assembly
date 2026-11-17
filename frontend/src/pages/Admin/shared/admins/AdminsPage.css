@@ -5,6 +5,10 @@
   padding-bottom: 32px;
   color: #1a2028;
 }
+.admins-page.is-empty {
+  display: flex;
+  flex-direction: column;
+}
 
 .admins-page-heading {
   display: flex;
@@ -307,14 +311,10 @@
 .admin-assignment-branch svg {
   flex: 0 0 auto;
 }
-.admins-feedback {
-  margin: 0 0 10px;
-  color: var(--admin-primary);
-  font-size: 14px;
-}
 .admins-empty-state {
   display: grid;
-  min-height: 280px;
+  flex: 1 0 320px;
+  min-height: 320px;
   justify-items: center;
   align-content: center;
   gap: 10px;
@@ -324,8 +324,19 @@
   color: #7e8982;
   text-align: center;
 }
-.admins-empty-state > svg {
-  color: var(--admin-primary);
+.admins-loading-state {
+  display: flex;
+  min-height: 280px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #7e8982;
+  font-size: 14px;
+}
+.admins-empty-state img {
+  width: min(220px, 60%);
+  max-height: 150px;
+  object-fit: contain;
 }
 .admins-empty-state h2 {
   color: #25332b;
@@ -432,6 +443,32 @@
 .admin-form-field select:focus {
   border-color: var(--admin-primary);
   box-shadow: 0 0 0 3px var(--admin-primary-soft);
+}
+.admin-password-input-wrap {
+  position: relative;
+  display: block;
+}
+.admin-password-input-wrap input {
+  padding-right: 44px;
+}
+.admin-form .admin-password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 7px;
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  padding: 0;
+  border: 0;
+  border-radius: 6px;
+  background: transparent;
+  color: #78847c;
+  transform: translateY(-50%);
+}
+.admin-form .admin-password-toggle:hover {
+  background: var(--admin-primary-soft);
+  color: var(--admin-primary);
 }
 .admin-form-select-wrap {
   position: relative;

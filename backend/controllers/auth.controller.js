@@ -28,11 +28,13 @@ export const login = async (req, res, next) => {
     }
 
     const token = signToken(admin._id);
+    await admin.populate('branch', 'name');
     const safeAdmin = {
       id: admin._id,
       name: admin.name,
       username: admin.username,
       role: admin.role,
+      branch: admin.branch,
     };
 
     res.cookie('access_token', token, getTokenCookieOptions());
@@ -71,17 +73,21 @@ export const logout = (req, res) => {
   res.status(200).json({ status: 'success' });
 };
 
-export const getCurrentAdmin = (req, res) => {
-  const { _id, name, username, role } = req.admin;
+export const getCurrentAdmin = async (req, res) => {
+  await req.admin.populate('branch', 'name');
+  const { _id, name, username, role, branch } = req.admin;
   res.status(200).json({
     status: 'success',
-    data: { admin: { id: _id, name, username, role } },
+    data: { admin: { id: _id, name, username, role, branch } },
   });
 };
 
 export const restrictTo = (...roles) => (req, res, next) => {
   if (!roles.includes(req.admin.role)) {
     return next(new AppError('You do not have permission to access this admin page', 403));
+  }
+  if (req.admin.role === 'branch-media-admin' && !req.admin.branch) {
+    return next(new AppError('This Branch Media Admin account is not assigned to a branch', 403));
   }
   next();
 };
