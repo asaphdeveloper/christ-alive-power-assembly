@@ -1,7 +1,7 @@
 import { rateLimit } from 'express-rate-limit';
 
 const rateLimitOptions = {
-  windowMs: 15 * 60 * 1000,
+  windowMs: 60 * 60 * 1000,
   standardHeaders: 'draft-8',
   legacyHeaders: false,
   message: {
