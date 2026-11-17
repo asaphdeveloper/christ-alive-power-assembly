@@ -10,7 +10,7 @@ import {
   Users,
 } from 'lucide-react';
 import { AdminLayout } from '../AdminLayout';
-import { AdminFilterDropdown } from './AdminFilterDropdown';
+import { AdminFilterDropdown } from '../../../components/Admin/shared/AdminFilterDropdown';
 import reports from '../../../data/general-overseer-received-reports.json';
 import branches from '../../../data/branches.json';
 import './AttendanceReportsPage.css';

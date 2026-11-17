@@ -17,7 +17,7 @@ import {
 } from 'lucide-react';
 import branches from '../../../../data/branches.json';
 import initialAdmins from '../../../../data/admins.json';
-import { AdminFilterDropdown as BranchFilterDropdown } from '../AdminFilterDropdown';
+import { AdminFilterDropdown as BranchFilterDropdown } from '../../../../components/Admin/shared/AdminFilterDropdown';
 import './BranchesPage.css';
 
 function getFilterOptions(records, field, allLabel) {

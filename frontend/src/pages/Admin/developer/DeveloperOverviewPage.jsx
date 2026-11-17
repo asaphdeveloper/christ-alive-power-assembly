@@ -19,11 +19,9 @@ const overviewLinks = [
 
 export function DeveloperOverviewPage() {
   return (
-    <section className='developer-overview-page' aria-labelledby='developer-overview-title'>
+    <section className='developer-overview-page' aria-label='Developer workspace overview'>
       <header>
         <p>ADMINISTRATION</p>
-        <h1 id='developer-overview-title'>Workspace overview</h1>
-        <span>Quick access to church accounts and branch records.</span>
       </header>
       <div className='developer-overview-links'>
         {overviewLinks.map(({ title, description, to, icon: Icon }) => (

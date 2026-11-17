@@ -1,4 +1,4 @@
-import { ArrowRight, ClipboardCheck, ClipboardList, MapPinned, Users } from 'lucide-react';
+import { ArrowRight, Clapperboard, ClipboardCheck, ClipboardList } from 'lucide-react';
 import { Link } from 'react-router';
 import { AdminLayout } from '../AdminLayout';
 import './GeneralOverseerOverviewPage.css';
@@ -6,8 +6,7 @@ import './GeneralOverseerOverviewPage.css';
 const overviewLinks = [
   { title: 'Attendance overview', description: 'Review attendance totals and service trends across all branches.', to: '/admin/attendance-overview', label: 'View attendance overview', icon: ClipboardCheck },
   { title: 'Attendance reports', description: 'Review attendance reports submitted by each branch.', to: '/admin/attendance-reports', label: 'View attendance reports', icon: ClipboardList },
-  { title: 'Administrators', description: 'Review the administrators assigned to each branch.', to: '/admin/all-admins', label: 'View administrators', icon: Users },
-  { title: 'Branches', description: 'View branch locations and their assigned administrators.', to: '/admin/branches', label: 'View branches', icon: MapPinned },
+  { title: 'Upload resources', description: 'Manage church documents and Sunday hymn lyrics.', to: '/admin/upload-resource', label: 'Upload resources', icon: Clapperboard },
 ];
 
 export function GeneralOverseerOverviewPage() {
@@ -17,10 +16,9 @@ export function GeneralOverseerOverviewPage() {
       pageTitle='Overview'
       showWelcomeBanner
     >
-      <section className='go-overview-page' aria-labelledby='general-overseer-title'>
-        <header className='go-overview-heading'>
-          <h1 id='general-overseer-title'>Workspace overview</h1>
-          <p>Use this workspace to review church attendance, administrators and branches.</p>
+      <section className='go-overview-page' aria-labelledby='general-overseer-label'>
+        <header>
+          <p id='general-overseer-label'>GENERAL OVERSEER</p>
         </header>
         <div className='go-overview-links'>
           {overviewLinks.map(({ title, description, to, label, icon: Icon }) => (

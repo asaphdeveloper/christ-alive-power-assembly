@@ -1,95 +1,67 @@
 .go-overview-page {
-  min-height: calc(100svh - 92px);
-  margin-top: 14px;
-  padding-bottom: 28px;
+  margin-top: 22px;
+  padding-bottom: 32px;
   color: #17231e;
 }
-.go-overview-heading {
-  padding: 8px 0 4px;
-  margin-bottom: 20px;
+.go-overview-page > header {
+  margin-bottom: 18px;
 }
-.go-overview-heading h1 {
-  color: #1d2b23;
-  font-size: 27px;
+.go-overview-page > header > p {
+  color: #087f5b;
+  font-size: 11px;
   font-weight: 700;
-  letter-spacing: -0.035em;
-}
-.go-overview-heading p {
-  margin-top: 5px;
-  color: #77837b;
-  font-size: 13px;
+  letter-spacing: .12em;
 }
 .go-overview-links {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 14px;
 }
 .go-overview-card {
-  display: grid;
+  display: flex;
   min-width: 0;
-  min-height: 150px;
-  grid-template-columns: 46px minmax(0, 1fr) 36px;
-  align-items: start;
-  gap: 15px;
-  padding: 20px;
-  border: 1px solid #e5ebe7;
-  border-radius: 15px;
-  background: linear-gradient(145deg, #fff 0%, #fbfdfb 100%);
-  transition: border-color 150ms ease, box-shadow 150ms ease, transform 150ms ease;
-}
-.go-overview-card:hover {
-  transform: translateY(-2px);
-  border-color: #bfd3c6;
+  align-items: center;
+  gap: 13px;
+  padding: 18px;
+  border: 1px solid #e1e9e4;
+  border-radius: 12px;
+  background: #fff;
 }
 .go-overview-icon {
   display: grid;
-  width: 45px;
-  height: 45px;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
   place-items: center;
-  border: 1px solid #e2eee6;
-  border-radius: 12px;
-  background: linear-gradient(145deg, #f1f8f3, #e8f2eb);
-  color: var(--admin-primary);
+  border-radius: 10px;
+  background: #e9f5ef;
+  color: #087f5b;
 }
-.go-overview-copy { min-width: 0; padding-top: 2px; }
+.go-overview-copy {
+  min-width: 0;
+  flex: 1;
+}
 .go-overview-copy h2 {
-  color: #253129;
-  font-size: 16px;
-  font-weight: 700;
-  letter-spacing: -0.015em;
+  color: #26352d;
+  font-size: 15px;
+  font-weight: 650;
 }
 .go-overview-copy p {
-  max-width: 38ch;
-  margin-top: 7px;
-  color: #6f7d74;
-  font-size: 13px;
-  line-height: 1.55;
+  margin-top: 4px;
+  color: #77837b;
+  font-size: 12px;
+  line-height: 1.5;
 }
 .go-overview-card > a {
   display: grid;
-  width: 36px;
-  height: 36px;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
   place-items: center;
-  border: 1px solid #e5ebe7;
-  border-radius: 10px;
-  background: #fff;
-  color: var(--admin-primary);
-  text-decoration: none;
-  transition: background 150ms ease, border-color 150ms ease, transform 150ms ease;
-}
-.go-overview-card > a:hover {
-  transform: translateX(2px);
-  border-color: #c5d8cb;
-  background: #f1f8f3;
-}
-.go-overview-card > a:focus-visible {
-  outline: 3px solid rgba(42, 111, 68, 0.22);
-  outline-offset: 2px;
-}
-@media (max-width: 1000px) {
-  .go-overview-links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  border-radius: 8px;
+  background: #f3f7f4;
+  color: #087f5b;
 }
 @media (max-width: 620px) {
   .go-overview-links { grid-template-columns: minmax(0, 1fr); }
-  .go-overview-card { min-height: 120px; gap: 11px; padding: 16px; }
 }

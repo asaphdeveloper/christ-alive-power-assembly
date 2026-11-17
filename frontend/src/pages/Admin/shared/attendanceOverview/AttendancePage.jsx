@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
 import { Check, ChevronDown, RotateCcw } from 'lucide-react';
 import { AdminLayout } from '../../AdminLayout';
-import { AttendanceKpis } from './AttendanceKpis';
-import { AttendanceTrendCard } from './AttendanceTrendCard';
-import { BranchComparisonCard } from './BranchComparisonCard';
+import { AttendanceKpis } from '../../../../components/Admin/AttendanceKpis';
+import { AttendanceTrendCard } from '../../../../components/Admin/AttendanceTrendCard';
+import { BranchComparisonCard } from '../../../../components/Admin/BranchComparisonCard';
 import attendanceConfig from '../../../../data/general-overseer-attendance.json';
 import branchData from '../../../../data/branches.json';
 import './AttendancePage.css';
