@@ -78,11 +78,6 @@
   margin-bottom: 6px;
   font-size: 13px;
 }
-.branches-feedback {
-  margin: 0 0 12px;
-  color: var(--admin-primary);
-  font-size: 14px;
-}
 .branch-form-backdrop {
   position: fixed;
   z-index: 100;

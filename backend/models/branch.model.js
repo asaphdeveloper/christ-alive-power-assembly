@@ -2,17 +2,25 @@ import mongoose from 'mongoose';
 
 const mapLocationSchema = new mongoose.Schema(
   {
-    longitude: {
-      type: Number,
-      min: [-180, 'Longitude must be between -180 and 180'],
-      max: [180, 'Longitude must be between -180 and 180'],
-      default: null,
+    type: {
+      type: String,
+      enum: ['Point'],
+      required: true,
+      default: 'Point',
     },
-    latitude: {
-      type: Number,
-      min: [-90, 'Latitude must be between -90 and 90'],
-      max: [90, 'Latitude must be between -90 and 90'],
-      default: null,
+    coordinates: {
+      type: [Number],
+      required: true,
+      validate: {
+        validator: (coordinates) => {
+          if (!Array.isArray(coordinates) || coordinates.length !== 2) return false;
+          const [longitude, latitude] = coordinates;
+          return Number.isFinite(longitude) && Number.isFinite(latitude)
+            && longitude >= -180 && longitude <= 180
+            && latitude >= -90 && latitude <= 90;
+        },
+        message: 'Provide valid longitude and latitude coordinates',
+      },
     },
   },
   { _id: false },
@@ -72,18 +80,7 @@ const branchSchema = new mongoose.Schema(
     },
     mapLocation: {
       type: mapLocationSchema,
-      default: () => ({}),
-      validate: {
-        validator: (location) => {
-          if (!location) return true;
-          const hasLongitude =
-            location.longitude !== null && location.longitude !== undefined;
-          const hasLatitude =
-            location.latitude !== null && location.latitude !== undefined;
-          return hasLongitude === hasLatitude;
-        },
-        message: 'Provide both longitude and latitude',
-      },
+      required: [true, 'Please provide the branch map location'],
     },
   },
   { timestamps: true },

@@ -1,7 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { apiFetch } from '../../../../utils/api';
 import emptyIllustration from '../../../../assets/images/empty.svg';
 import { LoadingSpinner } from '../../../../components/LoadingSpinner';
+import { Toast } from '../../../../components/Toast';
 import {
   Building2,
   Check,
@@ -44,8 +45,22 @@ const emptyBranchForm = {
   mapLocation: { longitude: null, latitude: null },
 };
 
+function getEditableMapLocation(location) {
+  if (Array.isArray(location?.coordinates) && location.coordinates.length === 2) {
+    return { longitude: location.coordinates[0], latitude: location.coordinates[1] };
+  }
+  return {
+    longitude: location?.longitude ?? null,
+    latitude: location?.latitude ?? null,
+  };
+}
+
 function BranchForm({ branch, admins, onSubmit, onCancel }) {
-  const [form, setForm] = useState(() => ({ ...emptyBranchForm, ...branch }));
+  const [form, setForm] = useState(() => ({
+    ...emptyBranchForm,
+    ...branch,
+    mapLocation: getEditableMapLocation(branch?.mapLocation),
+  }));
   const [step, setStep] = useState(1);
   const [selectedAdminIds, setSelectedAdminIds] = useState(
     () =>
@@ -83,10 +98,14 @@ function BranchForm({ branch, admins, onSubmit, onCancel }) {
       return;
     }
     const chosenAdmins = selectedAdminIds;
-    const longitude = form.mapLocation?.longitude ?? null;
-    const latitude = form.mapLocation?.latitude ?? null;
-    if ((longitude === null) !== (latitude === null)) {
-      setError('Enter both map coordinates, or leave both blank.');
+    const longitude = form.mapLocation?.longitude;
+    const latitude = form.mapLocation?.latitude;
+    if (!Number.isFinite(longitude) || !Number.isFinite(latitude)) {
+      setError('Enter both map coordinates to continue.');
+      return;
+    }
+    if (longitude < -180 || longitude > 180 || latitude < -90 || latitude > 90) {
+      setError('Enter a longitude from -180 to 180 and a latitude from -90 to 90.');
       return;
     }
     onSubmit({
@@ -98,7 +117,7 @@ function BranchForm({ branch, admins, onSubmit, onCancel }) {
       lga: form.lga.trim(),
       leadPastor: form.leadPastor.trim(),
       address: form.address.trim(),
-      mapLocation: { longitude, latitude },
+      mapLocation: { type: 'Point', coordinates: [longitude, latitude] },
       adminId: chosenAdmins[0] ?? '',
     });
   }
@@ -237,6 +256,7 @@ function BranchForm({ branch, admins, onSubmit, onCancel }) {
                   value={form.mapLocation?.longitude ?? ''}
                   onChange={updateMapCoordinate}
                   placeholder='e.g. 9.8965'
+                  required
                 />
               </label>
               <label className='branch-form-field'>
@@ -250,6 +270,7 @@ function BranchForm({ branch, admins, onSubmit, onCancel }) {
                   value={form.mapLocation?.latitude ?? ''}
                   onChange={updateMapCoordinate}
                   placeholder='e.g. 8.8921'
+                  required
                 />
               </label>
             </>
@@ -556,11 +577,14 @@ export function BranchesPage() {
   const [adminRecords, setAdminRecords] = useState([]);
   const [formBranch, setFormBranch] = useState(undefined);
   const [openBranchMenu, setOpenBranchMenu] = useState(null);
-  const [feedback, setFeedback] = useState('');
+  const [feedback, setFeedback] = useState(null);
   const [selectedState, setSelectedState] = useState('all');
   const [selectedCountry, setSelectedCountry] = useState('all');
   const [openFilter, setOpenFilter] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const notify = useCallback((message, type = 'success') => {
+    setFeedback({ id: Date.now(), message, type });
+  }, []);
   const filtersRef = useRef(null);
   const stateOptions = getFilterOptions(branchRecords, 'state', 'All states');
   const countryOptions = getFilterOptions(
@@ -580,10 +604,10 @@ export function BranchesPage() {
         setBranchRecords(branchResult.data.branches);
         setAdminRecords(adminResult.data.admins);
       })
-      .catch((error) => active && setFeedback(error.message))
+      .catch((error) => active && notify(error.message, 'error'))
       .finally(() => active && setIsLoading(false));
     return () => { active = false; };
-  }, []);
+  }, [notify]);
 
   useEffect(() => {
     if (!openFilter) return undefined;
@@ -690,8 +714,8 @@ export function BranchesPage() {
                   if (!response.ok) throw new Error('Could not delete this branch.');
                   setBranchRecords((current) => current.filter((item) => item._id !== branch._id));
                   setAdminRecords((current) => current.map((admin) => String(admin.branch?._id ?? admin.branch) === String(branch._id) ? { ...admin, branch: null } : admin));
-                  setFeedback(`${branch.name} deleted.`);
-                }).catch((error) => setFeedback(error.message));
+                  notify(`${branch.name} deleted.`);
+                }).catch((error) => notify(error.message, 'error'));
             }}
           />
         ))}
@@ -707,21 +731,9 @@ export function BranchesPage() {
           <img src={emptyIllustration} alt='' aria-hidden='true' />
           <h2>No branches yet</h2>
           <p>Add a branch to get started.</p>
-          <button
-            className='branches-add-button'
-            type='button'
-            onClick={() => setFormBranch(null)}
-          >
-            <Plus size={16} aria-hidden='true' />
-            Add branch
-          </button>
         </div>
       )}
-      {feedback && (
-        <p className='branches-feedback' role='status'>
-          {feedback}
-        </p>
-      )}
+      {feedback && <Toast key={feedback.id} message={feedback.message} type={feedback.type} />}
       {formBranch !== undefined && (
         <BranchForm
           key={
@@ -750,9 +762,9 @@ export function BranchesPage() {
                 if (branchesResponse.ok) setBranchRecords(branchesResult.data.branches);
                 setSelectedState('all');
                 setSelectedCountry('all');
-                setFeedback(`${saved.name} saved${saved.status === 'pending-admin' ? ' · Pending admin' : ''}.`);
+                notify(`${saved.name} saved${saved.status === 'pending-admin' ? ' · Pending admin' : ''}.`);
                 setFormBranch(undefined);
-              }).catch((error) => setFeedback(error.message));
+              }).catch((error) => notify(error.message, 'error'));
           }}
         />
       )}
