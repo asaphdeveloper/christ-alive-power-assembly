@@ -67,11 +67,6 @@ const headquaterMediaAdminNavItems = [
     to: '/admin/upload-resource',
     icon: Clapperboard,
   },
-  {
-    label: 'Developer workspace',
-    to: '/admin/developer/overview',
-    icon: Wrench,
-  },
   { label: 'Public website', to: '/', icon: ExternalLink },
 ];
 

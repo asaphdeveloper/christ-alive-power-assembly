@@ -11,74 +11,21 @@ import { apiUrl } from '../../../utils/api';
 
 const categoryIcons = { 'All materials': GridViewIcon, Hymn: MusicNote01Icon };
 
-const hymnVerses = [
-  [
-    'Amazing grace! How sweet the sound',
-    'That saved a wretch like me!',
-    'I once was lost, but now am found;',
-    'Was blind, but now I see.',
-  ],
-  [
-    "'Twas grace that taught my heart to fear,",
-    'And grace my fears relieved;',
-    'How precious did that grace appear',
-    'The hour I first believed!',
-  ],
-  [
-    'Through many dangers, toils, and snares,',
-    'I have already come;',
-    "'Tis grace hath brought me safe thus far,",
-    'And grace will lead me home.',
-  ],
-  [
-    'Through many dangers, toils, and snares,',
-    'I have already come;',
-    "'Tis grace hath brought me safe thus far,",
-    'And grace will lead me home.',
-  ],
-  [
-    'Through many dangers, toils, and snares,',
-    'I have already come;',
-    "'Tis grace hath brought me safe thus far,",
-    'And grace will lead me home.',
-  ],
-  [
-    'Through many dangers, toils, and snares,',
-    'I have already come;',
-    "'Tis grace hath brought me safe thus far,",
-    'And grace will lead me home.',
-  ],
-];
-
-const publishedHymnStorageKey = 'cap-assembly-published-hymn';
-
-function readPublishedHymnVerses() {
-  try {
-    const savedHymn = JSON.parse(
-      window.localStorage.getItem(publishedHymnStorageKey) ?? 'null',
-    );
-    if (!savedHymn?.lyrics?.trim()) return hymnVerses;
-
-    return savedHymn.lyrics
-      .trim()
-      .split(/\n\s*\n/)
-      .map((verse) =>
-        verse
-          .split('\n')
-          .map((line) => line.trim())
-          .filter(Boolean),
-      )
-      .filter((verse) => verse.length);
-  } catch {
-    return hymnVerses;
-  }
+function parseHymnVerses(lyrics) {
+  if (!lyrics?.trim()) return [];
+  return lyrics
+    .trim()
+    .split(/\n\s*\n/)
+    .map((verse) => verse.split('\n').map((line) => line.trim()).filter(Boolean))
+    .filter((verse) => verse.length);
 }
 
 const hymnResource = {
-  id: 'amazing-grace',
-  title: 'Amazing Grace',
+  id: 'sunday-hymn',
+  title: 'Sunday Hymn',
   category: 'Hymn',
-  description: 'A classic hymn of grace and hope.',
+  description: 'Published hymn lyrics.',
+  hymnNumber: null,
   type: 'hymn',
 };
 
@@ -117,9 +64,8 @@ const documentCategories = {
 
 export const Resources = () => {
   const [category, setCategory] = useState('All materials');
-  const [publicHymnVerses, setPublicHymnVerses] = useState(
-    readPublishedHymnVerses,
-  );
+  const [publicHymnVerses, setPublicHymnVerses] = useState([]);
+  const [publicHymnNumber, setPublicHymnNumber] = useState(null);
   const [documents, setDocuments] = useState([]);
   const categories = ['All materials', 'Hymn'];
   useEffect(() => {
@@ -134,22 +80,34 @@ export const Resources = () => {
           if (isActive) setDocuments([]);
         });
 
+    const loadHymn = () =>
+      fetch(apiUrl('/api/resources/hymn'), { cache: 'no-store' })
+        .then((response) => response.json())
+        .then((result) => {
+          if (!isActive) return;
+          setPublicHymnVerses(parseHymnVerses(result.data?.hymn?.lyrics));
+          setPublicHymnNumber(result.data?.hymn?.number ?? null);
+        })
+        .catch(() => {
+          if (isActive) {
+            setPublicHymnVerses([]);
+            setPublicHymnNumber(null);
+          }
+        });
+
     loadDocuments();
+    loadHymn();
     const resourceEvents = new EventSource(apiUrl('/api/resources/events'));
-    resourceEvents.onopen = loadDocuments;
-    resourceEvents.addEventListener('resources-updated', loadDocuments);
+    const reloadPublicResources = () => {
+      loadDocuments();
+      loadHymn();
+    };
+    resourceEvents.onopen = reloadPublicResources;
+    resourceEvents.addEventListener('resources-updated', reloadPublicResources);
 
-    function handlePublishedHymnChange(event) {
-      if (event.key === publishedHymnStorageKey) {
-        setPublicHymnVerses(readPublishedHymnVerses());
-      }
-    }
-
-    window.addEventListener('storage', handlePublishedHymnChange);
     return () => {
       isActive = false;
       resourceEvents.close();
-      window.removeEventListener('storage', handlePublishedHymnChange);
     };
   }, []);
   const resourceTypes = [
@@ -167,7 +125,9 @@ export const Resources = () => {
           : null;
       })
       .filter(Boolean),
-    hymnResource,
+    ...(publicHymnVerses.length
+      ? [{ ...hymnResource, hymnNumber: publicHymnNumber }]
+      : []),
   ];
   const visible = resourceTypes.filter(
     (item) => category === 'All materials' || item.category === category,
@@ -239,6 +199,7 @@ export const Resources = () => {
                     <span className='church-resource-hymn-label'>Hymn</span>
                     <h3>{item.title}</h3>
                     <p>{item.description}</p>
+                    {item.hymnNumber && <p className='church-resource-hymn-number'>Hymn No. {item.hymnNumber}</p>}
                   </div>
                 </div>
                 {category === 'Hymn' ? (

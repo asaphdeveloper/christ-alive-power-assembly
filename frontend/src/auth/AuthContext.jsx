@@ -38,10 +38,7 @@ export function AuthProvider({ children }) {
       .then((currentAdmin) => {
         if (!isCurrent) return;
         setAdmin(currentAdmin);
-        const role = currentAdmin.role === 'jos-media-admin'
-          ? 'headquater-media-admin'
-          : currentAdmin.role;
-        window.localStorage.setItem('admin_workspace', role);
+        window.localStorage.setItem('admin_workspace', currentAdmin.role);
         setIsCheckingSession(false);
       })
       .catch(() => {
@@ -74,7 +71,7 @@ export function AuthProvider({ children }) {
     window.localStorage.setItem('access_token', result.token);
     window.localStorage.setItem(
       'admin_workspace',
-      signedInAdmin.role === 'jos-media-admin' ? 'headquater-media-admin' : signedInAdmin.role,
+      signedInAdmin.role,
     );
     setAdmin(signedInAdmin);
     setIsCheckingSession(false);

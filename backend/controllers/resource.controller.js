@@ -4,6 +4,7 @@ import multer from 'multer';
 import AppError from '../utils/appError.js';
 import ResourceDocument from '../models/resourceDocument.model.js';
 import ResourceUsage from '../models/resourceUsage.model.js';
+import Hymn from '../models/hymn.model.js';
 import { getR2Client, getResourceCategories, isR2Configured } from '../services/resourceStorage.js';
 import { broadcastResourceUpdate } from '../services/resourceEvents.js';
 
@@ -110,6 +111,91 @@ export const getResourceUsage = async (_req, res, next) => {
           monthlyReadBudget: readBudget(),
           monthlyWriteBudget: writeBudget(),
           month: monthKey(),
+        },
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getPublicHymn = async (_req, res, next) => {
+  try {
+    const hymn = await Hymn.findOne({ key: 'sunday-hymn' }).select('publishedLyrics publishedNumber publishedAt').lean();
+    res.set('Cache-Control', 'no-store');
+    res.status(200).json({
+      status: 'success',
+      data: {
+        hymn: {
+          lyrics: hymn?.publishedLyrics || '',
+          number: hymn?.publishedNumber || null,
+          publishedAt: hymn?.publishedAt || null,
+        },
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getManageHymn = async (_req, res, next) => {
+  try {
+    const hymn = await Hymn.findOne({ key: 'sunday-hymn' }).lean();
+    res.status(200).json({
+      status: 'success',
+      data: {
+        hymn: {
+          draftLyrics: hymn?.draftLyrics || '',
+          draftNumber: hymn?.draftNumber || null,
+          publishedLyrics: hymn?.publishedLyrics || '',
+          publishedNumber: hymn?.publishedNumber || null,
+          publishedAt: hymn?.publishedAt || null,
+        },
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const saveHymn = async (req, res, next) => {
+  try {
+    const lyrics = typeof req.body.lyrics === 'string' ? req.body.lyrics.trim() : '';
+    const hymnNumber = Number(req.body.hymnNumber);
+    const publish = req.body.publish === true;
+    if (!lyrics) return next(new AppError('Enter hymn lyrics before saving.', 400));
+    if (!Number.isInteger(hymnNumber) || hymnNumber < 1 || hymnNumber > 99999) {
+      return next(new AppError('Enter a valid hymn number between 1 and 99,999.', 400));
+    }
+    if (lyrics.length > 8000) return next(new AppError('Hymn lyrics must be 8,000 characters or fewer.', 413));
+
+    const update = {
+      $set: { draftLyrics: lyrics, draftNumber: hymnNumber, updatedBy: req.admin._id },
+      $setOnInsert: { key: 'sunday-hymn' },
+    };
+    if (publish) {
+      update.$set.publishedLyrics = lyrics;
+      update.$set.publishedNumber = hymnNumber;
+      update.$set.publishedAt = new Date();
+    }
+
+    const hymn = await Hymn.findOneAndUpdate(
+      { key: 'sunday-hymn' },
+      update,
+      { new: true, upsert: true, runValidators: true, setDefaultsOnInsert: true },
+    ).lean();
+
+    if (publish) broadcastResourceUpdate();
+    res.status(200).json({
+      status: 'success',
+      message: publish ? 'Hymn published to the public website.' : 'Hymn lyrics saved as a draft.',
+      data: {
+        hymn: {
+          draftLyrics: hymn.draftLyrics,
+          draftNumber: hymn.draftNumber,
+          publishedLyrics: hymn.publishedLyrics,
+          publishedNumber: hymn.publishedNumber,
+          publishedAt: hymn.publishedAt,
         },
       },
     });

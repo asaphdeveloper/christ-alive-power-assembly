@@ -4,7 +4,6 @@ import crypto from 'crypto';
 
 export const ADMIN_ROLES = [
   'headquater-media-admin',
-  'jos-media-admin',
   'general-overseer',
   'developer',
   'branch-media-admin',
