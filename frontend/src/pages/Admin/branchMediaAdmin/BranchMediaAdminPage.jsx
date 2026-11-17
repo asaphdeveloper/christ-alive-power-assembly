@@ -271,7 +271,8 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
       setSavedHymnLyrics(result.data.hymn.draftLyrics);
       setSavedHymnNumber(String(result.data.hymn.draftNumber));
       setIsEditingHymnLyrics(false);
-      notify(result.message || 'Hymn lyrics saved.');
+      const verseCount = result.data.hymn.draftLyrics.split(/\n\s*\n/).length;
+      notify(`${verseCount} ${verseCount === 1 ? 'verse' : 'verses'} saved as a draft.`);
     } catch (error) {
       notify(error.message || 'Unable to save hymn lyrics.', 'error');
     } finally {
@@ -610,14 +611,6 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
                 {isPublishingHymn ? 'Publishing…' : isHymnPublished ? 'Publish updates' : 'Publish hymn'}
               </button>
             </div>
-            {savedHymnLyrics && (
-              <p className='branch-media-hymn-saved' role='status'>
-                {savedHymnLyrics.split(/\n\s*\n/).length} verse
-                {savedHymnLyrics.split(/\n\s*\n/).length === 1 ? '' : 's'}{' '}
-                saved.
-                {isHymnPublished ? ' Published on the public website.' : ' Draft only.'}
-              </p>
-            )}
           </form>
           <section
             className='branch-media-current-uploads'

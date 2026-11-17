@@ -21,12 +21,10 @@ export function HeadquaterOverviewPage() {
     >
       <section
         className='headquater-overview-page'
-        aria-labelledby='headquater-overview-title'
+        aria-labelledby='headquater-overview-label'
       >
         <header>
-          <p>HEADQUARTER MEDIA</p>
-          <h1 id='headquater-overview-title'>Workspace overview</h1>
-          <span>Quick access to church-wide media resources.</span>
+          <p id='headquater-overview-label'>HEADQUARTER MEDIA</p>
         </header>
         <div className='headquater-overview-links'>
           {overviewLinks.map(({ title, description, to, icon: Icon }) => (

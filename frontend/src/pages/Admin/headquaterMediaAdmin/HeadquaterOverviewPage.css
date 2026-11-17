@@ -12,17 +12,6 @@
   font-weight: 700;
   letter-spacing: .12em;
 }
-.headquater-overview-page > header h1 {
-  margin-top: 5px;
-  font-size: 23px;
-  font-weight: 650;
-}
-.headquater-overview-page > header > span {
-  display: block;
-  margin-top: 5px;
-  color: #77837b;
-  font-size: 13px;
-}
 .headquater-overview-links {
   display: grid;
   max-width: 560px;
