@@ -14,7 +14,29 @@ import { apiLimiter } from './middleware/rateLimiters.js';
 export const app = express();
 
 app.use(helmet());
-app.use(cors());
+const allowedOrigins = (process.env.FRONTEND_ORIGINS || '')
+  .split(',')
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+app.use(cors({
+  origin: allowedOrigins.length ? allowedOrigins : true,
+  credentials: true,
+}));
+app.use((req, res, next) => {
+  req.cookies = Object.fromEntries(
+    (req.headers.cookie || '').split(';').filter(Boolean).map((part) => {
+      const separator = part.indexOf('=');
+      const name = part.slice(0, separator).trim();
+      const value = part.slice(separator + 1).trim();
+      try {
+        return [name, decodeURIComponent(value)];
+      } catch {
+        return [name, value];
+      }
+    }),
+  );
+  next();
+});
 app.use(express.json({ limit: '64kb' }));
 app.use(express.urlencoded({ extended: false, limit: '10kb' }));
 const hppMiddleware = hpp();

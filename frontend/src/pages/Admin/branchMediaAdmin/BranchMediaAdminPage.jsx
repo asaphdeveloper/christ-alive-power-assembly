@@ -105,12 +105,6 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
   }, []);
 
   useEffect(() => {
-    const token = window.localStorage.getItem('access_token');
-    if (!token) {
-      notify('Please sign in to manage resources.', 'error');
-      setIsLoadingUploads(false);
-      return;
-    }
     apiFetch('/api/resources/manage')
       .then(async (response) => {
         const result = await response.json();
@@ -322,11 +316,6 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
       return;
     }
 
-    const token = window.localStorage.getItem('access_token');
-    if (!token) {
-      notify('Your session has expired. Sign in again to upload.', 'error');
-      return;
-    }
     setIsUploading(true);
     const formData = new FormData();
     formData.append('file', selectedFile);

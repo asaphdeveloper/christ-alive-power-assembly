@@ -5,14 +5,11 @@ import { AuthContext } from './authContext';
 export function AuthProvider({ children }) {
   const [admin, setAdmin] = useState(null);
   const [isCheckingSession, setIsCheckingSession] = useState(true);
-  const hasSavedToken = typeof window !== 'undefined'
-    && Boolean(window.localStorage.getItem('access_token'));
-  const isLoading = isCheckingSession && hasSavedToken;
+  const isLoading = isCheckingSession;
 
   useEffect(() => {
     let isCurrent = true;
     function clearSession() {
-      window.localStorage.removeItem('access_token');
       window.localStorage.removeItem('admin_workspace');
       if (isCurrent) {
         setAdmin(null);
@@ -21,14 +18,6 @@ export function AuthProvider({ children }) {
     }
 
     window.addEventListener('auth:expired', clearSession);
-    const token = window.localStorage.getItem('access_token');
-    if (!token) {
-      return () => {
-        isCurrent = false;
-        window.removeEventListener('auth:expired', clearSession);
-      };
-    }
-
     apiFetch('/api/auth/me')
       .then(async (response) => {
         const result = await response.json();
@@ -54,6 +43,7 @@ export function AuthProvider({ children }) {
   const signIn = useCallback(async (credentials) => {
     const response = await fetch(apiUrl('/api/auth/login'), {
       method: 'POST',
+      credentials: 'include',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(credentials),
     });
@@ -63,12 +53,11 @@ export function AuthProvider({ children }) {
       throw new Error(`Sign-in failed (HTTP ${response.status}). Check that the backend API is running and its URL is configured correctly.`);
     }
     if (!result) throw new Error('The sign-in service returned an unreadable response. Check the backend API URL.');
-    if (!result.token || !result.data?.admin) {
+    if (!result.data?.admin) {
       throw new Error('The sign-in response was incomplete. Please try again.');
     }
 
     const signedInAdmin = result.data.admin;
-    window.localStorage.setItem('access_token', result.token);
     window.localStorage.setItem(
       'admin_workspace',
       signedInAdmin.role,
@@ -78,9 +67,12 @@ export function AuthProvider({ children }) {
     return signedInAdmin;
   }, []);
 
-  const signOut = useCallback(() => {
-    window.localStorage.removeItem('access_token');
+  const signOut = useCallback(async () => {
     window.localStorage.removeItem('admin_workspace');
+    await fetch(apiUrl('/api/auth/logout'), {
+      method: 'POST',
+      credentials: 'include',
+    }).catch(() => {});
     setAdmin(null);
   }, []);
 

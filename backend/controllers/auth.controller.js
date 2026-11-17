@@ -7,6 +7,14 @@ const signToken = (id) => jwt.sign({ id }, process.env.JWT_SECRET, {
   expiresIn: process.env.JWT_EXPIRES_IN,
 });
 
+const getTokenCookieOptions = () => ({
+  httpOnly: true,
+  secure: process.env.NODE_ENV === 'production',
+  sameSite: 'lax',
+  path: '/',
+  maxAge: 24 * 60 * 60 * 1000,
+});
+
 export const login = async (req, res, next) => {
   try {
     const { username, password } = req.body;
@@ -27,7 +35,8 @@ export const login = async (req, res, next) => {
       role: admin.role,
     };
 
-    res.status(200).json({ status: 'success', token, data: { admin: safeAdmin } });
+    res.cookie('access_token', token, getTokenCookieOptions());
+    res.status(200).json({ status: 'success', data: { admin: safeAdmin } });
   } catch (err) {
     next(err);
   }
@@ -36,9 +45,9 @@ export const login = async (req, res, next) => {
 export const authenticate = async (req, res, next) => {
   try {
     const authHeader = req.headers.authorization;
-    const token = authHeader?.startsWith('Bearer ')
+    const token = req.cookies?.access_token || (authHeader?.startsWith('Bearer ')
       ? authHeader.split(' ')[1]
-      : null;
+      : null);
     if (!token) return next(new AppError('You are not logged in', 401));
 
     const decoded = await promisify(jwt.verify)(token, process.env.JWT_SECRET);
@@ -55,6 +64,11 @@ export const authenticate = async (req, res, next) => {
   } catch (err) {
     next(err);
   }
+};
+
+export const logout = (req, res) => {
+  res.clearCookie('access_token', getTokenCookieOptions());
+  res.status(200).json({ status: 'success' });
 };
 
 export const getCurrentAdmin = (req, res) => {
