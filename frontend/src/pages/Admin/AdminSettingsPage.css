@@ -5,103 +5,6 @@
   gap: 24px;
   margin: 34px 0;
 }
-.admin-settings-layout.has-usage {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-.admin-settings-page {
-  width: 100%;
-  margin: 0;
-  padding: 30px;
-  border: 1px solid #e1e9e4;
-  border-radius: 18px;
-  background: #fff;
-}
-.admin-settings-heading {
-  display: flex;
-  align-items: center;
-  gap: 15px;
-  margin-bottom: 28px;
-}
-.admin-settings-icon {
-  display: grid;
-  width: 46px;
-  height: 46px;
-  place-items: center;
-  border-radius: 14px;
-  background: #e9f5ef;
-  color: #087f5b;
-}
-.admin-settings-heading h1 {
-  margin: 0;
-  font-size: 23px;
-  color: #19382b;
-}
-.admin-settings-heading p {
-  margin: 6px 0 0;
-  color: #68776e;
-  font-size: 14px;
-}
-.admin-settings-form {
-  display: grid;
-  gap: 18px;
-}
-.admin-settings-form > label {
-  display: grid;
-  gap: 8px;
-  color: #34413a;
-  font-size: 13px;
-  font-weight: 600;
-}
-.admin-settings-input {
-  display: flex;
-  min-height: 48px;
-  align-items: center;
-  gap: 10px;
-  padding: 0 14px;
-  border: 1px solid #dce4df;
-  border-radius: 10px;
-  color: #839088;
-}
-.admin-settings-input:focus-within {
-  border-color: #087f5b;
-}
-.admin-settings-input input {
-  width: 100%;
-  min-width: 0;
-  border: 0;
-  outline: 0;
-  background: transparent;
-  color: #17231e;
-  font-size: 14px;
-}
-.admin-shell .admin-settings-input input:focus-visible {
-  outline: none;
-}
-.admin-settings-message {
-  margin: 0;
-  font-size: 13px;
-}
-.admin-settings-message.is-error {
-  color: #c52d24;
-}
-.admin-settings-message.is-success {
-  color: #087f5b;
-}
-.admin-settings-form > button {
-  min-height: 46px;
-  justify-self: start;
-  padding: 0 22px;
-  border: 0;
-  border-radius: 100px;
-  background: #087f5b;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-}
-.admin-settings-form > button:disabled {
-  opacity: 0.65;
-  cursor: wait;
-}
 .admin-settings-usage {
   min-width: 0;
   margin: 0;
@@ -176,18 +79,10 @@
   color: #b42318;
 }
 @media (max-width: 600px) {
-  .admin-settings-layout,
-  .admin-settings-layout.has-usage {
-    grid-template-columns: minmax(0, 1fr);
+  .admin-settings-layout {
     margin: 20px 0;
-  }
-  .admin-settings-page {
-    padding: 22px 18px;
   }
   .admin-settings-usage {
     padding: 22px 18px;
-  }
-  .admin-settings-heading {
-    align-items: flex-start;
   }
 }

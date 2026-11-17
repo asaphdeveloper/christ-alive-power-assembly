@@ -97,29 +97,6 @@ export const updateAdminPassword = async (req, res, next) => {
   }
 };
 
-export const updateMyPassword = async (req, res, next) => {
-  try {
-    const { currentPassword, password, passwordConfirm } = req.body;
-    if (!currentPassword || !password || !passwordConfirm) {
-      return next(new AppError('Please provide your current password, new password, and confirmation', 400));
-    }
-    const admin = await Admin.findById(req.admin.id).select('+password');
-    if (!(await admin.comparePasswords(currentPassword, admin.password))) {
-      return next(new AppError('Your current password is incorrect', 401));
-    }
-    admin.password = password;
-    admin.passwordConfirm = passwordConfirm;
-    admin.passwordChangedAt = new Date(Date.now() - 1000);
-    await admin.save();
-    res.status(200).json({
-      status: 'success',
-      message: 'Password updated. Please sign in again with your new password.',
-    });
-  } catch (err) {
-    next(err);
-  }
-};
-
 export const deleteAdmin = async (req, res, next) => {
   try {
     if (!validateAdminId(req.params.id, next)) return;

@@ -6,8 +6,6 @@ export const router = express.Router();
 
 router.use(authController.authenticate);
 
-router.patch('/me/password', adminController.updateMyPassword);
-
 router.patch(
   '/:id/password',
   authController.restrictTo('developer'),

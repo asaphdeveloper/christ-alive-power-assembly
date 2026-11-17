@@ -20,6 +20,7 @@ import { Toast } from '../../../components/Toast';
 import { LoadingSpinner } from '../../../components/LoadingSpinner';
 import EmptyIllustration from '../../../assets/images/empty.svg';
 import UploadIllustration from '../../../assets/images/upload.svg';
+import UploadReadyIllustration from '../../../assets/images/upload-ready.svg';
 import { apiFetch, apiUrl } from '../../../utils/api';
 import './BranchMediaAdminPage.css';
 
@@ -66,18 +67,30 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
   const [replacement, setReplacement] = useState(null);
   const [previewDocument, setPreviewDocument] = useState(null);
   const [feedback, setFeedback] = useState(null);
+  const [deleteRequest, setDeleteRequest] = useState(null);
+  const [isDeleting, setIsDeleting] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
+  const [isLoadingUploads, setIsLoadingUploads] = useState(true);
+  const [uploadLimitNotice, setUploadLimitNotice] = useState('');
   const [isCategoryMenuOpen, setIsCategoryMenuOpen] = useState(false);
   const [isUploadsMenuOpen, setIsUploadsMenuOpen] = useState(false);
   const documentInputRef = useRef(null);
+  const categoryControlRef = useRef(null);
   const uploadsActionsRef = useRef(null);
+  const deleteCancelRef = useRef(null);
+  const previousFocusRef = useRef(null);
+  const uploadLimitTimerRef = useRef(null);
   const uploadTargetResource = resources.find(
     (resource) => resource.id === uploadTarget,
   );
+  const isSelectedCategoryFull = Boolean(uploadTargetResource?.documents.length);
+  const areAllCategoriesFull = resources.every((resource) => resource.documents.length > 0);
+  const isNewUploadBlocked = isLoadingUploads || (!replacement && (isSelectedCategoryFull || areAllCategoriesFull));
   const uploadedDocuments = resources.flatMap((resource) =>
     resource.documents.map((document) => ({
       ...document,
       resourceId: resource.id,
+      resourceTitle: resource.title,
     })),
   );
 
@@ -89,6 +102,7 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
     const token = window.localStorage.getItem('access_token');
     if (!token) {
       notify('Please sign in to manage resources.', 'error');
+      setIsLoadingUploads(false);
       return;
     }
     apiFetch('/api/resources/manage')
@@ -111,8 +125,30 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
             })),
         })));
       })
-      .catch((error) => notify(error.message, 'error'));
+      .catch((error) => notify(error.message, 'error'))
+      .finally(() => setIsLoadingUploads(false));
   }, [notify]);
+
+  useEffect(() => {
+    if (!isCategoryMenuOpen) return undefined;
+
+    function handlePointerDown(event) {
+      if (!categoryControlRef.current?.contains(event.target)) {
+        setIsCategoryMenuOpen(false);
+      }
+    }
+
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') setIsCategoryMenuOpen(false);
+    }
+
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isCategoryMenuOpen]);
 
   useEffect(() => {
     if (!isUploadsMenuOpen) return undefined;
@@ -135,6 +171,14 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
     };
   }, [isUploadsMenuOpen]);
 
+  useEffect(() => {
+    if (!deleteRequest) return undefined;
+    deleteCancelRef.current?.focus();
+    return () => previousFocusRef.current?.focus?.();
+  }, [deleteRequest]);
+
+  useEffect(() => () => window.clearTimeout(uploadLimitTimerRef.current), []);
+
   function handleFileChange(event) {
     const file = event.target.files?.[0] ?? null;
     if (file && (file.type !== 'application/pdf' || !file.name.toLowerCase().endsWith('.pdf'))) {
@@ -150,6 +194,20 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
       return;
     }
     setSelectedFile(file);
+  }
+
+  function handleFilePickerClick(event) {
+    if (!isNewUploadBlocked) return;
+    event.preventDefault();
+    setUploadLimitNotice(
+      isLoadingUploads
+        ? 'Checking existing uploads before allowing a new document.'
+        : areAllCategoriesFull
+          ? 'All five resource categories already have a PDF. Replace an existing document to upload an update.'
+          : 'This category already has a PDF. Use Replace to update it.',
+    );
+    window.clearTimeout(uploadLimitTimerRef.current);
+    uploadLimitTimerRef.current = window.setTimeout(() => setUploadLimitNotice(''), 4000);
   }
 
   function handleCancelUpload() {
@@ -187,6 +245,16 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
 
   async function handleUpload(event) {
     event.preventDefault();
+
+    if (isNewUploadBlocked) {
+      notify(
+        areAllCategoriesFull
+          ? 'All five resource categories already have a PDF. Replace an existing document to upload an update.'
+          : 'A PDF is already uploaded for this category. Use Replace to update it.',
+        'error',
+      );
+      return;
+    }
 
     if (!selectedFile) {
       notify('Choose a PDF before uploading.', 'error');
@@ -256,50 +324,49 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
     notify('Choose a replacement document below.', 'info');
   }
 
-  async function handleDelete(resourceId, documentId) {
-    if (!window.confirm('Delete this PDF? This cannot be undone.')) return;
-    try {
-      const response = await apiFetch(`/api/resources/manage/${documentId}`, {
-        method: 'DELETE',
-      });
-      if (!response.ok) {
-        const result = await response.json();
-        throw new Error(result.message || 'Unable to delete this PDF.');
-      }
-    setResources((currentResources) =>
-      currentResources.map((resource) =>
-        resource.id === resourceId
-          ? {
-              ...resource,
-              documents: resource.documents.filter(
-                (item) => item.id !== documentId,
-              ),
-            }
-          : resource,
-      ),
-    );
-      notify('Document deleted.');
-    } catch (error) {
-      notify(error.message || 'Unable to delete this PDF.', 'error');
-    }
+  function requestDelete(resourceId, documentId, name) {
+    previousFocusRef.current = document.activeElement;
+    setDeleteRequest({ type: 'single', resourceId, documentId, name });
   }
 
-  async function handleDeleteAll() {
-    if (!window.confirm('Delete every uploaded PDF? This cannot be undone.')) return;
+  function requestDeleteAll() {
+    previousFocusRef.current = uploadsActionsRef.current?.querySelector('.branch-media-uploads-more');
+    setIsUploadsMenuOpen(false);
+    setDeleteRequest({ type: 'all' });
+  }
+
+  async function confirmDelete() {
+    if (!deleteRequest || isDeleting) return;
+    setIsDeleting(true);
     try {
-      const response = await apiFetch('/api/resources/manage/all', {
-        method: 'DELETE',
-      });
+      const response = deleteRequest.type === 'all'
+        ? await apiFetch('/api/resources/manage/all', { method: 'DELETE' })
+        : await apiFetch(`/api/resources/manage/${deleteRequest.documentId}`, { method: 'DELETE' });
       if (!response.ok) {
         const result = await response.json();
-        throw new Error(result.message || 'Unable to delete the documents.');
+        throw new Error(result.message || 'Unable to delete the selected documents.');
       }
-      setResources((current) => current.map((resource) => ({ ...resource, documents: [] })));
-      setPreviewDocument(null);
-      setIsUploadsMenuOpen(false);
-      notify('All documents deleted.');
+      if (deleteRequest.type === 'all') {
+        setResources((current) => current.map((resource) => ({ ...resource, documents: [] })));
+        setPreviewDocument(null);
+        notify('All documents deleted.');
+      } else {
+        const { resourceId, documentId, name } = deleteRequest;
+        setResources((currentResources) =>
+          currentResources.map((resource) =>
+            resource.id === resourceId
+              ? { ...resource, documents: resource.documents.filter((item) => item.id !== documentId) }
+              : resource,
+          ),
+        );
+        setPreviewDocument((current) => current?.id === documentId ? null : current);
+        notify(`${name} deleted.`);
+      }
+      setDeleteRequest(null);
     } catch (error) {
-      notify(error.message || 'Unable to delete the documents.', 'error');
+      notify(error.message || 'Unable to delete the selected documents.', 'error');
+    } finally {
+      setIsDeleting(false);
     }
   }
 
@@ -331,7 +398,7 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
                   </p>
                 </div>
               </div>
-              <div className='branch-media-category-control'>
+              <div className='branch-media-category-control' ref={categoryControlRef}>
                 <span id='branch-media-category-label'>Resource category</span>
                 <button
                   className='branch-media-category-button'
@@ -358,6 +425,8 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
                         type='button'
                         role='option'
                         aria-selected={resource.id === uploadTarget}
+                        aria-label={`${resource.title}${resource.documents.length ? ', document already uploaded' : ''}`}
+                        disabled={Boolean(resource.documents.length) && replacement?.resourceId !== resource.id}
                         key={resource.id}
                         onClick={() => {
                           setUploadTarget(resource.id);
@@ -366,8 +435,8 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
                         }}
                       >
                         <span>{resource.title}</span>
-                        {resource.id === uploadTarget && (
-                          <Check size={14} aria-hidden='true' />
+                        {resource.documents.length > 0 && (
+                          <Check className='is-uploaded' size={14} aria-hidden='true' />
                         )}
                       </button>
                     ))}
@@ -375,16 +444,28 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
                 )}
               </div>
             </div>
-            <label className='branch-media-file-picker'>
+            <label className='branch-media-file-picker' onClick={handleFilePickerClick}>
               <input
                 ref={documentInputRef}
                 type='file'
                 accept='application/pdf,.pdf'
+                disabled={isNewUploadBlocked}
                 onChange={handleFileChange}
               />
-              <img src={UploadIllustration} alt='' aria-hidden='true' />
-              <span>{selectedFile?.name ?? 'Choose a document'}</span>
+              <img
+                src={selectedFile ? UploadReadyIllustration : UploadIllustration}
+                alt=''
+                aria-hidden='true'
+              />
+              <span>
+                {selectedFile?.name ?? (isNewUploadBlocked ? 'Use Replace on an existing document' : 'Choose a document')}
+              </span>
             </label>
+            {uploadLimitNotice && (
+              <p className='branch-media-upload-limit' role='status' aria-live='polite'>
+                {uploadLimitNotice}
+              </p>
+            )}
             <div className='branch-media-upload-actions'>
               {(selectedFile || replacement) && (
                 <button
@@ -395,7 +476,7 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
                   Cancel upload
                 </button>
               )}
-              <button type='submit' disabled={isUploading} aria-busy={isUploading}>
+              <button type='submit' disabled={isUploading || isNewUploadBlocked} aria-busy={isUploading}>
                 {isUploading ? <LoadingSpinner /> : <Upload size={15} aria-hidden='true' />}
                 {isUploading ? 'Uploading…' : replacement ? 'Replace document' : 'Upload PDF'}
               </button>
@@ -499,7 +580,7 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
                       className='admin-record-menu-item is-danger'
                       type='button'
                       role='menuitem'
-                      onClick={handleDeleteAll}
+                      onClick={requestDeleteAll}
                     >
                       <Trash2 size={16} aria-hidden='true' />
                       <span>Delete all</span>
@@ -509,13 +590,18 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
               </div>
             </header>
             <div className='branch-media-upload-list'>
-              {uploadedDocuments.length ? (
+              {isLoadingUploads ? (
+                <div className='branch-media-uploads-loading' role='status' aria-live='polite'>
+                  <LoadingSpinner />
+                  <span>Loading uploads…</span>
+                </div>
+              ) : uploadedDocuments.length ? (
                 <ul className='branch-media-document-list'>
                   {uploadedDocuments.map((document) => (
                     <li key={document.id}>
                       <FileText size={18} aria-hidden='true' />
                       <div className='branch-media-document-details'>
-                        <strong>{document.name}</strong>
+                        <strong>{document.resourceTitle}</strong>
                         <span>
                           <em>{document.type}</em>
                           <span>
@@ -557,7 +643,7 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
                           className='is-danger'
                           type='button'
                           onClick={() =>
-                            handleDelete(document.resourceId, document.id)
+                            requestDelete(document.resourceId, document.id, document.name)
                           }
                           aria-label={`Delete ${document.name}`}
                           title='Delete'
@@ -604,6 +690,64 @@ export function BranchMediaAdminPage({ workspace = 'headquater-media-admin' }) {
           )}
         </div>
       </section>
+      {deleteRequest && (
+        <div
+          className='branch-media-confirm-backdrop'
+          onMouseDown={(event) => {
+            if (event.target === event.currentTarget && !isDeleting) setDeleteRequest(null);
+          }}
+        >
+          <section
+            className='branch-media-confirm-dialog'
+            role='alertdialog'
+            aria-modal='true'
+            aria-labelledby='branch-media-confirm-title'
+            aria-describedby='branch-media-confirm-description'
+            onKeyDown={(event) => {
+              if (event.key === 'Escape' && !isDeleting) setDeleteRequest(null);
+              if (event.key === 'Tab') {
+                const controls = event.currentTarget.querySelectorAll('button:not(:disabled)');
+                const first = controls[0];
+                const last = controls[controls.length - 1];
+                if (event.shiftKey && document.activeElement === first) {
+                  event.preventDefault();
+                  last?.focus();
+                } else if (!event.shiftKey && document.activeElement === last) {
+                  event.preventDefault();
+                  first?.focus();
+                }
+              }
+            }}
+          >
+            <div className='branch-media-confirm-icon'><Trash2 size={20} aria-hidden='true' /></div>
+            <h2 id='branch-media-confirm-title'>
+              {deleteRequest.type === 'all' ? 'Delete all uploads?' : 'Delete this upload?'}
+            </h2>
+            <p id='branch-media-confirm-description'>
+              {deleteRequest.type === 'all'
+                ? 'This will permanently delete every uploaded PDF. This action cannot be undone.'
+                : `“${deleteRequest.name}” will be permanently deleted. This action cannot be undone.`}
+            </p>
+            <div className='branch-media-confirm-actions'>
+              <button
+                ref={deleteCancelRef}
+                type='button'
+                disabled={isDeleting}
+                onClick={() => setDeleteRequest(null)}
+              >Cancel</button>
+              <button
+                className='is-danger'
+                type='button'
+                disabled={isDeleting}
+                aria-busy={isDeleting}
+                onClick={confirmDelete}
+              >
+                {isDeleting ? <><LoadingSpinner /> Deleting…</> : 'Delete'}
+              </button>
+            </div>
+          </section>
+        </div>
+      )}
       {feedback && <Toast key={feedback.id} message={feedback.message} type={feedback.type} />}
     </AdminLayout>
   );

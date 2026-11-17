@@ -13,6 +13,7 @@ const rateLimitOptions = {
 export const apiLimiter = rateLimit({
   ...rateLimitOptions,
   limit: 100,
+  skip: (req) => req.path === '/resources/events',
 });
 
 export const loginLimiter = rateLimit({

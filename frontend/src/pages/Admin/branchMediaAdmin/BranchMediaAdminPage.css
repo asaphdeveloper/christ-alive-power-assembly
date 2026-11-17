@@ -262,6 +262,10 @@
   background: var(--admin-primary-soft);
   color: var(--admin-primary);
 }
+.branch-media-category-menu button > svg.is-uploaded {
+  flex: 0 0 auto;
+  color: #087f5b;
+}
 .branch-media-file-picker {
   display: flex;
   grid-column: 1 / -1;
@@ -307,6 +311,14 @@
   display: flex;
   grid-column: 1;
   gap: 8px;
+}
+.branch-media-upload-limit {
+  grid-column: 1 / -1;
+  width: 100%;
+  margin: -8px 0 0;
+  color: #876322;
+  font-size: 12px;
+  line-height: 1.45;
 }
 .branch-media-upload-actions button,
 .branch-media-card-upload,
@@ -378,6 +390,74 @@
   margin-top: 12px;
   border: 1px solid #e1e9e4;
   border-radius: 8px;
+}
+.branch-media-confirm-backdrop {
+  position: fixed;
+  z-index: 120;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 20px;
+  background: rgba(13, 24, 17, 0.48);
+}
+.branch-media-confirm-dialog {
+  width: min(100%, 420px);
+  padding: 26px;
+  border: 1px solid #e5e9e6;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 20px 70px rgba(18, 34, 24, 0.24);
+}
+.branch-media-confirm-icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  place-items: center;
+  border-radius: 12px;
+  background: #fff0f0;
+  color: #c93636;
+}
+.branch-media-confirm-dialog h2 {
+  margin: 18px 0 0;
+  color: #202a24;
+  font-size: 18px;
+}
+.branch-media-confirm-dialog p {
+  margin: 8px 0 0;
+  color: #69766e;
+  font-size: 13px;
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+.branch-media-confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+}
+.branch-media-confirm-actions button {
+  display: inline-flex;
+  min-height: 40px;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 0 16px;
+  border: 1px solid #dce4df;
+  border-radius: 9px;
+  background: #fff;
+  color: #3e4a42;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.branch-media-confirm-actions button.is-danger {
+  border-color: #c93636;
+  background: #c93636;
+  color: #fff;
+}
+.branch-media-confirm-actions button:disabled {
+  opacity: 0.65;
+  cursor: wait;
 }
 .branch-media-current-uploads {
   grid-column: 1;
@@ -480,6 +560,15 @@
 }
 .branch-media-upload-list {
   padding: 0 17px;
+}
+.branch-media-uploads-loading {
+  display: flex;
+  min-height: 190px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #718078;
+  font-size: 13px;
 }
 .branch-media-empty-state {
   display: grid;

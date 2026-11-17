@@ -59,7 +59,6 @@ const generalOverseerNavItems = [
     to: '/admin/attendance-reports',
     icon: ClipboardList,
   },
-  { label: 'Settings', to: '/admin/settings', icon: Settings },
   {
     label: 'Developer workspace',
     to: '/admin/developer/overview',
@@ -76,7 +75,6 @@ const branchMediaAdminNavItems = [
     icon: ClipboardCheck,
   },
   { label: 'Visitors', to: '/admin/branch-media-admin/visitors', icon: Users },
-  { label: 'Settings', to: '/admin/settings', icon: Settings },
   {
     label: 'Developer workspace',
     to: '/admin/developer/overview',
@@ -91,7 +89,6 @@ const branchFinanceSecretaryNavItems = [
     to: '/admin/branch-finance-secretary',
     icon: LayoutDashboard,
   },
-  { label: 'Settings', to: '/admin/settings', icon: Settings },
   {
     label: 'Developer workspace',
     to: '/admin/developer/overview',
@@ -111,7 +108,6 @@ const headquaterMediaAdminNavItems = [
     to: '/admin/upload-resource',
     icon: Clapperboard,
   },
-  { label: 'Settings', to: '/admin/settings', icon: Settings },
   {
     label: 'Developer workspace',
     to: '/admin/developer/overview',

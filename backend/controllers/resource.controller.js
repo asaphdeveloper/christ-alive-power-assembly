@@ -5,6 +5,7 @@ import AppError from '../utils/appError.js';
 import ResourceDocument from '../models/resourceDocument.model.js';
 import ResourceUsage from '../models/resourceUsage.model.js';
 import { getR2Client, getResourceCategories, isR2Configured } from '../services/resourceStorage.js';
+import { broadcastResourceUpdate } from '../services/resourceEvents.js';
 
 const MAX_RESOURCE_BYTES = 20 * 1024 * 1024;
 const createUpload = () => multer({
@@ -137,6 +138,19 @@ export const uploadDocument = async (req, res, next) => {
     if (req.body.replaceId && !oldDocument) {
       return next(new AppError('The document to replace was not found in this category.', 404));
     }
+    if (!req.body.replaceId) {
+      const existingDocument = await ResourceDocument.exists({ category });
+      if (existingDocument) {
+        const uploadedCategories = await ResourceDocument.distinct('category');
+        const allCategoriesUploaded = validCategories.every((item) => uploadedCategories.includes(item.id));
+        return next(new AppError(
+          allCategoriesUploaded
+            ? 'All five resource categories already have a PDF. Replace an existing document to upload an update.'
+            : 'A PDF is already uploaded for this category. Use Replace to update it.',
+          409,
+        ));
+      }
+    }
     if (storageUsed - (oldDocument?.size || 0) + req.file.size > storageBudget()) {
       return next(new AppError('Upload paused to stay below the configured R2 storage safety limit.', 413));
     }
@@ -166,10 +180,12 @@ export const uploadDocument = async (req, res, next) => {
         await client.send(new DeleteObjectCommand({ Bucket: process.env.R2_BUCKET_NAME, Key: oldDocument.objectKey }));
         await ResourceDocument.deleteOne({ _id: oldDocument._id });
       } catch {
+        broadcastResourceUpdate();
         res.status(201).json({ status: 'success', message: 'New PDF uploaded. The previous copy could not be removed; delete it from the resource list when available.', data: { document } });
         return;
       }
     }
+    broadcastResourceUpdate();
     res.status(201).json({ status: 'success', data: { document } });
   } catch (error) {
     if (objectKey) {
@@ -189,6 +205,7 @@ export const deleteDocument = async (req, res, next) => {
     await reserveOperation('write');
     await getR2Client().send(new DeleteObjectCommand({ Bucket: process.env.R2_BUCKET_NAME, Key: document.objectKey }));
     await document.deleteOne();
+    broadcastResourceUpdate();
     res.status(204).end();
   } catch (error) {
     next(error);
@@ -196,6 +213,7 @@ export const deleteDocument = async (req, res, next) => {
 };
 
 export const deleteAllDocuments = async (_req, res, next) => {
+  let didDelete = false;
   try {
     const documents = await ResourceDocument.find();
     const client = getR2Client();
@@ -203,9 +221,12 @@ export const deleteAllDocuments = async (_req, res, next) => {
       await reserveOperation('write');
       await client.send(new DeleteObjectCommand({ Bucket: process.env.R2_BUCKET_NAME, Key: document.objectKey }));
       await document.deleteOne();
+      didDelete = true;
     }
+    if (didDelete) broadcastResourceUpdate();
     res.status(204).end();
   } catch (error) {
+    if (didDelete) broadcastResourceUpdate();
     next(error);
   }
 };
@@ -213,6 +234,7 @@ export const deleteAllDocuments = async (_req, res, next) => {
 export const listPublicDocuments = async (_req, res, next) => {
   try {
     const documents = await ResourceDocument.find().sort({ createdAt: -1 }).lean();
+    res.set('Cache-Control', 'no-store');
     res.status(200).json({
       status: 'success',
       data: { documents: documents.map(({ _id, category, name, size, createdAt }) => ({ id: _id, category, name, size, uploadedAt: createdAt })) },

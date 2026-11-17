@@ -86,26 +86,31 @@ const documentCategories = {
   'sunday-bulletin': {
     title: 'Sunday Bulletin',
     category: 'Bulletins',
+    description: 'Bulletin for the Sunday service.',
     day: 'Sunday',
   },
   'wednesday-bulletin': {
     title: 'Wednesday Bulletin',
     category: 'Bulletins',
+    description: 'Bulletin for the Wednesday service.',
     day: 'Wednesday',
   },
   'bible-study-guide': {
     title: 'Bible Study Guide',
     category: 'Bible study',
+    description: 'Study material for the weekly Bible study.',
     day: 'Wednesday',
   },
   'friday-prayer-meeting': {
     title: 'Friday Prayer Meeting',
     category: 'Prayer',
+    description: 'Guide for the Friday prayer meeting.',
     day: 'Friday',
   },
   'sunday-school-guide': {
     title: 'Sunday School Guide',
     category: 'Sunday school',
+    description: 'Learning material for Sunday school.',
     day: 'Sunday',
   },
 };
@@ -118,10 +123,21 @@ export const Resources = () => {
   const [documents, setDocuments] = useState([]);
   const categories = ['All materials', 'Hymn'];
   useEffect(() => {
-    fetch(apiUrl('/api/resources'))
-      .then((response) => response.json())
-      .then((result) => setDocuments(result.data?.documents ?? []))
-      .catch(() => setDocuments([]));
+    let isActive = true;
+    const loadDocuments = () =>
+      fetch(apiUrl('/api/resources'), { cache: 'no-store' })
+        .then((response) => response.json())
+        .then((result) => {
+          if (isActive) setDocuments(result.data?.documents ?? []);
+        })
+        .catch(() => {
+          if (isActive) setDocuments([]);
+        });
+
+    loadDocuments();
+    const resourceEvents = new EventSource(apiUrl('/api/resources/events'));
+    resourceEvents.onopen = loadDocuments;
+    resourceEvents.addEventListener('resources-updated', loadDocuments);
 
     function handlePublishedHymnChange(event) {
       if (event.key === publishedHymnStorageKey) {
@@ -130,8 +146,11 @@ export const Resources = () => {
     }
 
     window.addEventListener('storage', handlePublishedHymnChange);
-    return () =>
+    return () => {
+      isActive = false;
+      resourceEvents.close();
       window.removeEventListener('storage', handlePublishedHymnChange);
+    };
   }, []);
   const resourceTypes = [
     ...documents
@@ -269,7 +288,7 @@ export const Resources = () => {
                 </div>
                 <div className='church-resource-details'>
                   <h3>{item.title}</h3>
-                  <p className='church-resource-description'>{item.fileName}</p>
+                  <p className='church-resource-description'>{item.description}</p>
                   <div>
                     <span className='church-resource-new-badge'>PDF</span>
                     <span className='church-resource-date'>{item.date}</span>
