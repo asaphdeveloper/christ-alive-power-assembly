@@ -14,7 +14,7 @@ router.patch(
 
 router.get(
   '/headquater-media-admin',
-  authController.restrictTo('headquater-media-admin'),
+  authController.restrictTo('headquater-media-admin', 'jos-media-admin'),
   adminController.getAdminWorkspace('headquater-media-admin'),
 );
 router.get(

@@ -28,6 +28,15 @@
   gap: 15px;
   margin-top: 18px;
 }
+.admin-settings-usage-loading {
+  display: flex;
+  min-height: 120px;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  color: #718078;
+  font-size: 13px;
+}
 .admin-settings-usage-meter > div {
   display: flex;
   justify-content: space-between;

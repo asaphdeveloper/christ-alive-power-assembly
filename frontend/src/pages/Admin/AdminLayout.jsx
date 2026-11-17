@@ -5,13 +5,11 @@ import {
   Clapperboard,
   Church,
   ExternalLink,
-  Landmark,
   LayoutDashboard,
   MapPin,
   MapPinned,
   Settings,
   Users,
-  Video,
   Wrench,
 } from 'lucide-react';
 import { useLocation } from 'react-router';
@@ -24,26 +22,6 @@ const developerNavItems = [
   { label: 'Administrators', to: '/admin/all-admins', icon: Users },
   { label: 'Branches', to: '/admin/branches', icon: MapPinned },
   { label: 'Settings', to: '/admin/settings', icon: Settings },
-  {
-    label: 'General overseer',
-    to: '/admin/general-overseer',
-    icon: LayoutDashboard,
-  },
-  {
-    label: 'Branch media admin',
-    to: '/admin/branch-media-admin',
-    icon: Video,
-  },
-  {
-    label: 'Branch finance secretary',
-    to: '/admin/branch-finance-secretary',
-    icon: Landmark,
-  },
-  {
-    label: 'Headquater media admin',
-    to: '/admin/headquater-media-admin/overview',
-    icon: Video,
-  },
   { label: 'Public website', to: '/', icon: ExternalLink },
 ];
 
@@ -59,11 +37,6 @@ const generalOverseerNavItems = [
     to: '/admin/attendance-reports',
     icon: ClipboardList,
   },
-  {
-    label: 'Developer workspace',
-    to: '/admin/developer/overview',
-    icon: Wrench,
-  },
   { label: 'Public website', to: '/', icon: ExternalLink },
 ];
 
@@ -75,20 +48,6 @@ const branchMediaAdminNavItems = [
     icon: ClipboardCheck,
   },
   { label: 'Visitors', to: '/admin/branch-media-admin/visitors', icon: Users },
-  {
-    label: 'Developer workspace',
-    to: '/admin/developer/overview',
-    icon: Wrench,
-  },
-  { label: 'Public website', to: '/', icon: ExternalLink },
-];
-
-const branchFinanceSecretaryNavItems = [
-  {
-    label: 'Overview',
-    to: '/admin/branch-finance-secretary',
-    icon: LayoutDashboard,
-  },
   {
     label: 'Developer workspace',
     to: '/admin/developer/overview',
@@ -133,11 +92,6 @@ const workspaces = {
     profileName: 'Branch Media Admin',
     brandName: 'CAPA BAUCHI',
   },
-  'branch-finance-secretary': {
-    navItems: branchFinanceSecretaryNavItems,
-    homeTo: '/admin/branch-finance-secretary',
-    profileName: 'Branch Finance Secretary',
-  },
   'headquater-media-admin': {
     navItems: headquaterMediaAdminNavItems,
     homeTo: '/admin/headquater-media-admin/overview',
@@ -168,14 +122,6 @@ const welcomeDetails = {
       'Your media workspace is ready. Keep service resources and hymn materials organized for your church community.',
     facts: ['Bauchi, Bauchi State', 'Manage your local branch'],
     icon: Clapperboard,
-  },
-  'branch-finance-secretary': {
-    kicker: 'BRANCH FINANCE WORKSPACE',
-    title: 'Welcome, Finance Secretary',
-    description:
-      'Keep branch financial records and reporting organized for your congregation.',
-    facts: ['Bauchi Branch', 'Finance administration'],
-    icon: Landmark,
   },
   'headquater-media-admin': {
     kicker: 'HEADQUARTER MEDIA WORKSPACE',

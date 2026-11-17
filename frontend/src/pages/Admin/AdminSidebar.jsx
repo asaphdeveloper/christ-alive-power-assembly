@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Link, NavLink, useNavigate } from 'react-router';
 import { ChevronDown, LogOut, UserRound } from 'lucide-react';
 import { useAuth } from '../../auth/useAuth';
@@ -17,8 +17,25 @@ export function AdminSidebar({
   collapsed,
 }) {
   const [isProfileMenuOpen, setIsProfileMenuOpen] = useState(false);
+  const profileMenuRef = useRef(null);
   const navigate = useNavigate();
   const { signOut } = useAuth();
+
+  useEffect(() => {
+    if (!isProfileMenuOpen) return undefined;
+    function handlePointerDown(event) {
+      if (!profileMenuRef.current?.contains(event.target)) setIsProfileMenuOpen(false);
+    }
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') setIsProfileMenuOpen(false);
+    }
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isProfileMenuOpen]);
 
   function handleLogOut() {
     signOut();
@@ -52,7 +69,7 @@ export function AdminSidebar({
       </nav>
 
       <div className='admin-sidebar-bottom'>
-        <div className='admin-profile-menu-wrap'>
+        <div className='admin-profile-menu-wrap' ref={profileMenuRef}>
           {isProfileMenuOpen && (
             <div className='admin-profile-menu' role='menu' aria-label={`${profileName} account menu`}>
               <button type='button' className='admin-profile-menu-item' role='menuitem' onClick={handleLogOut}>

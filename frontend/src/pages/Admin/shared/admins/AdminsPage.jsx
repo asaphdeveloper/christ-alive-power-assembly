@@ -28,7 +28,6 @@ const roleOptions = [
   'Headquater Media Admin',
   'Branch Media Admin',
   'Branch Pastor',
-  'Branch Finance Secretary',
   'Branch Administrator',
 ];
 

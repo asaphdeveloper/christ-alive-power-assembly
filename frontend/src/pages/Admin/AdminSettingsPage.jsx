@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router';
 import { apiFetch } from '../../utils/api';
+import { LoadingSpinner } from '../../components/LoadingSpinner';
 import { AdminLayout } from './AdminLayout';
 import './AdminSettingsPage.css';
 
@@ -12,21 +13,27 @@ export function AdminSettingsPage() {
   const workspace = state?.workspace || storedWorkspace || 'developer';
   const [resourceUsage, setResourceUsage] = useState(null);
   const [usageError, setUsageError] = useState('');
+  const [isLoadingUsage, setIsLoadingUsage] = useState(true);
 
   useEffect(() => {
-    if (workspace !== 'developer') return;
-    const token = window.localStorage.getItem('access_token');
-    if (!token) return;
-    apiFetch('/api/resources/manage/usage', {
-      headers: { Authorization: `Bearer ${token}` },
-    })
+    if (workspace !== 'developer') return undefined;
+    let isActive = true;
+    apiFetch('/api/resources/manage/usage')
       .then(async (response) => {
         const result = await response.json();
         if (!response.ok) throw new Error(result.message || 'Unable to load R2 usage.');
         return result.data.usage;
       })
-      .then(setResourceUsage)
-      .catch((error) => setUsageError(error.message));
+      .then((usage) => {
+        if (isActive) setResourceUsage(usage);
+      })
+      .catch((error) => {
+        if (isActive) setUsageError(error.message);
+      })
+      .finally(() => {
+        if (isActive) setIsLoadingUsage(false);
+      });
+    return () => { isActive = false; };
   }, [workspace]);
 
   return (
@@ -38,6 +45,12 @@ export function AdminSettingsPage() {
               <h2 id='admin-settings-usage-title'>Cloudflare Upload Usage</h2>
               <p>Monthly app usage against its R2 safety limits{resourceUsage ? ` · ${resourceUsage.month}` : ''}</p>
             </header>
+            {isLoadingUsage && (
+              <div className='admin-settings-usage-loading' role='status' aria-live='polite'>
+                <LoadingSpinner />
+                <span>Loading Cloudflare usage…</span>
+              </div>
+            )}
             {usageError && <p className='admin-settings-usage-error' role='status'>{usageError}</p>}
             {resourceUsage && !resourceUsage.r2Configured && (
               <p className='admin-settings-usage-error' role='status'>Cloudflare R2 is not configured yet. Usage will appear after the backend is connected to R2.</p>

@@ -49,10 +49,6 @@ const pages = {
     'Branch Visitors | Christ Alive Power Assembly',
     'Record and review visitors to your Christ Alive Power Assembly branch.',
   ],
-  '/admin/branch-finance-secretary': [
-    'Branch Finance Secretary | Christ Alive Power Assembly',
-    'Branch Finance Secretary workspace for Christ Alive Power Assembly.',
-  ],
   '/admin/headquater-media-admin/overview': [
     'Headquater Media Admin | Christ Alive Power Assembly',
     'Headquater Media Admin workspace for Christ Alive Power Assembly.',

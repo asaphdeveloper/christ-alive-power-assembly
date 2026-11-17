@@ -7,6 +7,7 @@ export const ADMIN_ROLES = [
   'jos-media-admin',
   'general-overseer',
   'developer',
+  'branch-media-admin',
 ];
 
 const adminSchema = new mongoose.Schema(

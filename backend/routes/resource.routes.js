@@ -11,8 +11,12 @@ router.get('/', resourceController.listPublicDocuments);
 router.get('/:id/file', resourceController.downloadDocument);
 
 router.use(authController.authenticate);
-router.use(authController.restrictTo('headquater-media-admin', 'developer'));
-router.get('/manage/usage', resourceController.getResourceUsage);
+router.get(
+  '/manage/usage',
+  authController.restrictTo('headquater-media-admin', 'jos-media-admin', 'developer'),
+  resourceController.getResourceUsage,
+);
+router.use(authController.restrictTo('headquater-media-admin', 'jos-media-admin'));
 router.get('/manage', resourceController.listAdminDocuments);
 router.post('/manage', uploadLimiter, resourceController.parsePdfUpload, resourceController.uploadDocument);
 router.delete('/manage/all', resourceController.deleteAllDocuments);

@@ -8,11 +8,11 @@ router.use(authController.authenticate);
 
 router
   .route('/')
-  .get(branchController.getAllBranches)
+  .get(authController.restrictTo('developer'), branchController.getAllBranches)
   .post(authController.restrictTo('developer'), branchController.createBranch);
 
 router
   .route('/:id')
-  .get(branchController.getBranch)
+  .get(authController.restrictTo('developer'), branchController.getBranch)
   .patch(authController.restrictTo('developer'), branchController.updateBranch)
   .delete(authController.restrictTo('developer'), branchController.deleteBranch);

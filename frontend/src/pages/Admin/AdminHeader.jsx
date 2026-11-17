@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useAuth } from '../../auth/useAuth';
 import {
@@ -16,8 +16,25 @@ import './AdminHeader.css';
 
 export function AdminHeader({ workspaceName, currentPage, collapsed, onToggleSidebar }) {
   const [isAccountMenuOpen, setIsAccountMenuOpen] = useState(false);
+  const accountMenuRef = useRef(null);
   const navigate = useNavigate();
   const { signOut } = useAuth();
+
+  useEffect(() => {
+    if (!isAccountMenuOpen) return undefined;
+    function handlePointerDown(event) {
+      if (!accountMenuRef.current?.contains(event.target)) setIsAccountMenuOpen(false);
+    }
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') setIsAccountMenuOpen(false);
+    }
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [isAccountMenuOpen]);
 
   function handleLogOut() {
     signOut();
@@ -66,7 +83,7 @@ export function AdminHeader({ workspaceName, currentPage, collapsed, onToggleSid
       >
         <Settings size={18} aria-hidden='true' />
       </button>
-      <div className='admin-header-account'>
+      <div className='admin-header-account' ref={accountMenuRef}>
         {isAccountMenuOpen && (
           <div className='admin-header-account-menu' role='menu' aria-label='Account menu'>
             <button
