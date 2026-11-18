@@ -71,7 +71,7 @@ function formatCalendarDate(
 }
 
 export function AttendancePage({
-  user = { name: 'Branch Media Admin', branch: 'Bauchi Branch' },
+  user = { name: 'Branch Media Admin', branch: 'your assigned branch' },
 }) {
   const [date, setDate] = useState(getToday);
   const [figures, setFigures] = useState(emptyAttendance);
@@ -84,7 +84,7 @@ export function AttendancePage({
     (sum, group) => sum + Number(figures[group.key] || 0),
     0,
   );
-  const alreadySent = attendanceHistory.some(
+  const alreadySent = [...attendanceHistory, ...records].some(
     (record) =>
       record.branch === user.branch &&
       record.serviceDate === date &&
@@ -95,7 +95,7 @@ export function AttendancePage({
   const weekEnd = new Date(weekStart);
   weekEnd.setDate(weekEnd.getDate() + 6);
   weekEnd.setHours(23, 59, 59, 999);
-  const weeklyRecords = attendanceHistory
+  const weeklyRecords = [...attendanceHistory, ...records]
     .filter((record) => {
       const recordDate = new Date(`${record.serviceDate}T12:00:00`);
       return (

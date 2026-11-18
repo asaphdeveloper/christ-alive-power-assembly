@@ -13,6 +13,7 @@ import {
   Wrench,
 } from 'lucide-react';
 import { useLocation } from 'react-router';
+import { useAuth } from '../../auth/useAuth';
 import { AdminHeader } from './AdminHeader';
 import { AdminSidebar } from './AdminSidebar';
 import './AdminLayout.css';
@@ -116,11 +117,10 @@ const welcomeDetails = {
     icon: Church,
   },
   'branch-media-admin': {
-    kicker: 'BAUCHI MEDIA WORKSPACE',
-    title: 'Welcome Bauchi Media Admin',
-    description:
-      'Your media workspace is ready. Keep service resources and hymn materials organized for your church community.',
-    facts: ['Bauchi, Bauchi State', 'Manage your local branch'],
+    kicker: 'BRANCH MEDIA WORKSPACE',
+    title: 'Welcome to your branch workspace',
+    description: 'Manage attendance, visitors, and media activity for your assigned branch.',
+    facts: ['Your assigned branch', 'Manage your local branch'],
     icon: Clapperboard,
   },
   'headquater-media-admin': {
@@ -133,10 +133,11 @@ const welcomeDetails = {
   },
 };
 
-function AdminWelcomeBanner({ workspace }) {
+function AdminWelcomeBanner({ workspace, branchName }) {
   const details = welcomeDetails[workspace];
   if (!details) return null;
   const Icon = details.icon;
+  const isBranchWorkspace = workspace === 'branch-media-admin';
 
   return (
     <section
@@ -145,12 +146,12 @@ function AdminWelcomeBanner({ workspace }) {
     >
       <div className='branch-media-welcome-content'>
         <span className='branch-media-welcome-kicker'>{details.kicker}</span>
-        <h1>{details.title}</h1>
+        <h1>{isBranchWorkspace ? `Welcome to ${branchName}` : details.title}</h1>
         <p>{details.description}</p>
         <div className='branch-media-welcome-facts'>
           <span>
             <MapPin size={15} aria-hidden='true' />
-            {details.facts[0]}
+            {isBranchWorkspace ? branchName : details.facts[0]}
           </span>
           <span>
             <ClipboardList size={15} aria-hidden='true' />
@@ -172,6 +173,7 @@ export function AdminLayout({
   showWelcomeBanner = false,
 }) {
   const { pathname } = useLocation();
+  const { admin } = useAuth();
   const [collapsed, setCollapsed] = useState(false);
   const {
     navItems,
@@ -181,6 +183,18 @@ export function AdminLayout({
   } = workspaces[workspace] ?? workspaces.developer;
   const currentPage =
     navItems.find((item) => item.to === pathname)?.label ?? pageTitle;
+  const branchName = admin?.branch?.name ?? 'your assigned branch';
+  const isBranchWorkspace = workspace === 'branch-media-admin';
+  const branchLabel = admin?.branch?.name?.replace(/\s+branch$/i, '').trim();
+  const workspaceProfileName = isBranchWorkspace
+    ? admin?.name ?? profileName
+    : profileName;
+  const workspaceAccountName = isBranchWorkspace
+    ? admin?.name ?? profileName
+    : profileName;
+  const workspaceBrandName = isBranchWorkspace && branchLabel
+    ? `CAPA ${branchLabel.toLocaleUpperCase()}`
+    : brandName;
 
   return (
     <div className={`admin-shell${collapsed ? ' is-collapsed' : ''}`}>
@@ -188,21 +202,21 @@ export function AdminLayout({
         navItems={navItems}
         homeTo={homeTo}
         homeLabel={`${profileName} workspace home`}
-        brandName={brandName}
+        brandName={workspaceBrandName}
         navigationLabel={`${profileName} workspace navigation`}
-        profileName={profileName}
+        profileName={workspaceProfileName}
         workspace={workspace}
-        profileDescription='Workspace access'
+        profileDescription={isBranchWorkspace ? admin?.username ?? '' : 'Workspace access'}
         collapsed={collapsed}
       />
       <main className='admin-main' id='main-content' tabIndex={-1}>
         <AdminHeader
-          workspaceName={profileName}
+          workspaceName={workspaceAccountName}
           currentPage={currentPage}
           collapsed={collapsed}
           onToggleSidebar={() => setCollapsed((value) => !value)}
         />
-        {showWelcomeBanner && <AdminWelcomeBanner workspace={workspace} />}
+        {showWelcomeBanner && <AdminWelcomeBanner workspace={workspace} branchName={branchName} />}
         {children}
       </main>
     </div>

@@ -1,7 +1,10 @@
 import { AdminLayout } from '../AdminLayout';
+import { useAuth } from '../../../auth/useAuth';
 import './BranchMediaOverviewPage.css';
 
 export function BranchMediaOverviewPage() {
+  const { admin } = useAuth();
+  const branchName = admin?.branch?.name ?? 'your assigned branch';
   return (
     <AdminLayout
       workspace='branch-media-admin'
@@ -14,7 +17,7 @@ export function BranchMediaOverviewPage() {
       >
         <header className='branch-media-overview-heading'>
           <h1 id='branch-media-overview-title'>Overview</h1>
-          <p>Welcome to your branch media workspace.</p>
+          <p>Welcome to the {branchName} branch media workspace.</p>
         </header>
       </section>
     </AdminLayout>

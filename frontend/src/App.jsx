@@ -96,7 +96,7 @@ const PageNotFound = lazy(() =>
 
 function BranchMediaAttendanceRoute() {
   const { admin } = useAuth();
-  return <AttendancePage user={{ name: admin?.name ?? 'Branch Media Admin', branch: admin?.branch?.name ?? '' }} />;
+  return <AttendancePage user={{ name: admin?.name ?? 'Branch Media Admin', branch: admin?.branch?.name ?? 'your assigned branch' }} />;
 }
 
 function App() {

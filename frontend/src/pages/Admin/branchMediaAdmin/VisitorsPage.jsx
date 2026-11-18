@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { CalendarDays, UserRoundPlus, Users } from 'lucide-react';
 import { AdminLayout } from '../AdminLayout';
+import { useAuth } from '../../../auth/useAuth';
 import './VisitorsPage.css';
 
 function getToday() {
@@ -11,6 +12,8 @@ function getToday() {
 }
 
 export function VisitorsPage() {
+  const { admin } = useAuth();
+  const branchName = admin?.branch?.name ?? 'your assigned branch';
   const [visitors, setVisitors] = useState([]);
   const [name, setName] = useState('');
   const [contact, setContact] = useState('');
@@ -32,7 +35,7 @@ export function VisitorsPage() {
         <header className='branch-visitors-heading'>
           <p>BRANCH MEDIA ADMIN</p>
           <h1 id='branch-visitors-title'>Visitors</h1>
-          <span>Record and review visitors to your branch.</span>
+          <span>Record and review visitors to {branchName}.</span>
         </header>
 
         <div className='branch-visitors-layout'>
@@ -41,7 +44,7 @@ export function VisitorsPage() {
               <span><UserRoundPlus size={18} aria-hidden='true' /></span>
               <div>
                 <h2>Record a visitor</h2>
-                <p>Add a visitor to the branch log.</p>
+                <p>Add a visitor to the {branchName} log.</p>
               </div>
             </div>
             <label>
