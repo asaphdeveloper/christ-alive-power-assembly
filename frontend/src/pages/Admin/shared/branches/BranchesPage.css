@@ -76,7 +76,7 @@
 }
 .branches-empty-state p {
   margin-bottom: 6px;
-  font-size: 13px;
+  font-size: 14px;
 }
 .branch-form-backdrop {
   position: fixed;
@@ -306,8 +306,11 @@
   color: #333;
   text-align: left;
   font: inherit;
-  font-size: 13px;
+  font-size: 14px;
   cursor: pointer;
+}
+.branch-record-menu-item span {
+  font-size: 14px;
 }
 .branch-record-menu-item:hover {
   background: #f4f6f4;
