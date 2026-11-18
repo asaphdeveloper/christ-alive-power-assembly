@@ -9,6 +9,7 @@ import {
   MoreVertical,
   Pencil,
   Phone,
+  Pin,
   Plus,
   KeyRound,
   ShieldCheck,
@@ -65,6 +66,7 @@ function AdminCard({
   onCloseMenu,
   onEdit,
   onUpdatePassword,
+  onTogglePin,
   onDelete,
 }) {
   const actionsRef = useRef(null);
@@ -90,6 +92,7 @@ function AdminCard({
   const actions = [
     { label: 'Update', icon: Pencil, onClick: onEdit },
     { label: 'Reset password', icon: KeyRound, onClick: onUpdatePassword },
+    { label: admin.isPinned ? 'Unpin' : 'Pin', icon: Pin, onClick: onTogglePin },
     ...(!protectedRoles.has(admin.role)
       ? [{ label: 'Delete', icon: Trash2, danger: true, onClick: onDelete }]
       : []),
@@ -97,7 +100,7 @@ function AdminCard({
 
   return (
     <article
-      className={`admin-card${menuOpen ? ' has-open-menu' : ''}`}
+      className={`admin-card${admin.isPinned ? ' is-pinned' : ''}${menuOpen ? ' has-open-menu' : ''}`}
     >
       <div className='admin-card-heading'>
         <span
@@ -468,6 +471,14 @@ function AdminForm({ admin, branches, onSubmit, onCancel }) {
 
 export function AdminsPage() {
   const [admins, setAdmins] = useState([]);
+  const [pinnedAdminIds, setPinnedAdminIds] = useState(() => {
+    try {
+      const saved = JSON.parse(window.localStorage.getItem('pinned-admin-ids') || '[]');
+      return new Set(Array.isArray(saved) ? saved.map(String) : []);
+    } catch {
+      return new Set();
+    }
+  });
   const [branchRecords, setBranchRecords] = useState([]);
   const [openAdminMenu, setOpenAdminMenu] = useState(null);
   const [formAdmin, setFormAdmin] = useState(undefined);
@@ -565,6 +576,20 @@ export function AdminsPage() {
     }
   }
 
+  function toggleAdminPin(admin) {
+    setPinnedAdminIds((current) => {
+      const next = new Set(current);
+      if (next.has(String(admin._id))) next.delete(String(admin._id));
+      else next.add(String(admin._id));
+      try {
+        window.localStorage.setItem('pinned-admin-ids', JSON.stringify([...next]));
+      } catch {
+        notify('Pin preference could not be saved in this browser.', 'error');
+      }
+      return next;
+    });
+  }
+
   const roleOptionsForFilter = [
     { label: 'All roles', value: 'all' },
     ...[...new Set(admins.map((admin) => admin.role).filter(Boolean))]
@@ -572,8 +597,10 @@ export function AdminsPage() {
       .map((role) => ({ label: formatAdminRole(role), value: role })),
   ];
   const orderedAdmins = admins
+    .map((admin) => ({ ...admin, isPinned: pinnedAdminIds.has(String(admin._id)) }))
     .filter((admin) => selectedRole === 'all' || admin.role === selectedRole)
     .sort((first, second) => {
+      if (first.isPinned !== second.isPinned) return first.isPinned ? -1 : 1;
       const firstDate = new Date(first.createdAt).getTime();
       const secondDate = new Date(second.createdAt).getTime();
       const safeFirstDate = Number.isNaN(firstDate) ? 0 : firstDate;
@@ -647,6 +674,7 @@ export function AdminsPage() {
               onCloseMenu={() => setOpenAdminMenu(null)}
               onEdit={() => setFormAdmin(admin)}
               onUpdatePassword={() => setPasswordAdmin(admin)}
+              onTogglePin={() => toggleAdminPin(admin)}
               onDelete={() => deleteAdmin(admin)}
             />
           ))}
