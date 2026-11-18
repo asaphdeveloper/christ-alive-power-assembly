@@ -1,23 +1,79 @@
 .branch-media-overview-page {
-  min-height: calc(100svh - 360px);
-  margin-top: 24px;
+  margin-top: 22px;
   padding-bottom: 32px;
   color: #17231e;
 }
 
 .branch-media-overview-heading {
-  padding: 8px 0 20px;
+  margin-bottom: 18px;
 }
 
-.branch-media-overview-heading h1 {
+.branch-media-overview-heading > p {
+  color: #087f5b;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .12em;
+}
+
+.branch-media-overview-links {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+
+.branch-media-overview-card {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  gap: 13px;
+  padding: 18px;
+  border: 1px solid #e1e9e4;
+  border-radius: 12px;
+  background: #fff;
+}
+
+.branch-media-overview-icon {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 10px;
+  background: #e9f5ef;
+  color: #087f5b;
+}
+
+.branch-media-overview-copy {
+  min-width: 0;
+  flex: 1;
+}
+
+.branch-media-overview-copy h2 {
   color: #26352d;
-  font-size: 23px;
-  font-weight: 600;
-  letter-spacing: -0.025em;
+  font-size: 15px;
+  font-weight: 650;
 }
 
-.branch-media-overview-heading p {
-  margin-top: 6px;
+.branch-media-overview-copy p {
+  margin-top: 4px;
   color: #77837b;
-  font-size: 14px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.branch-media-overview-card > a {
+  display: grid;
+  width: 34px;
+  height: 34px;
+  flex: 0 0 auto;
+  place-items: center;
+  border-radius: 8px;
+  background: #f3f7f4;
+  color: #087f5b;
+}
+
+@media (max-width: 620px) {
+  .branch-media-overview-links {
+    grid-template-columns: minmax(0, 1fr);
+  }
 }

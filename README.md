@@ -45,3 +45,9 @@ what happens to the admin linked to a branch when i delete the branch
 MAP: 10.262723092424185, 9.784401806775811
 
 add a loading spinner to admin-form-submit, while loading replace the admin-form-submit svg icon with the loading spinner. do same for branch-form-submit also.
+
+in branch attendance page add stat cards showing Highest Attendace recorded in that branch
+
+what happens when i delete a branch
+
+when a new record is set send notification to the specific branch admin, hedquater admin, developer and headquater admin

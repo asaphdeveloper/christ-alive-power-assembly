@@ -93,9 +93,15 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
   const uploadTargetResource = resources.find(
     (resource) => resource.id === uploadTarget,
   );
-  const isSelectedCategoryFull = Boolean(uploadTargetResource?.documents.length);
-  const areAllCategoriesFull = resources.every((resource) => resource.documents.length > 0);
-  const isNewUploadBlocked = isLoadingUploads || (!replacement && (isSelectedCategoryFull || areAllCategoriesFull));
+  const isSelectedCategoryFull = Boolean(
+    uploadTargetResource?.documents.length,
+  );
+  const areAllCategoriesFull = resources.every(
+    (resource) => resource.documents.length > 0,
+  );
+  const isNewUploadBlocked =
+    isLoadingUploads ||
+    (!replacement && (isSelectedCategoryFull || areAllCategoriesFull));
   const uploadedDocuments = resources.flatMap((resource) =>
     resource.documents.map((document) => ({
       ...document,
@@ -112,22 +118,25 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
     apiFetch('/api/resources/manage')
       .then(async (response) => {
         const result = await response.json();
-        if (!response.ok) throw new Error(result.message || 'Unable to load documents.');
+        if (!response.ok)
+          throw new Error(result.message || 'Unable to load documents.');
         return result.data;
       })
       .then(({ documents }) => {
-        setResources((current) => current.map((resource) => ({
-          ...resource,
-          documents: documents
-            .filter((document) => document.category === resource.id)
-            .map((document) => ({
-              ...document,
-              id: document._id,
-              size: document.size,
-              type: 'PDF',
-              uploadedAt: new Date(document.createdAt).toLocaleDateString(),
-            })),
-        })));
+        setResources((current) =>
+          current.map((resource) => ({
+            ...resource,
+            documents: documents
+              .filter((document) => document.category === resource.id)
+              .map((document) => ({
+                ...document,
+                id: document._id,
+                size: document.size,
+                type: 'PDF',
+                uploadedAt: new Date(document.createdAt).toLocaleDateString(),
+              })),
+          })),
+        );
       })
       .catch((error) => notify(error.message, 'error'))
       .finally(() => setIsLoadingUploads(false));
@@ -138,33 +147,43 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
     apiFetch('/api/resources/manage/hymn')
       .then(async (response) => {
         const result = await response.json();
-        if (!response.ok) throw new Error(result.message || 'Unable to load hymn lyrics.');
+        if (!response.ok)
+          throw new Error(result.message || 'Unable to load hymn lyrics.');
         return result.data.hymn;
       })
       .then((hymn) => {
         if (!isActive) return;
         let localDraft = null;
         try {
-          localDraft = JSON.parse(window.localStorage.getItem(hymnDraftStorageKey) || 'null');
+          localDraft = JSON.parse(
+            window.localStorage.getItem(hymnDraftStorageKey) || 'null',
+          );
         } catch {
           window.localStorage.removeItem(hymnDraftStorageKey);
         }
-        const initialLyrics = typeof localDraft?.lyrics === 'string'
-          ? localDraft.lyrics
-          : hymn.publishedLyrics || '';
+        const initialLyrics =
+          typeof localDraft?.lyrics === 'string'
+            ? localDraft.lyrics
+            : hymn.publishedLyrics || '';
         const initialNumber = localDraft?.hymnNumber
           ? String(localDraft.hymnNumber)
-          : hymn.publishedNumber ? String(hymn.publishedNumber) : '';
+          : hymn.publishedNumber
+            ? String(hymn.publishedNumber)
+            : '';
         setHymnLyrics(initialLyrics);
         setSavedHymnLyrics(initialLyrics);
         setHymnNumber(initialNumber);
         setSavedHymnNumber(initialNumber);
         setIsEditingHymnLyrics(!initialLyrics);
         setPublishedHymnLyrics(hymn.publishedLyrics || '');
-        setPublishedHymnNumber(hymn.publishedNumber ? String(hymn.publishedNumber) : '');
-        setIsHymnPublished(Boolean(initialLyrics.trim())
-          && initialLyrics.trim() === (hymn.publishedLyrics || '').trim()
-          && initialNumber === String(hymn.publishedNumber || ''));
+        setPublishedHymnNumber(
+          hymn.publishedNumber ? String(hymn.publishedNumber) : '',
+        );
+        setIsHymnPublished(
+          Boolean(initialLyrics.trim()) &&
+            initialLyrics.trim() === (hymn.publishedLyrics || '').trim() &&
+            initialNumber === String(hymn.publishedNumber || ''),
+        );
       })
       .catch((error) => {
         if (isActive) notify(error.message, 'error');
@@ -172,7 +191,9 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
       .finally(() => {
         if (isActive) setIsLoadingHymn(false);
       });
-    return () => { isActive = false; };
+    return () => {
+      isActive = false;
+    };
   }, [notify]);
 
   useEffect(() => {
@@ -227,7 +248,11 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
 
   function handleFileChange(event) {
     const file = event.target.files?.[0] ?? null;
-    if (file && (file.type !== 'application/pdf' || !file.name.toLowerCase().endsWith('.pdf'))) {
+    if (
+      file &&
+      (file.type !== 'application/pdf' ||
+        !file.name.toLowerCase().endsWith('.pdf'))
+    ) {
       setSelectedFile(null);
       event.target.value = '';
       notify('Choose a PDF file.', 'error');
@@ -253,7 +278,10 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
           : 'This category already has a PDF. Use Replace to update it.',
     );
     window.clearTimeout(uploadLimitTimerRef.current);
-    uploadLimitTimerRef.current = window.setTimeout(() => setUploadLimitNotice(''), 4000);
+    uploadLimitTimerRef.current = window.setTimeout(
+      () => setUploadLimitNotice(''),
+      4000,
+    );
   }
 
   function handleCancelUpload() {
@@ -268,22 +296,33 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
       notify('Paste hymn lyrics before saving.', 'error');
       return;
     }
-    if (!Number.isInteger(Number(hymnNumber)) || Number(hymnNumber) < 1 || Number(hymnNumber) > 99999) {
+    if (
+      !Number.isInteger(Number(hymnNumber)) ||
+      Number(hymnNumber) < 1 ||
+      Number(hymnNumber) > 99999
+    ) {
       notify('Enter a valid hymn number between 1 and 99,999.', 'error');
       return;
     }
     setIsSavingHymn(true);
     try {
-      const draft = { lyrics: hymnLyrics.trim(), hymnNumber: Number(hymnNumber) };
+      const draft = {
+        lyrics: hymnLyrics.trim(),
+        hymnNumber: Number(hymnNumber),
+      };
       window.localStorage.setItem(hymnDraftStorageKey, JSON.stringify(draft));
       setHymnLyrics(draft.lyrics);
       setSavedHymnLyrics(draft.lyrics);
       setSavedHymnNumber(String(draft.hymnNumber));
-      setIsHymnPublished(draft.lyrics === publishedHymnLyrics.trim()
-        && String(draft.hymnNumber) === publishedHymnNumber);
+      setIsHymnPublished(
+        draft.lyrics === publishedHymnLyrics.trim() &&
+          String(draft.hymnNumber) === publishedHymnNumber,
+      );
       setIsEditingHymnLyrics(false);
       const verseCount = draft.lyrics.split(/\n\s*\n/).length;
-      notify(`${verseCount} ${verseCount === 1 ? 'verse' : 'verses'} saved as a draft in this browser.`);
+      notify(
+        `${verseCount} ${verseCount === 1 ? 'verse' : 'verses'} saved as a draft in this browser.`,
+      );
     } catch (error) {
       notify(error.message || 'Unable to save hymn lyrics.', 'error');
     } finally {
@@ -302,18 +341,29 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
       const response = await apiFetch('/api/resources/manage/hymn', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ lyrics: savedHymnLyrics, hymnNumber: Number(savedHymnNumber), publish: true }),
+        body: JSON.stringify({
+          lyrics: savedHymnLyrics,
+          hymnNumber: Number(savedHymnNumber),
+          publish: true,
+        }),
       });
       const result = await response.json();
-      if (!response.ok) throw new Error(result.message || 'Unable to publish hymn lyrics.');
-      setPublishedHymnLyrics(result.data.hymn.publishedLyrics || savedHymnLyrics);
-      setPublishedHymnNumber(String(result.data.hymn.publishedNumber || savedHymnNumber));
+      if (!response.ok)
+        throw new Error(result.message || 'Unable to publish hymn lyrics.');
+      setPublishedHymnLyrics(
+        result.data.hymn.publishedLyrics || savedHymnLyrics,
+      );
+      setPublishedHymnNumber(
+        String(result.data.hymn.publishedNumber || savedHymnNumber),
+      );
       setIsHymnPublished(true);
       window.localStorage.removeItem(hymnDraftStorageKey);
       setIsEditingHymnLyrics(false);
-      notify(result.data.alreadyPublished
-        ? 'This hymn is already published and matches the public website.'
-        : result.message || 'Hymn lyrics published to the public website.');
+      notify(
+        result.data.alreadyPublished
+          ? 'This hymn is already published and matches the public website.'
+          : result.message || 'Hymn lyrics published to the public website.',
+      );
     } catch (error) {
       notify(error.message || 'Unable to publish hymn lyrics.', 'error');
     } finally {
@@ -350,7 +400,8 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
         body: formData,
       });
       const result = await response.json();
-      if (!response.ok) throw new Error(result.message || 'Unable to upload this PDF.');
+      if (!response.ok)
+        throw new Error(result.message || 'Unable to upload this PDF.');
       const saved = result.data.document;
       const document = {
         id: saved._id,
@@ -362,24 +413,30 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
 
       setResources((currentResources) =>
         currentResources.map((resource) => {
-        if (resource.id !== uploadTarget) {
-          return resource;
-        }
+          if (resource.id !== uploadTarget) {
+            return resource;
+          }
 
-        if (replacement?.resourceId === resource.id && !result.message) {
-          return {
-            ...resource,
-            documents: resource.documents.map((item) =>
-              item.id === replacement.documentId ? document : item,
-            ),
-          };
-        }
+          if (replacement?.resourceId === resource.id && !result.message) {
+            return {
+              ...resource,
+              documents: resource.documents.map((item) =>
+                item.id === replacement.documentId ? document : item,
+              ),
+            };
+          }
 
-        return { ...resource, documents: [...resource.documents, document] };
+          return { ...resource, documents: [...resource.documents, document] };
         }),
       );
 
-      notify(result.message || (replacement ? 'Document replaced successfully.' : 'Document added successfully.'), result.message ? 'warning' : 'success');
+      notify(
+        result.message ||
+          (replacement
+            ? 'Document replaced successfully.'
+            : 'Document added successfully.'),
+        result.message ? 'warning' : 'success',
+      );
       setSelectedFile(null);
       setReplacement(null);
       event.target.reset();
@@ -404,7 +461,9 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
 
   function requestDeleteAll() {
     if (uploadedDocuments.length === 0) return;
-    previousFocusRef.current = uploadsActionsRef.current?.querySelector('.branch-media-uploads-more');
+    previousFocusRef.current = uploadsActionsRef.current?.querySelector(
+      '.branch-media-uploads-more',
+    );
     setIsUploadsMenuOpen(false);
     setDeleteRequest({ type: 'all' });
   }
@@ -413,15 +472,23 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
     if (!deleteRequest || isDeleting) return;
     setIsDeleting(true);
     try {
-      const response = deleteRequest.type === 'all'
-        ? await apiFetch('/api/resources/manage/all', { method: 'DELETE' })
-        : await apiFetch(`/api/resources/manage/${deleteRequest.documentId}`, { method: 'DELETE' });
+      const response =
+        deleteRequest.type === 'all'
+          ? await apiFetch('/api/resources/manage/all', { method: 'DELETE' })
+          : await apiFetch(
+              `/api/resources/manage/${deleteRequest.documentId}`,
+              { method: 'DELETE' },
+            );
       if (!response.ok) {
         const result = await response.json();
-        throw new Error(result.message || 'Unable to delete the selected documents.');
+        throw new Error(
+          result.message || 'Unable to delete the selected documents.',
+        );
       }
       if (deleteRequest.type === 'all') {
-        setResources((current) => current.map((resource) => ({ ...resource, documents: [] })));
+        setResources((current) =>
+          current.map((resource) => ({ ...resource, documents: [] })),
+        );
         setPreviewDocument(null);
         notify('All documents deleted.');
       } else {
@@ -429,16 +496,26 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
         setResources((currentResources) =>
           currentResources.map((resource) =>
             resource.id === resourceId
-              ? { ...resource, documents: resource.documents.filter((item) => item.id !== documentId) }
+              ? {
+                  ...resource,
+                  documents: resource.documents.filter(
+                    (item) => item.id !== documentId,
+                  ),
+                }
               : resource,
           ),
         );
-        setPreviewDocument((current) => current?.id === documentId ? null : current);
+        setPreviewDocument((current) =>
+          current?.id === documentId ? null : current,
+        );
         notify(`${name} deleted.`);
       }
       setDeleteRequest(null);
     } catch (error) {
-      notify(error.message || 'Unable to delete the selected documents.', 'error');
+      notify(
+        error.message || 'Unable to delete the selected documents.',
+        'error',
+      );
     } finally {
       setIsDeleting(false);
     }
@@ -472,7 +549,10 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
                   </p>
                 </div>
               </div>
-              <div className='branch-media-category-control' ref={categoryControlRef}>
+              <div
+                className='branch-media-category-control'
+                ref={categoryControlRef}
+              >
                 <span id='branch-media-category-label'>Resource category</span>
                 <button
                   className='branch-media-category-button'
@@ -500,7 +580,10 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
                         role='option'
                         aria-selected={resource.id === uploadTarget}
                         aria-label={`${resource.title}${resource.documents.length ? ', document already uploaded' : ''}`}
-                        disabled={Boolean(resource.documents.length) && replacement?.resourceId !== resource.id}
+                        disabled={
+                          Boolean(resource.documents.length) &&
+                          replacement?.resourceId !== resource.id
+                        }
                         key={resource.id}
                         onClick={() => {
                           setUploadTarget(resource.id);
@@ -510,7 +593,11 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
                       >
                         <span>{resource.title}</span>
                         {resource.documents.length > 0 && (
-                          <Check className='is-uploaded' size={14} aria-hidden='true' />
+                          <Check
+                            className='is-uploaded'
+                            size={14}
+                            aria-hidden='true'
+                          />
                         )}
                       </button>
                     ))}
@@ -518,7 +605,10 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
                 )}
               </div>
             </div>
-            <label className='branch-media-file-picker' onClick={handleFilePickerClick}>
+            <label
+              className='branch-media-file-picker'
+              onClick={handleFilePickerClick}
+            >
               <input
                 ref={documentInputRef}
                 type='file'
@@ -527,16 +617,25 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
                 onChange={handleFileChange}
               />
               <img
-                src={selectedFile ? UploadReadyIllustration : UploadIllustration}
+                src={
+                  selectedFile ? UploadReadyIllustration : UploadIllustration
+                }
                 alt=''
                 aria-hidden='true'
               />
               <span>
-                {selectedFile?.name ?? (isNewUploadBlocked ? 'Use Replace on an existing document' : 'Choose a document')}
+                {selectedFile?.name ??
+                  (isNewUploadBlocked
+                    ? 'Use Replace on an existing document'
+                    : 'Choose a document')}
               </span>
             </label>
             {uploadLimitNotice && (
-              <p className='branch-media-upload-limit' role='status' aria-live='polite'>
+              <p
+                className='branch-media-upload-limit'
+                role='status'
+                aria-live='polite'
+              >
                 {uploadLimitNotice}
               </p>
             )}
@@ -550,9 +649,21 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
                   Cancel upload
                 </button>
               )}
-              <button type='submit' disabled={isUploading || isNewUploadBlocked} aria-busy={isUploading}>
-                {isUploading ? <LoadingSpinner /> : <Upload size={15} aria-hidden='true' />}
-                {isUploading ? 'Uploading…' : replacement ? 'Replace document' : 'Upload PDF'}
+              <button
+                type='submit'
+                disabled={isUploading || isNewUploadBlocked}
+                aria-busy={isUploading}
+              >
+                {isUploading ? (
+                  <LoadingSpinner />
+                ) : (
+                  <Upload size={15} aria-hidden='true' />
+                )}
+                {isUploading
+                  ? 'Uploading…'
+                  : replacement
+                    ? 'Replace document'
+                    : 'Upload PDF'}
               </button>
             </div>
           </form>
@@ -567,7 +678,11 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
                   <h2>Sunday Hymn lyrics</h2>
                   <p>Paste the hymn lyrics below.</p>
                 </div>
-                <p className={`branch-media-hymn-status${isHymnPublished ? ' is-published' : ''}`} role='status' aria-live='polite'>
+                <p
+                  className={`branch-media-hymn-status${isHymnPublished ? ' is-published' : ''}`}
+                  role='status'
+                  aria-live='polite'
+                >
                   {isLoadingHymn
                     ? 'Checking published hymn…'
                     : isHymnPublished
@@ -586,14 +701,20 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
                 placeholder='Enter hymn number'
                 value={hymnNumber}
                 onChange={(event) => setHymnNumber(event.target.value)}
-                readOnly={isLoadingHymn || (Boolean(savedHymnLyrics) && !isEditingHymnLyrics)}
+                readOnly={
+                  isLoadingHymn ||
+                  (Boolean(savedHymnLyrics) && !isEditingHymnLyrics)
+                }
                 aria-labelledby='branch-media-hymn-number-label'
                 required
               />
               <textarea
                 value={hymnLyrics}
                 onChange={(event) => setHymnLyrics(event.target.value)}
-                readOnly={isLoadingHymn || (Boolean(savedHymnLyrics) && !isEditingHymnLyrics)}
+                readOnly={
+                  isLoadingHymn ||
+                  (Boolean(savedHymnLyrics) && !isEditingHymnLyrics)
+                }
                 aria-busy={isLoadingHymn}
                 placeholder={
                   isLoadingHymn
@@ -619,7 +740,12 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
                 </button>
               ) : (
                 <>
-                  <button className='branch-media-hymn-save' type='submit' disabled={isSavingHymn || isLoadingHymn} aria-busy={isSavingHymn}>
+                  <button
+                    className='branch-media-hymn-save'
+                    type='submit'
+                    disabled={isSavingHymn || isLoadingHymn}
+                    aria-busy={isSavingHymn}
+                  >
                     {isSavingHymn ? <LoadingSpinner /> : null}
                     {isSavingHymn ? 'Saving…' : 'Save lyrics'}
                   </button>
@@ -643,11 +769,23 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
               <button
                 className='branch-media-hymn-publish'
                 type='button'
-                disabled={isPublishingHymn || isSavingHymn || isLoadingHymn || !savedHymnLyrics.trim() || (isEditingHymnLyrics && (hymnLyrics.trim() !== savedHymnLyrics || hymnNumber !== savedHymnNumber))}
+                disabled={
+                  isPublishingHymn ||
+                  isSavingHymn ||
+                  isLoadingHymn ||
+                  !savedHymnLyrics.trim() ||
+                  (isEditingHymnLyrics &&
+                    (hymnLyrics.trim() !== savedHymnLyrics ||
+                      hymnNumber !== savedHymnNumber))
+                }
                 aria-busy={isPublishingHymn}
                 onClick={handlePublishHymn}
               >
-                {isPublishingHymn ? <LoadingSpinner /> : <Globe size={14} aria-hidden='true' />}
+                {isPublishingHymn ? (
+                  <LoadingSpinner />
+                ) : (
+                  <Globe size={14} aria-hidden='true' />
+                )}
                 {isPublishingHymn ? 'Publishing…' : 'Publish hymn'}
               </button>
             </div>
@@ -659,7 +797,7 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
             <header className='branch-media-current-uploads-heading'>
               <div>
                 <h2 id='branch-media-current-uploads-title'>
-                  Current uploads
+                  Live uploads
                   {uploadedDocuments.length > 0 && (
                     <span
                       className='branch-media-live-dot'
@@ -667,7 +805,7 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
                     />
                   )}
                 </h2>
-                <p>Documents currently available for each service resource.</p>
+                <p>Resources currently Live on the website</p>
               </div>
               <div
                 className='branch-media-uploads-actions'
@@ -694,7 +832,9 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
                       className='admin-record-menu-item is-danger'
                       type='button'
                       role='menuitem'
-                      disabled={uploadedDocuments.length === 0 || isLoadingUploads}
+                      disabled={
+                        uploadedDocuments.length === 0 || isLoadingUploads
+                      }
                       onClick={requestDeleteAll}
                     >
                       <Trash2 size={16} aria-hidden='true' />
@@ -706,7 +846,11 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
             </header>
             <div className='branch-media-upload-list'>
               {isLoadingUploads ? (
-                <div className='branch-media-uploads-loading' role='status' aria-live='polite'>
+                <div
+                  className='branch-media-uploads-loading'
+                  role='status'
+                  aria-live='polite'
+                >
                   <LoadingSpinner />
                   <span>Loading uploads…</span>
                 </div>
@@ -738,7 +882,9 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
                           <Eye size={15} aria-hidden='true' />
                         </button>
                         <a
-                          href={apiUrl(`/api/resources/${document.id}/file?download=1`)}
+                          href={apiUrl(
+                            `/api/resources/${document.id}/file?download=1`,
+                          )}
                           aria-label={`Download ${document.name}`}
                           title='Download'
                         >
@@ -758,7 +904,11 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
                           className='is-danger'
                           type='button'
                           onClick={() =>
-                            requestDelete(document.resourceId, document.id, document.name)
+                            requestDelete(
+                              document.resourceId,
+                              document.id,
+                              document.name,
+                            )
                           }
                           aria-label={`Delete ${document.name}`}
                           title='Delete'
@@ -809,7 +959,8 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
         <div
           className='branch-media-confirm-backdrop'
           onMouseDown={(event) => {
-            if (event.target === event.currentTarget && !isDeleting) setDeleteRequest(null);
+            if (event.target === event.currentTarget && !isDeleting)
+              setDeleteRequest(null);
           }}
         >
           <section
@@ -821,7 +972,9 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
             onKeyDown={(event) => {
               if (event.key === 'Escape' && !isDeleting) setDeleteRequest(null);
               if (event.key === 'Tab') {
-                const controls = event.currentTarget.querySelectorAll('button:not(:disabled)');
+                const controls = event.currentTarget.querySelectorAll(
+                  'button:not(:disabled)',
+                );
                 const first = controls[0];
                 const last = controls[controls.length - 1];
                 if (event.shiftKey && document.activeElement === first) {
@@ -834,9 +987,13 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
               }
             }}
           >
-            <div className='branch-media-confirm-icon'><Trash2 size={20} aria-hidden='true' /></div>
+            <div className='branch-media-confirm-icon'>
+              <Trash2 size={20} aria-hidden='true' />
+            </div>
             <h2 id='branch-media-confirm-title'>
-              {deleteRequest.type === 'all' ? 'Delete all uploads?' : 'Delete this upload?'}
+              {deleteRequest.type === 'all'
+                ? 'Delete all uploads?'
+                : 'Delete this upload?'}
             </h2>
             <p id='branch-media-confirm-description'>
               {deleteRequest.type === 'all'
@@ -849,7 +1006,9 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
                 type='button'
                 disabled={isDeleting}
                 onClick={() => setDeleteRequest(null)}
-              >Cancel</button>
+              >
+                Cancel
+              </button>
               <button
                 className='is-danger'
                 type='button'
@@ -857,13 +1016,25 @@ export function ResourceUploadPage({ workspace = 'headquater-media-admin' }) {
                 aria-busy={isDeleting}
                 onClick={confirmDelete}
               >
-                {isDeleting ? <><LoadingSpinner /> Deleting…</> : 'Delete'}
+                {isDeleting ? (
+                  <>
+                    <LoadingSpinner /> Deleting…
+                  </>
+                ) : (
+                  'Delete'
+                )}
               </button>
             </div>
           </section>
         </div>
       )}
-      {feedback && <Toast key={feedback.id} message={feedback.message} type={feedback.type} />}
+      {feedback && (
+        <Toast
+          key={feedback.id}
+          message={feedback.message}
+          type={feedback.type}
+        />
+      )}
     </AdminLayout>
   );
 }
