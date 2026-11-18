@@ -32,10 +32,6 @@ i want to be able to control the services each branch holds. the headquater bran
 
 implement request data sanitization in the backend
 
-i want to also have a stats cards that record the highest number of attendance recorded in each branch and also all branches combined.
-
-whenever a new attendance record is set or crossed send a notification.
-
 i want to be able to create and delete new resource categories apart fron the default ones. i want to be able to do that in the developer settings page only. e.g i should be able to create a "Prayer & fasting guide" and i should be able to upload the pdf and perform all other usual operations. explain how that would be
 
 diffrentiate chorus for hymn
@@ -51,3 +47,5 @@ in branch attendance page add stat cards showing Highest Attendace recorded in t
 what happens when i delete a branch
 
 when a new record is set send notification to the specific branch admin, hedquater admin, developer and headquater admin
+
+remove visitors attendance-count-field

@@ -10,7 +10,6 @@ import {
   MapPinned,
   Settings,
   Users,
-  Wrench,
 } from 'lucide-react';
 import { useLocation } from 'react-router';
 import { useAuth } from '../../auth/useAuth';
@@ -52,11 +51,6 @@ const branchMediaAdminNavItems = [
     label: 'Attendance',
     to: '/admin/branch-media-admin/attendance',
     icon: ClipboardCheck,
-  },
-  {
-    label: 'Developer workspace',
-    to: '/admin/developer/overview',
-    icon: Wrench,
   },
   { label: 'Public website', to: '/', icon: ExternalLink },
 ];
