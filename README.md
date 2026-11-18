@@ -43,3 +43,5 @@ diffrentiate chorus for hymn
 what happens to the admin linked to a branch when i delete the branch
 
 MAP: 10.262723092424185, 9.784401806775811
+
+add a loading spinner to admin-form-submit, while loading replace the admin-form-submit svg icon with the loading spinner. do same for branch-form-submit also.

@@ -19,6 +19,7 @@ import { apiFetch } from '../../../../utils/api';
 import emptyIllustration from '../../../../assets/images/empty.svg';
 import { LoadingSpinner } from '../../../../components/LoadingSpinner';
 import { Toast } from '../../../../components/Toast';
+import { AdminFilterDropdown } from '../../../../components/Admin/shared/AdminFilterDropdown';
 import './AdminsPage.css';
 
 const roleOptions = ['Branch Media Admin'];
@@ -473,9 +474,29 @@ export function AdminsPage() {
   const [passwordAdmin, setPasswordAdmin] = useState(null);
   const [feedback, setFeedback] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [dateOrder, setDateOrder] = useState('newest');
+  const [selectedRole, setSelectedRole] = useState('all');
+  const [openFilter, setOpenFilter] = useState(null);
+  const filtersRef = useRef(null);
   const notify = useCallback((message, type = 'success') => {
     setFeedback({ id: Date.now(), message, type });
   }, []);
+
+  useEffect(() => {
+    if (!openFilter) return undefined;
+    function handlePointerDown(event) {
+      if (!filtersRef.current?.contains(event.target)) setOpenFilter(null);
+    }
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') setOpenFilter(null);
+    }
+    document.addEventListener('pointerdown', handlePointerDown);
+    document.addEventListener('keydown', handleKeyDown);
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [openFilter]);
 
   useEffect(() => {
     let active = true;
@@ -544,7 +565,21 @@ export function AdminsPage() {
     }
   }
 
-  const orderedAdmins = admins;
+  const roleOptionsForFilter = [
+    { label: 'All roles', value: 'all' },
+    ...[...new Set(admins.map((admin) => admin.role).filter(Boolean))]
+      .sort((first, second) => first.localeCompare(second))
+      .map((role) => ({ label: formatAdminRole(role), value: role })),
+  ];
+  const orderedAdmins = admins
+    .filter((admin) => selectedRole === 'all' || admin.role === selectedRole)
+    .sort((first, second) => {
+      const firstDate = new Date(first.createdAt).getTime();
+      const secondDate = new Date(second.createdAt).getTime();
+      const safeFirstDate = Number.isNaN(firstDate) ? 0 : firstDate;
+      const safeSecondDate = Number.isNaN(secondDate) ? 0 : secondDate;
+      return dateOrder === 'oldest' ? safeFirstDate - safeSecondDate : safeSecondDate - safeFirstDate;
+    });
 
   return (
     <section className={`admins-page${!isLoading && orderedAdmins.length === 0 ? ' is-empty' : ''}`} aria-labelledby='admins-title' aria-busy={isLoading}>
@@ -554,6 +589,29 @@ export function AdminsPage() {
           <p className='admins-description'>Branch Media Admin accounts assigned to church branches.</p>
         </div>
         <div className='admins-heading-actions'>
+          <div className='admins-filter-controls' ref={filtersRef}>
+            <AdminFilterDropdown
+              name='date'
+              label='Date'
+              options={[
+                { label: 'Newest first', value: 'newest' },
+                { label: 'Oldest first', value: 'oldest' },
+              ]}
+              value={dateOrder}
+              isOpen={openFilter === 'date'}
+              onToggle={() => setOpenFilter((current) => current === 'date' ? null : 'date')}
+              onSelect={(value) => { setDateOrder(value); setOpenFilter(null); }}
+            />
+            <AdminFilterDropdown
+              name='role'
+              label='Role'
+              options={roleOptionsForFilter}
+              value={selectedRole}
+              isOpen={openFilter === 'role'}
+              onToggle={() => setOpenFilter((current) => current === 'role' ? null : 'role')}
+              onSelect={(value) => { setSelectedRole(value); setOpenFilter(null); }}
+            />
+          </div>
           <span className='admins-count'>
             {admins.length}{' '}
             {admins.length === 1 ? 'administrator' : 'administrators'}
