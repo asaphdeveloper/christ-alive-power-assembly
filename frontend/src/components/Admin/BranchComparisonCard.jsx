@@ -70,7 +70,7 @@ export function BranchComparisonCard({
         aria-label={`${groupLabel} by expression`}
       >
         {branchComparison.map(
-          ({ branch: branchName, total: branchTotal }, index) => (
+          ({ branch: branchName }, index) => (
             <li
               key={branchName}
               style={{

@@ -2,6 +2,7 @@ import { defineConfig, loadEnv } from 'vite';
 import react from '@vitejs/plugin-react';
 import { readFile } from 'node:fs/promises';
 import { gzipSync } from 'node:zlib';
+import process from 'node:process';
 import { securityHeaders } from './scripts/security-headers.mjs';
 
 // https://vite.dev/config/

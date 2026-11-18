@@ -58,11 +58,6 @@ const AttendancePage = lazy(() =>
     default: module.AttendancePage,
   })),
 );
-const VisitorsPage = lazy(() =>
-  import('./pages/Admin/branchMediaAdmin/VisitorsPage').then((module) => ({
-    default: module.VisitorsPage,
-  })),
-);
 const HeadquaterMediaAdminPage = lazy(() =>
   import('./pages/Admin/headquaterMediaAdmin/HeadquaterMediaAdminPage').then(
     (module) => ({ default: module.HeadquaterMediaAdminPage }),
@@ -84,9 +79,9 @@ const AdminSettingsPage = lazy(() =>
   })),
 );
 const BranchesPage = lazy(() =>
-  import('./pages/Admin/shared/branches/BranchesPage').then(
-    (module) => ({ default: module.BranchesPage }),
-  ),
+  import('./pages/Admin/shared/branches/BranchesPage').then((module) => ({
+    default: module.BranchesPage,
+  })),
 );
 const PageNotFound = lazy(() =>
   import('./pages/PageNotFound').then((module) => ({
@@ -96,7 +91,14 @@ const PageNotFound = lazy(() =>
 
 function BranchMediaAttendanceRoute() {
   const { admin } = useAuth();
-  return <AttendancePage user={{ name: admin?.name ?? 'Branch Media Admin', branch: admin?.branch?.name ?? 'your assigned branch' }} />;
+  return (
+    <AttendancePage
+      user={{
+        name: admin?.name ?? 'Branch Media Admin',
+        branch: admin?.branch?.name ?? 'your assigned branch',
+      }}
+    />
+  );
 }
 
 function App() {
@@ -124,108 +126,102 @@ function App() {
             <Route index element={<HomePage />} />
             <Route path='login' element={<LoginPage />} />
             <Route element={<RequireAuth />}>
-          <Route
-            path='admin/developer/overview'
-            element={
-              <RequireRole roles={['developer']}>
-                <AdminPortalPage />
-              </RequireRole>
-            }
-          >
-            <Route index element={<DeveloperOverviewPage />} />
-          </Route>
-          <Route
-            path='admin/all-admins'
-            element={
-              <RequireRole roles={['developer']}>
-                <DeveloperSubpageLayout pageTitle='Administrators'>
-                  <AdminsPage />
-                </DeveloperSubpageLayout>
-              </RequireRole>
-            }
-          />
-          <Route
-            path='admin/branches'
-            element={
-              <RequireRole roles={['developer']}>
-                <DeveloperSubpageLayout pageTitle='Branches'>
-                  <BranchesPage />
-                </DeveloperSubpageLayout>
-              </RequireRole>
-            }
-          />
-          <Route
-            path='admin/settings'
-            element={
-              <RequireRole roles={['developer']}>
-                <AdminSettingsPage />
-              </RequireRole>
-            }
-          />
-          <Route
-            path='admin/general-overseer'
-            element={
-              <RequireRole roles={['general-overseer']}>
-                <GeneralOverseerOverviewPage />
-              </RequireRole>
-            }
-          />
-          <Route
-            path='admin/attendance-overview'
-            element={
-              <RequireRole roles={['general-overseer']}>
-                <GeneralOverseerAttendancePage />
-              </RequireRole>
-            }
-          />
-          <Route
-            path='admin/attendance-reports'
-            element={
-              <RequireRole roles={['general-overseer']}>
-                <AttendanceReportsPage />
-              </RequireRole>
-            }
-          />
-          <Route
-            path='admin/branch-media-admin'
-            element={
-              <RequireRole roles={['branch-media-admin']}>
-                <BranchMediaOverviewPage />
-              </RequireRole>
-            }
-          />
-          <Route
-            path='admin/branch-media-admin/attendance'
-            element={
-              <RequireRole roles={['branch-media-admin']}>
-                <BranchMediaAttendanceRoute />
-              </RequireRole>
-            }
-          />
-          <Route
-            path='admin/branch-media-admin/visitors'
-            element={
-              <RequireRole roles={['branch-media-admin']}>
-                <VisitorsPage />
-              </RequireRole>
-            }
-          />
-          <Route
-            path='admin/upload-resource'
-            element={
-              <RequireRole roles={['headquater-media-admin', 'general-overseer']}>
-                <HeadquaterMediaAdminPage />
-              </RequireRole>
-            }
-          />
-          <Route
-            path='admin/headquater-media-admin/overview'
-            element={
-              <RequireRole roles={['headquater-media-admin']}>
-                <HeadquaterOverviewPage />
-              </RequireRole>
-            }
-          />
+              <Route
+                path='admin/developer/overview'
+                element={
+                  <RequireRole roles={['developer']}>
+                    <AdminPortalPage />
+                  </RequireRole>
+                }
+              >
+                <Route index element={<DeveloperOverviewPage />} />
+              </Route>
+              <Route
+                path='admin/all-admins'
+                element={
+                  <RequireRole roles={['developer']}>
+                    <DeveloperSubpageLayout pageTitle='Administrators'>
+                      <AdminsPage />
+                    </DeveloperSubpageLayout>
+                  </RequireRole>
+                }
+              />
+              <Route
+                path='admin/branches'
+                element={
+                  <RequireRole roles={['developer']}>
+                    <DeveloperSubpageLayout pageTitle='Branches'>
+                      <BranchesPage />
+                    </DeveloperSubpageLayout>
+                  </RequireRole>
+                }
+              />
+              <Route
+                path='admin/settings'
+                element={
+                  <RequireRole roles={['developer']}>
+                    <AdminSettingsPage />
+                  </RequireRole>
+                }
+              />
+              <Route
+                path='admin/general-overseer'
+                element={
+                  <RequireRole roles={['general-overseer']}>
+                    <GeneralOverseerOverviewPage />
+                  </RequireRole>
+                }
+              />
+              <Route
+                path='admin/attendance-overview'
+                element={
+                  <RequireRole roles={['general-overseer']}>
+                    <GeneralOverseerAttendancePage />
+                  </RequireRole>
+                }
+              />
+              <Route
+                path='admin/attendance-reports'
+                element={
+                  <RequireRole roles={['general-overseer']}>
+                    <AttendanceReportsPage />
+                  </RequireRole>
+                }
+              />
+              <Route
+                path='admin/branch-media-admin'
+                element={
+                  <RequireRole roles={['branch-media-admin']}>
+                    <BranchMediaOverviewPage />
+                  </RequireRole>
+                }
+              />
+              <Route
+                path='admin/branch-media-admin/attendance'
+                element={
+                  <RequireRole roles={['branch-media-admin']}>
+                    <BranchMediaAttendanceRoute />
+                  </RequireRole>
+                }
+              />
+              <Route
+                path='admin/upload-resource'
+                element={
+                  <RequireRole
+                    roles={['headquater-media-admin', 'general-overseer']}
+                  >
+                    <HeadquaterMediaAdminPage />
+                  </RequireRole>
+                }
+              />
+              <Route
+                path='admin/headquater-media-admin/overview'
+                element={
+                  <RequireRole roles={['headquater-media-admin']}>
+                    <HeadquaterOverviewPage />
+                  </RequireRole>
+                }
+              />
             </Route>
             <Route path='*' element={<PageNotFound />} />
           </Routes>

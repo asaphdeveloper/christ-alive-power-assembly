@@ -53,7 +53,6 @@ const branchMediaAdminNavItems = [
     to: '/admin/branch-media-admin/attendance',
     icon: ClipboardCheck,
   },
-  { label: 'Visitors', to: '/admin/branch-media-admin/visitors', icon: Users },
   {
     label: 'Developer workspace',
     to: '/admin/developer/overview',
@@ -119,7 +118,7 @@ const welcomeDetails = {
   'branch-media-admin': {
     kicker: 'BRANCH MEDIA WORKSPACE',
     title: 'Welcome to your branch workspace',
-    description: 'Manage attendance, visitors, and media activity for your assigned branch.',
+    description: 'Manage attendance and media activity for your assigned branch.',
     facts: ['Your assigned branch', 'Manage your local branch'],
     icon: Clapperboard,
   },

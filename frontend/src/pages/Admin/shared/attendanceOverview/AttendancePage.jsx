@@ -26,7 +26,7 @@ const orderedBranchData = [...branchData].sort((first, second) => {
   const secondIsHeadquarter = /headquarter/i.test(second.name);
   return Number(secondIsHeadquarter) - Number(firstIsHeadquarter);
 });
-const expressionOptions = orderedBranchData.map(({ name, location }) => {
+const expressionOptions = orderedBranchData.map(({ name }) => {
   const expressionName = /headquarter/i.test(name)
     ? 'Headquater'
     : name.replace(/ branch$/i, '');
@@ -77,7 +77,7 @@ export function GeneralOverseerAttendancePage() {
               serviceOrder.indexOf(second.service) ||
             first.date.localeCompare(second.date),
         ),
-    [branch],
+    [branch, latestWeekRecords],
   );
   const filteredData = useMemo(
     () => branchWeekRecords.filter((record) => record.service === service),
@@ -85,7 +85,7 @@ export function GeneralOverseerAttendancePage() {
   );
   const comparisonRecords = useMemo(
     () => latestWeekRecords.filter((record) => record.service === service),
-    [service],
+    [service, latestWeekRecords],
   );
   const totals = useMemo(
     () =>

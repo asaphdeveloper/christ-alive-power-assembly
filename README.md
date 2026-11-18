@@ -26,13 +26,9 @@ I want to build the admin pages. For now, I want to build just the front-end par
 
 switch to Bricolage Grotesque. make sure it supports increasing and redcing the font weight and remove all old unused font and their code
 
-add a visitors sidebar item for visitors page:
-
 i want to be able to see those that havent sent theirs
 
 i want to be able to control the services each branch holds. the headquater branch services are (Sunday, Monday, Wednesday and Friday) but other branches services are (Sunday, Wednesday and Friday) i want to be able to set service days.
-
-use the empty illustration when visitors log is empty
 
 implement request data sanitization in the backend
 
@@ -43,3 +39,7 @@ whenever a new attendance record is set or crossed send a notification.
 i want to be able to create and delete new resource categories apart fron the default ones. i want to be able to do that in the developer settings page only. e.g i should be able to create a "Prayer & fasting guide" and i should be able to upload the pdf and perform all other usual operations. explain how that would be
 
 diffrentiate chorus for hymn
+
+what happens to the admin linked to a branch when i delete the branch
+
+MAP: 10.262723092424185, 9.784401806775811

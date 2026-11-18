@@ -41,7 +41,6 @@ const emptyBranchForm = {
   lga: '',
   leadPastor: '',
   address: '',
-  phoneNumber: '',
   mapLocation: { longitude: null, latitude: null },
 };
 
@@ -240,10 +239,6 @@ function BranchForm({ branch, admins, onSubmit, onCancel }) {
                   placeholder='Enter the branch street address'
                   required
                 />
-              </label>
-              <label className='branch-form-field'>
-                Branch phone number
-                <input name='phoneNumber' type='tel' value={form.phoneNumber ?? ''} onChange={updateField} placeholder='+234 800 000 0000' />
               </label>
               <label className='branch-form-field'>
                 Map longitude
@@ -544,7 +539,7 @@ function BranchCard({
       <div className='branch-admin-contact'>
         <p>
           <Phone size={14} aria-hidden='true' />
-            <span>{branch.admin?.phone || branch.phoneNumber || 'No phone number'}</span>
+            <span>{branch.admin?.phone || 'No phone number'}</span>
         </p>
         <p>
           <UserRound size={14} aria-hidden='true' />

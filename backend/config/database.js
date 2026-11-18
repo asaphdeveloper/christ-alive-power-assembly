@@ -1,4 +1,5 @@
 import mongoose from 'mongoose';
+import Branch from '../models/branch.model.js';
 
 export const connectDatabase = async () => {
   const environment = process.env.NODE_ENV || 'development';
@@ -16,6 +17,12 @@ export const connectDatabase = async () => {
 
   try {
     const conn = await mongoose.connect(connectionString);
+    const branchIndexes = await Branch.collection.indexes();
+    const legacyUsernameIndex = branchIndexes.find((index) => index.name === 'username_1');
+    if (legacyUsernameIndex) {
+      await Branch.collection.dropIndex(legacyUsernameIndex.name);
+      console.log('Removed legacy unique username index from branches');
+    }
     console.log(`MongoDB Connected: ${conn.connection.host} (${environment})`);
     return conn;
   } catch (error) {

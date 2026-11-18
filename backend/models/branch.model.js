@@ -62,13 +62,6 @@ const branchSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
-    username: {
-      type: String,
-      unique: [true, 'Username already exists'],
-      lowercase: true,
-      trim: true,
-      sparse: true,
-    },
     slogan: {
       type: String,
       trim: true,

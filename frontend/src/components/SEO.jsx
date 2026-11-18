@@ -45,10 +45,6 @@ const pages = {
     'Branch Attendance | Christ Alive Power Assembly',
     'Record and review service attendance for your Christ Alive Power Assembly branch.',
   ],
-  '/admin/branch-media-admin/visitors': [
-    'Branch Visitors | Christ Alive Power Assembly',
-    'Record and review visitors to your Christ Alive Power Assembly branch.',
-  ],
   '/admin/headquater-media-admin/overview': [
     'Headquater Media Admin | Christ Alive Power Assembly',
     'Headquater Media Admin workspace for Christ Alive Power Assembly.',
