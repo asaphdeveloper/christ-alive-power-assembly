@@ -14,12 +14,15 @@
   border-radius: 8px;
   background: #fff;
   color: #363d44;
+  color: #555;
   font: inherit;
   font-size: 14px;
   font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
-  transition: border-color 150ms ease, background 150ms ease;
+  transition:
+    border-color 150ms ease,
+    background 150ms ease;
 }
 
 .admin-shell .admin-filter-button:not(:disabled):hover {

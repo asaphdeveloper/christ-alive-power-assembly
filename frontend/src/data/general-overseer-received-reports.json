@@ -9,9 +9,9 @@
     "youth": 33,
     "children": 25,
     "total": 180,
-    "submittedBy": "Joseph Mark",
+    "submittedBy": "wukari@media@admin",
     "submittedAt": "2026-11-02T19:18:00.000Z",
-    "status": "Delivered"
+    "status": "Received"
   },
   {
     "id": "report-hq-sun",
@@ -23,9 +23,9 @@
     "youth": 148,
     "children": 113,
     "total": 760,
-    "submittedBy": "Joseph Mark",
+    "submittedBy": "wukari@media@admin",
     "submittedAt": "2026-11-08T13:18:00.000Z",
-    "status": "Delivered"
+    "status": "Received"
   },
   {
     "id": "report-jos-sun",
@@ -37,9 +37,9 @@
     "youth": 87,
     "children": 66,
     "total": 435,
-    "submittedBy": "Grace James",
+    "submittedBy": "jos@media@admin",
     "submittedAt": "2026-11-08T13:32:00.000Z",
-    "status": "Delivered"
+    "status": "Received"
   },
   {
     "id": "report-wukari-sun",
@@ -51,9 +51,9 @@
     "youth": 65,
     "children": 51,
     "total": 335,
-    "submittedBy": "Peter Daniel",
+    "submittedBy": "headquater@media@admin",
     "submittedAt": "2026-11-08T13:40:00.000Z",
-    "status": "Delivered"
+    "status": "Received"
   },
   {
     "id": "report-sabon-wed",
@@ -65,9 +65,9 @@
     "youth": 44,
     "children": 33,
     "total": 223,
-    "submittedBy": "Esther Musa",
+    "submittedBy": "wukari@media@admin",
     "submittedAt": "2026-11-11T19:27:00.000Z",
-    "status": "Delivered"
+    "status": "Received"
   },
   {
     "id": "report-wuntin-wed",
@@ -79,9 +79,9 @@
     "youth": 57,
     "children": 43,
     "total": 284,
-    "submittedBy": "Samuel John",
+    "submittedBy": "wukari@media@admin",
     "submittedAt": "2026-11-11T19:34:00.000Z",
-    "status": "Delivered"
+    "status": "Received"
   },
   {
     "id": "report-zango-wed",
@@ -93,9 +93,9 @@
     "youth": 40,
     "children": 30,
     "total": 200,
-    "submittedBy": "Ruth David",
+    "submittedBy": "jos@media@admin",
     "submittedAt": "2026-11-11T19:42:00.000Z",
-    "status": "Delivered"
+    "status": "Received"
   },
   {
     "id": "report-hq-fri",
@@ -107,9 +107,9 @@
     "youth": 84,
     "children": 65,
     "total": 430,
-    "submittedBy": "Joseph Mark",
+    "submittedBy": "wukari@media@admin",
     "submittedAt": "2026-11-13T19:41:00.000Z",
-    "status": "Delivered"
+    "status": "Received"
   },
   {
     "id": "report-jos-fri",
@@ -121,7 +121,7 @@
     "youth": 50,
     "children": 38,
     "total": 253,
-    "submittedBy": "Grace James",
+    "submittedBy": "jos@media@admin",
     "submittedAt": "2026-11-13T19:48:00.000Z",
     "status": "Pending"
   }

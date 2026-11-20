@@ -107,9 +107,6 @@ function App() {
       <>
         <SEO />
         <RouteFocus />
-        <a className='skip-link' href='#main-content'>
-          Skip to main content
-        </a>
         <Suspense
           fallback={
             <main
