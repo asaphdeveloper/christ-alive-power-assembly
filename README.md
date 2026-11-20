@@ -53,3 +53,5 @@ when a branch sends its attendance the headquater media admin should receive a n
 remove visitors attendance-count-field
 
 add loading spinner to send attendance button
+
+i want to fully implement the ability for the logged in branch media admin to send the attendance and the headquater media admin and also the general overseer shoould be able to see the sent attendance reocord.

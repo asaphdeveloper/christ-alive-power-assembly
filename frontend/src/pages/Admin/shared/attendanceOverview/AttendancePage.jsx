@@ -1,6 +1,7 @@
 import { useMemo, useState } from 'react';
 import { Check, ChevronDown, RotateCcw } from 'lucide-react';
 import { AdminLayout } from '../../AdminLayout';
+import { useAuth } from '../../../../auth/useAuth';
 import { AttendanceKpis } from '../../../../components/Admin/AttendanceKpis';
 import { AttendanceTrendCard } from '../../../../components/Admin/AttendanceTrendCard';
 import { BranchComparisonCard } from '../../../../components/Admin/BranchComparisonCard';
@@ -47,6 +48,10 @@ const getValue = (record, key) =>
     : record[key];
 
 export function GeneralOverseerAttendancePage() {
+  const { admin } = useAuth();
+  const workspace = admin?.role === 'headquater-media-admin'
+    ? 'headquater-media-admin'
+    : 'general-overseer';
   const [branch, setBranch] = useState('All branches');
   const [service, setService] = useState(serviceDays[0]);
   const [group, setGroup] = useState('total');
@@ -193,7 +198,7 @@ export function GeneralOverseerAttendancePage() {
   }
 
   return (
-    <AdminLayout workspace='general-overseer' pageTitle='Attendance overview'>
+    <AdminLayout workspace={workspace} pageTitle='Attendance overview'>
       <section
         className='general-overseer-page'
         aria-labelledby='general-overseer-title'

@@ -175,7 +175,9 @@ function App() {
               <Route
                 path='admin/attendance-overview'
                 element={
-                  <RequireRole roles={['general-overseer']}>
+                  <RequireRole
+                    roles={['general-overseer', 'headquater-media-admin']}
+                  >
                     <GeneralOverseerAttendancePage />
                   </RequireRole>
                 }
@@ -183,7 +185,9 @@ function App() {
               <Route
                 path='admin/attendance-reports'
                 element={
-                  <RequireRole roles={['general-overseer']}>
+                  <RequireRole
+                    roles={['general-overseer', 'headquater-media-admin']}
+                  >
                     <AttendanceReportsPage />
                   </RequireRole>
                 }

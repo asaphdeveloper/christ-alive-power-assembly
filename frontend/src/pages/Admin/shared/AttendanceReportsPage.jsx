@@ -10,6 +10,7 @@ import {
   Users,
 } from 'lucide-react';
 import { AdminLayout } from '../AdminLayout';
+import { useAuth } from '../../../auth/useAuth';
 import { AdminFilterDropdown } from '../../../components/Admin/shared/AdminFilterDropdown';
 import reports from '../../../data/general-overseer-received-reports.json';
 import branches from '../../../data/branches.json';
@@ -31,6 +32,10 @@ const formatSubmittedAt = (value) =>
   });
 
 export function AttendanceReportsPage() {
+  const { admin } = useAuth();
+  const workspace = admin?.role === 'headquater-media-admin'
+    ? 'headquater-media-admin'
+    : 'general-overseer';
   const [query, setQuery] = useState('');
   const [branchFilter, setBranchFilter] = useState('all');
   const [statusFilter, setStatusFilter] = useState('all');
@@ -59,7 +64,7 @@ export function AttendanceReportsPage() {
   const totalAttendance = reports.reduce((sum, report) => sum + report.total, 0);
 
   return (
-    <AdminLayout workspace='general-overseer' pageTitle='Attendance reports'>
+    <AdminLayout workspace={workspace} pageTitle='Attendance reports'>
       <section className='attendance-reports-page' aria-labelledby='attendance-reports-title'>
         <header className='attendance-reports-heading'>
           <div>

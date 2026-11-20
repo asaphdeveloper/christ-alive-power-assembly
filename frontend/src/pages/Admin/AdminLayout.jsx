@@ -62,6 +62,16 @@ const headquaterMediaAdminNavItems = [
     icon: LayoutDashboard,
   },
   {
+    label: 'Attendance overview',
+    to: '/admin/attendance-overview',
+    icon: ClipboardCheck,
+  },
+  {
+    label: 'Attendance reports',
+    to: '/admin/attendance-reports',
+    icon: ClipboardList,
+  },
+  {
     label: 'Upload resources',
     to: '/admin/upload-resource',
     icon: Clapperboard,
