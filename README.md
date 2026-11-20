@@ -48,4 +48,8 @@ what happens when i delete a branch
 
 when a new record is set send notification to the specific branch admin, hedquater admin, developer and headquater admin
 
+when a branch sends its attendance the headquater media admin should receive a notification about it.
+
 remove visitors attendance-count-field
+
+add loading spinner to send attendance button

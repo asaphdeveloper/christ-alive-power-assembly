@@ -1,16 +1,19 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import {
   Baby,
   CalendarDays,
   Check,
   Clock3,
   Mars,
+  Plus,
+  Trophy,
   ShieldCheck,
-  UserRound,
   UsersRound,
   Venus,
+  X,
 } from 'lucide-react';
 import { AdminLayout } from '../AdminLayout';
+import { Toast } from '../../../components/Toast';
 import attendanceHistory from '../../../data/attendance-history.json';
 import './attendancePage.css';
 
@@ -19,7 +22,6 @@ const attendanceGroups = [
   { key: 'women', label: 'Women', icon: Venus },
   { key: 'youth', label: 'Youth', icon: UsersRound },
   { key: 'children', label: 'Children', icon: Baby },
-  { key: 'visitors', label: 'Visitors', icon: UserRound },
 ];
 
 const emptyAttendance = {
@@ -27,7 +29,6 @@ const emptyAttendance = {
   women: '',
   youth: '',
   children: '',
-  visitors: '',
 };
 
 function getToday() {
@@ -77,9 +78,18 @@ export function AttendancePage({
   const [figures, setFigures] = useState(emptyAttendance);
   const [records, setRecords] = useState([]);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const [isEntryOpen, setIsEntryOpen] = useState(false);
   const [error, setError] = useState('');
-  const [success, setSuccess] = useState('');
+  const [success, setSuccess] = useState(null);
   const service = useMemo(() => getService(date), [date]);
+  useEffect(() => {
+    if (!isEntryOpen) return undefined;
+    function handleKeyDown(event) {
+      if (event.key === 'Escape') setIsEntryOpen(false);
+    }
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isEntryOpen]);
   const membersTotal = attendanceGroups.reduce(
     (sum, group) => sum + Number(figures[group.key] || 0),
     0,
@@ -95,34 +105,54 @@ export function AttendancePage({
   const weekEnd = new Date(weekStart);
   weekEnd.setDate(weekEnd.getDate() + 6);
   weekEnd.setHours(23, 59, 59, 999);
-  const weeklyRecords = [...attendanceHistory, ...records]
-    .filter((record) => {
-      const recordDate = new Date(`${record.serviceDate}T12:00:00`);
-      return (
-        record.branch === user.branch &&
-        recordDate >= weekStart &&
-        recordDate <= weekEnd
-      );
-    })
+  const branchRecords = [...attendanceHistory, ...records]
+    .filter((record) => record.branch === user.branch)
     .map((record) => ({
       ...record,
-      date: record.serviceDate,
-      service: record.serviceDay,
-      visitors: record.visitors ?? 0,
+      date: record.serviceDate ?? record.date,
+      service: record.serviceDay ?? record.service,
       total:
-        record.men +
-        record.women +
-        record.youth +
-        record.children +
-        (record.visitors ?? 0),
-    }))
+        Number(record.men || 0) +
+        Number(record.women || 0) +
+        Number(record.youth || 0) +
+        Number(record.children || 0),
+    }));
+  const serviceRecordSamples = {
+    Sunday: { total: 184, date: '2026-10-18' },
+    Monday: { total: 96, date: '2026-10-19' },
+    Wednesday: { total: 132, date: '2026-10-21' },
+    Friday: { total: 108, date: '2026-10-23' },
+  };
+  const serviceRecords = ['Sunday', 'Monday', 'Wednesday', 'Friday'].map(
+    (serviceDay) => {
+      const highest = branchRecords
+        .filter((record) => record.service === serviceDay)
+        .reduce(
+          (currentHighest, record) =>
+            !currentHighest || record.total > currentHighest.total
+              ? record
+              : currentHighest,
+          null,
+        );
+      return {
+        service: serviceDay,
+        ...(highest ?? serviceRecordSamples[serviceDay]),
+        isSample: !highest,
+      };
+    },
+  );
+  const weeklyRecords = branchRecords
+    .filter((record) => {
+      const recordDate = new Date(`${record.date}T12:00:00`);
+      return recordDate >= weekStart && recordDate <= weekEnd;
+    })
     .sort((first, second) => first.date.localeCompare(second.date));
 
   function changeFigure(event) {
     const { name, value } = event.target;
     setFigures((current) => ({ ...current, [name]: value.replace(/\D/g, '') }));
     setError('');
-    setSuccess('');
+    setSuccess(null);
   }
 
   function reviewAttendance(event) {
@@ -161,7 +191,6 @@ export function AttendancePage({
       women: Number(figures.women),
       youth: Number(figures.youth),
       children: Number(figures.children),
-      visitors: Number(figures.visitors),
       total: membersTotal,
       submittedBy: user.name,
       submittedAt: new Date().toISOString(),
@@ -171,7 +200,11 @@ export function AttendancePage({
     setRecords((current) => [...current, record]);
     setFigures(emptyAttendance);
     setShowConfirmation(false);
-    setSuccess(`${service} attendance was sent for ${formatDate(date)}.`);
+    setIsEntryOpen(false);
+    setSuccess({
+      id: Date.now(),
+      message: `${service} attendance was sent for ${formatDate(date)}.`,
+    });
     setError('');
   }
 
@@ -181,6 +214,7 @@ export function AttendancePage({
         className='attendance-page'
         aria-label={`${user.branch} attendance`}
       >
+        {success && <Toast key={success.id} message={success.message} />}
         <header
           className='attendance-page-heading'
           aria-labelledby='attendance-page-title'
@@ -190,149 +224,210 @@ export function AttendancePage({
             Record and review weekly service attendance for {user.branch}.
           </span>
         </header>
-        <form
-          className='attendance-entry-panel'
-          onSubmit={reviewAttendance}
-          noValidate
+        <section
+          className='attendance-record-summary'
+          aria-label='Highest attendance by service day'
         >
-          <header className='attendance-entry-title'>
-            <h1>Record attendance</h1>
-            <p>{user.branch} · enter 0 for any group with no attendance.</p>
-          </header>
-          {showConfirmation ? (
-            <section
-              className='attendance-confirmation'
-              aria-labelledby='attendance-confirmation-title'
+          {serviceRecords.map((record) => (
+            <article className='attendance-stat-card' key={record.service}>
+              <span className='attendance-stat-icon'>
+                <Trophy size={18} aria-hidden='true' />
+              </span>
+              <div>
+                <p>Highest attendance {record.service}</p>
+                <strong>{record.total.toLocaleString()}</strong>
+                <span>
+                  {record.isSample ? 'Temporary sample · ' : 'Record set '}
+                  {formatDate(record.date, {
+                    day: 'numeric',
+                    month: 'short',
+                    year: 'numeric',
+                  })}
+                </span>
+              </div>
+            </article>
+          ))}
+        </section>
+        <div className='attendance-entry-launch'>
+          <button
+            className='attendance-record-button'
+            type='button'
+            onClick={() => {
+              setIsEntryOpen(true);
+              setShowConfirmation(false);
+              setError('');
+            }}
+          >
+            <Plus size={17} aria-hidden='true' />
+            Record attendance
+          </button>
+        </div>
+        {isEntryOpen && (
+          <div
+            className='attendance-modal-backdrop'
+            onMouseDown={(event) => {
+              if (event.target === event.currentTarget) setIsEntryOpen(false);
+            }}
+          >
+            <form
+              className='attendance-entry-panel'
+              onSubmit={reviewAttendance}
+              noValidate
+              role='dialog'
+              aria-modal='true'
+              aria-labelledby='attendance-entry-title'
             >
-              <div className='attendance-confirmation-heading'>
-                <span>Review before sending</span>
-                <h2 id='attendance-confirmation-title'>Confirm attendance</h2>
-                <p>
-                  {user.branch} · {formatDate(date)} · {service} service
-                </p>
-              </div>
-              <dl className='attendance-confirmation-counts'>
-                {attendanceGroups.map(({ key, label }) => (
-                  <div key={key}>
-                    <dt>{label}</dt>
-                    <dd>{Number(figures[key])}</dd>
-                  </div>
-                ))}
-                <div className='attendance-confirmation-total'>
-                  <dt>Total</dt>
-                  <dd>{membersTotal}</dd>
+              <header className='attendance-entry-title'>
+                <div>
+                  <h1 id='attendance-entry-title'>Record attendance</h1>
+                  <p>
+                    {user.branch} · enter 0 for any group with no attendance.
+                  </p>
                 </div>
-              </dl>
-              <div className='attendance-confirmation-actions'>
                 <button
-                  className='attendance-edit-button'
+                  className='attendance-modal-close'
                   type='button'
-                  onClick={() => setShowConfirmation(false)}
+                  aria-label='Close attendance form'
+                  onClick={() => setIsEntryOpen(false)}
                 >
-                  Edit
+                  <X size={19} aria-hidden='true' />
                 </button>
-                <button
-                  className='attendance-send-button'
-                  type='button'
-                  onClick={confirmAttendance}
+              </header>
+              {showConfirmation ? (
+                <section
+                  className='attendance-confirmation'
+                  aria-labelledby='attendance-confirmation-title'
                 >
-                  <Check size={17} aria-hidden='true' />
-                  Confirm
-                </button>
-              </div>
-            </section>
-          ) : (
-            <>
-              <div className='attendance-date-service-row'>
-                <label className='attendance-date-field'>
-                  <span className='attendance-date-service-label'>
-                    Service date
-                  </span>
-                  <span className='attendance-date-input'>
-                    <CalendarDays size={17} aria-hidden='true' />
-                    <input
-                      type='date'
-                      value={date}
-                      max={getToday()}
-                      onChange={(event) => {
-                        setDate(event.target.value);
-                        setError('');
-                        setSuccess('');
-                      }}
-                      required
-                    />
-                  </span>
-                </label>
-                <div className='attendance-service-field'>
-                  <span className='attendance-date-service-label'>Service</span>
-                  <div
-                    className={`attendance-service-chip${service ? '' : ' is-unavailable'}`}
-                    aria-live='polite'
-                  >
-                    <strong>
-                      {service
-                        ? `${service} service`
-                        : 'No service on this day'}
-                    </strong>
+                  <div className='attendance-confirmation-heading'>
+                    <span>Review before sending</span>
+                    <h2 id='attendance-confirmation-title'>
+                      Confirm attendance
+                    </h2>
+                    <p>
+                      {user.branch} · {formatDate(date)} · {service} service
+                    </p>
                   </div>
-                </div>
-              </div>
-              <fieldset className='attendance-groups-fieldset'>
-                <legend>Attendance counts</legend>
-                <div className='attendance-groups-grid'>
-                  {attendanceGroups.map(({ key, label, icon: Icon }) => (
-                    <label className='attendance-count-field' key={key}>
-                      <span
-                        className={`attendance-count-icon attendance-count-icon-${key}`}
-                      >
-                        <Icon size={17} aria-hidden='true' />
+                  <dl className='attendance-confirmation-counts'>
+                    {attendanceGroups.map(({ key, label }) => (
+                      <div key={key}>
+                        <dt>{label}</dt>
+                        <dd>{Number(figures[key])}</dd>
+                      </div>
+                    ))}
+                    <div className='attendance-confirmation-total'>
+                      <dt>Total</dt>
+                      <dd>{membersTotal}</dd>
+                    </div>
+                  </dl>
+                  <div className='attendance-confirmation-actions'>
+                    <button
+                      className='attendance-edit-button'
+                      type='button'
+                      onClick={() => setShowConfirmation(false)}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className='attendance-send-button'
+                      type='button'
+                      onClick={confirmAttendance}
+                    >
+                      <Check size={17} aria-hidden='true' />
+                      Confirm
+                    </button>
+                  </div>
+                </section>
+              ) : (
+                <>
+                  <div className='attendance-date-service-row'>
+                    <label className='attendance-date-field'>
+                      <span className='attendance-date-service-label'>
+                        Service date
                       </span>
-                      <span>{label}</span>
-                      <input
-                        name={key}
-                        type='text'
-                        inputMode='numeric'
-                        pattern='[0-9]*'
-                        value={figures[key]}
-                        onChange={changeFigure}
-                        required
-                        aria-label={`${label} attendance`}
-                      />
+                      <span className='attendance-date-input'>
+                        <CalendarDays size={17} aria-hidden='true' />
+                        <input
+                          type='date'
+                          value={date}
+                          max={getToday()}
+                          onChange={(event) => {
+                            setDate(event.target.value);
+                            setError('');
+                            setSuccess(null);
+                          }}
+                          required
+                        />
+                      </span>
                     </label>
-                  ))}
-                </div>
-              </fieldset>
-              <div className='attendance-members-total' aria-live='polite'>
-                <span>Total attendance, including visitors</span>
-                <strong>{membersTotal}</strong>
-              </div>
-              {error && (
-                <p className='attendance-validation-message' role='alert'>
-                  {error}
-                </p>
+                    <div className='attendance-service-field'>
+                      <span className='attendance-date-service-label'>
+                        Service
+                      </span>
+                      <div
+                        className={`attendance-service-chip${service ? '' : ' is-unavailable'}`}
+                        aria-live='polite'
+                      >
+                        <strong>
+                          {service
+                            ? `${service} service`
+                            : 'No service on this day'}
+                        </strong>
+                      </div>
+                    </div>
+                  </div>
+                  <fieldset className='attendance-groups-fieldset'>
+                    <legend>Attendance counts</legend>
+                    <div className='attendance-groups-grid'>
+                      {attendanceGroups.map(({ key, label, icon: Icon }) => (
+                        <label className='attendance-count-field' key={key}>
+                          <span
+                            className={`attendance-count-icon attendance-count-icon-${key}`}
+                          >
+                            <Icon size={17} aria-hidden='true' />
+                          </span>
+                          <span>{label}</span>
+                          <input
+                            name={key}
+                            type='text'
+                            inputMode='numeric'
+                            pattern='[0-9]*'
+                            value={figures[key]}
+                            onChange={changeFigure}
+                            required
+                            aria-label={`${label} attendance`}
+                          />
+                        </label>
+                      ))}
+                    </div>
+                  </fieldset>
+                  <div className='attendance-members-total' aria-live='polite'>
+                    <span>Total attendance</span>
+                    <strong>{membersTotal}</strong>
+                  </div>
+                  {error && (
+                    <p className='attendance-validation-message' role='alert'>
+                      {error}
+                    </p>
+                  )}
+                  {alreadySent && !success && (
+                    <p className='attendance-validation-message' role='alert'>
+                      Attendance has already been sent for this branch, date and
+                      service.
+                    </p>
+                  )}
+                  <button
+                    className='attendance-send-button'
+                    type='submit'
+                    disabled={!service || alreadySent}
+                  >
+                    <Check size={17} aria-hidden='true' />
+                    Send attendance
+                  </button>
+                </>
               )}
-              {alreadySent && !success && (
-                <p className='attendance-validation-message' role='alert'>
-                  Attendance has already been sent for this branch, date and
-                  service.
-                </p>
-              )}
-              {success && (
-                <p className='attendance-success-message' role='status'>
-                  {success}
-                </p>
-              )}
-              <button
-                className='attendance-send-button'
-                type='submit'
-                disabled={!service || alreadySent}
-              >
-                <Check size={17} aria-hidden='true' />
-                Send attendance
-              </button>
-            </>
-          )}
-        </form>
+            </form>
+          </div>
+        )}
 
         <section
           className='attendance-week-history'
@@ -341,7 +436,7 @@ export function AttendancePage({
           <header>
             <div>
               <p>WEEKLY HISTORY</p>
-              <h2 id='attendance-history-title'>This week</h2>
+              {/* <h2 id='attendance-history-title'>This week</h2> */}
             </div>
             <span>
               {formatCalendarDate(weekStart)} – {formatCalendarDate(weekEnd)}
@@ -358,7 +453,6 @@ export function AttendancePage({
                     <th scope='col'>Women</th>
                     <th scope='col'>Youth</th>
                     <th scope='col'>Children</th>
-                    <th scope='col'>Visitors</th>
                     <th scope='col'>Total</th>
                     <th scope='col'>Status</th>
                   </tr>
@@ -372,7 +466,6 @@ export function AttendancePage({
                       <td>{record.women}</td>
                       <td>{record.youth}</td>
                       <td>{record.children}</td>
-                      <td>{record.visitors}</td>
                       <td className='attendance-history-total'>
                         {record.total}
                       </td>
